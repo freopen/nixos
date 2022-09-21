@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.sway.enable = true;
 
@@ -9,9 +9,7 @@
       defaultWorkspace = "workspace number 1";
       terminal = "alacritty";
       window.titlebar = false;
-      keybindings = let 
-        modifier = config.wayland.windowManager.sway.config.modifier;
-      in lib.mkOptionDefault {
+      keybindings = lib.mkOptionDefault {
         "XF86MonBrightnessUp" = "brightnessctl set +5%";
         "XF86MonBrightnessDown" = "brightnessctl set -5%";
       }; 

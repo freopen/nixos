@@ -16,7 +16,7 @@
     };
   };
 
-  networking.networkmanager.enabled = true;
+  networking.networkmanager.enable = true;
 
   services = {
     xserver = {
@@ -30,6 +30,11 @@
       enable = true;
       pulse.enable = true;
     };
+  };
+
+  users.users.freopen = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
   };
 
   home-manager.users.freopen = {
@@ -46,5 +51,5 @@
       ];
     };
     programs.home-manager.enable = true;
-  }
+  };
 }

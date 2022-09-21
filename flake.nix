@@ -20,13 +20,13 @@
         system = "x86_64-linux";
         modules = [
           home-manager.nixosModules.home-manager
-          ./shared/default
+          ./shared
         ];
       };
 
       hosts.laptop = {
         modules = [
-          ./hosts/laptop
+          ./hosts/laptop.nix
           ./desktop
         ];
       };

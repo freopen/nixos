@@ -8,7 +8,10 @@
       modifier = "Mod4";
       defaultWorkspace = "workspace number 1";
       terminal = "alacritty";
-      window.titlebar = false;
+      window = {
+        titlebar = false;
+        hideEdgeBorders = "both";
+      };
       keybindings = lib.mkOptionDefault {
         "XF86MonBrightnessUp" = "brightnessctl set +5%";
         "XF86MonBrightnessDown" = "brightnessctl set -5%";

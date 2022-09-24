@@ -11,12 +11,13 @@
     enable = true;
     dates = "Sat, 09:00";
     flake = "github:freopen/nixos";
+    flags = [ "--no-write-lock-file" ];
     allowReboot = true;
   };
   nix = {
     optimise = {
       automatic = true;
-      dates = "Sun, 09:00";
+      dates = [ "Sun, 09:00" ];
     };
     gc = {
       automatic = true;

@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, fup, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, fup, home-manager, ... }@inputs:
     fup.lib.mkFlake {
       inherit self inputs;
 
@@ -24,10 +24,13 @@
         ];
       };
 
-      hosts.laptop = {
-        modules = [
+      hosts = {
+        laptop.modules = [
           ./hosts/laptop.nix
           ./desktop
+        ];
+        server.modules = [
+          ./hosts/server.nix
         ];
       };
     };

@@ -20,7 +20,7 @@
         system = "x86_64-linux";
         modules = [
           home-manager.nixosModules.home-manager
-          ./shared
+          ./common
         ];
       };
 

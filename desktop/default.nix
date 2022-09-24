@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  imports = [ ./sway.nix ];
+  imports = [ ./sway.nix ./dev.nix ];
 
   boot = {
     # Switch to Zen when 6.0 is released
@@ -47,7 +47,6 @@
         firefox-wayland
         alacritty
         hack-font
-        vscode
       ];
     };
     programs.home-manager.enable = true;

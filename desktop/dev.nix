@@ -7,6 +7,5 @@
         rnix-lsp
       ];
     };
-    programs.home-manager.enable = true;
   };
 }

@@ -29,4 +29,7 @@
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0xybsoHuUubvYkoOBNbrqz7CQmRjGIru4HMq/x0Zxo freopen@FREOPEN-DESKTOP"
   ];
+  age.identityPaths = [
+    "/root/.ssh/id_ed25519"
+  ];
 }

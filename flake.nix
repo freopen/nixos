@@ -8,9 +8,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, fup, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, fup, home-manager, agenix, ... }@inputs:
     fup.lib.mkFlake {
       inherit self inputs;
 
@@ -19,6 +20,7 @@
       hostDefaults = {
         system = "x86_64-linux";
         modules = [
+          agenix.nixosModule
           home-manager.nixosModules.home-manager
           ./common
         ];
@@ -31,6 +33,7 @@
         ];
         server.modules = [
           ./hosts/server.nix
+          ./server/monitoring.nix
         ];
       };
     };

@@ -8,6 +8,7 @@
   users.users.opentelemetry = {
     isSystemUser = true;
     group = "opentelemetry";
+    extraGroups = [ "systemd-journal" ];
     packages = with pkgs; [ opentelemetry-collector-contrib ];
   };
   users.groups.opentelemetry = { };
@@ -24,7 +25,15 @@
               ];
             }];
           }];
-          journald = {};
+          journald = {
+            units = [ "*" ];
+          };
+        };
+        processors.transform = {
+          logs.queries = [
+            "set(attributes, body)"
+          ];
+
         };
         service = {
           telemetry.metrics.level = "detailed";
@@ -37,7 +46,7 @@
             };
             logs = {
               receivers = [ "journald" ];
-              processors = [];
+              processors = [ "transform" ];
               exporters = [ "otlp" ];
             };
           };
@@ -54,6 +63,7 @@
             "${pkgs.opentelemetry-collector-contrib}/bin/otelcontribcol" + 
             " --config=" + builtins.toFile "config.yaml" otel_config +
             " --config=" + config.age.secrets.newrelic.path;
+        Restart = "always";
       };
     };
   services.prometheus.exporters.node = {

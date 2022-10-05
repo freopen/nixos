@@ -5,6 +5,8 @@
       packages = with pkgs; [
         vscode
         rnix-lsp
+        rustc
+        cargo
       ];
     };
   };

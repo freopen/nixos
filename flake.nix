@@ -34,6 +34,7 @@
         server.modules = [
           ./hosts/server.nix
           ./server/monitoring.nix
+          ./server/proxy.nix
         ];
       };
     };

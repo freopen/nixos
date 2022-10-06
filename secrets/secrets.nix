@@ -4,4 +4,5 @@ let
 in
 {
   "newrelic.age".publicKeys = [ laptopKey serverKey ];
+  "shadowsocks.age".publicKeys = [ laptopKey serverKey ];
 }

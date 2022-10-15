@@ -30,7 +30,7 @@
           };
         };
         processors.transform = {
-          logs.queries = [
+          logs.statements = [
             "set(attributes, body)"
           ];
 

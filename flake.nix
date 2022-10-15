@@ -3,12 +3,18 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    fup = {
+      url = "github:gytis-ivaskevicius/flake-utils-plus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    agenix.url = "github:ryantm/agenix";
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, fup, home-manager, agenix, ... }@inputs:
@@ -35,6 +41,7 @@
           ./hosts/server.nix
           ./server/monitoring.nix
           ./server/proxy.nix
+          ./server/wireguard
         ];
       };
     };

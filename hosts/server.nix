@@ -15,10 +15,6 @@
     allowReboot = true;
   };
   nix = {
-    optimise = {
-      automatic = true;
-      dates = [ "Sun, 09:00" ];
-    };
     gc = {
       automatic = true;
       dates = "Sun, 14:00";

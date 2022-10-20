@@ -3,8 +3,7 @@
   imports = [ ./sway.nix ./dev.nix ./shell.nix ];
 
   boot = {
-    # Switch to Zen when 6.0 is released
-    kernelPackages = pkgs.linuxKernel.packages.linux_testing;
+    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {

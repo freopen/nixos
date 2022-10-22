@@ -3,10 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    fup = {
-      url = "github:gytis-ivaskevicius/flake-utils-plus";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,9 +12,14 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    chat_bot = {
+      url = "github:freopen/chat-bot";
+      # url = "/home/freopen/Projects/chat-bot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, fup, home-manager, agenix, ... }@inputs:
+  outputs = { self, nixpkgs, fup, home-manager, agenix, chat_bot, ... }@inputs:
     fup.lib.mkFlake {
       inherit self inputs;
 
@@ -42,6 +44,8 @@
           ./server/monitoring.nix
           ./server/proxy.nix
           ./server/wireguard
+          chat_bot.nixosModules.freopen_chat_bot
+          ./server/chat_bot.nix
         ];
       };
     };

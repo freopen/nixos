@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
-  nix.settings.auto-optimise-store = true;
+  nix.settings = {
+    auto-optimise-store = true;
+    sandbox = "relaxed";
+  };
   environment = {
     systemPackages = with pkgs; [
       vim

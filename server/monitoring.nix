@@ -22,12 +22,14 @@
               targets = [
                 "localhost:8888" # opentelemetry-collector
                 "localhost:9100" # prometheus-node-exporter
+                "localhost:4001" # chess-erdos
               ];
             }];
           }];
           journald = {
             units = [ "*" ];
           };
+          otlp.protocols.grpc.endpoint = "localhost:4317";
         };
         processors.transform = {
           logs.statements = [
@@ -47,6 +49,11 @@
             logs = {
               receivers = [ "journald" ];
               processors = [ "transform" ];
+              exporters = [ "otlp" ];
+            };
+            traces = {
+              receivers = [ "otlp" ];
+              processors = [];
               exporters = [ "otlp" ];
             };
           };

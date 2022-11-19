@@ -17,9 +17,14 @@
       # url = "/home/freopen/Projects/chat-bot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    chess_erdos = {
+      url = "github:freopen/chess-erdos";
+      # url = "/home/freopen/Projects/chess-erdos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, fup, home-manager, agenix, chat_bot, ... }@inputs:
+  outputs = { self, nixpkgs, fup, home-manager, agenix, chat_bot, chess_erdos, ... }@inputs:
     fup.lib.mkFlake {
       inherit self inputs;
 
@@ -46,6 +51,8 @@
           ./server/wireguard
           chat_bot.nixosModules.freopen_chat_bot
           ./server/chat_bot.nix
+          chess_erdos.nixosModules.default
+          ./server/chess_erdos.nix
         ];
       };
     };

@@ -49,6 +49,7 @@
           ./server/monitoring.nix
           ./server/proxy.nix
           ./server/wireguard
+          ./server/cloudflared.nix
           chat_bot.nixosModules.freopen_chat_bot
           ./server/chat_bot.nix
           chess_erdos.nixosModules.default

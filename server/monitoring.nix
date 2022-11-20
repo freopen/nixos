@@ -20,9 +20,10 @@
             job_name = "prometheus_scraper";
             static_configs = [{
               targets = [
-                "localhost:8888" # opentelemetry-collector
-                "localhost:9100" # prometheus-node-exporter
-                "localhost:4001" # chess-erdos
+                "localhost:8888"   # opentelemetry-collector
+                "localhost:9100"   # prometheus-node-exporter
+                "localhost:34711"  # cloudflared
+                "localhost:4001"   # chess-erdos
               ];
             }];
           }];

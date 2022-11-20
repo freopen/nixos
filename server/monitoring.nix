@@ -20,10 +20,14 @@
             job_name = "prometheus_scraper";
             static_configs = [{
               targets = [
-                "localhost:8888"   # opentelemetry-collector
-                "localhost:9100"   # prometheus-node-exporter
-                "localhost:34711"  # cloudflared
-                "localhost:4001"   # chess-erdos
+                "localhost:8888" # opentelemetry-collector
+                "localhost:8001" # cloudflared
+                # Prometheus exporters:
+                "localhost:9100" # node
+                "localhost:9558" # systemd
+                "localhost:9586" # wireguard
+                # My services
+                "localhost:4001" # chess-erdos
               ];
             }];
           }];
@@ -32,11 +36,15 @@
           };
           otlp.protocols.grpc.endpoint = "localhost:4317";
         };
-        processors.transform = {
-          logs.statements = [
-            "set(attributes, body)"
-          ];
-
+        processors = {
+          batch = {
+            timeout = "10s";
+          };
+          transform = {
+            logs.statements = [
+              "set(attributes, body)"
+            ];
+          };
         };
         service = {
           telemetry.metrics.level = "detailed";
@@ -44,17 +52,17 @@
           pipelines = {
             metrics = {
               receivers = [ "prometheus" ];
-              processors = [];
+              processors = [ "batch" ];
               exporters = [ "otlp" ];
             };
             logs = {
               receivers = [ "journald" ];
-              processors = [ "transform" ];
+              processors = [ "transform" "batch" ];
               exporters = [ "otlp" ];
             };
             traces = {
               receivers = [ "otlp" ];
-              processors = [];
+              processors = [ "batch" ];
               exporters = [ "otlp" ];
             };
           };
@@ -67,14 +75,28 @@
       restartTriggers = [ pkgs.opentelemetry-collector-contrib otel_config ];
       serviceConfig = {
         User = "opentelemetry";
-        ExecStart = 
-            "${pkgs.opentelemetry-collector-contrib}/bin/otelcontribcol" + 
-            " --config=" + builtins.toFile "config.yaml" otel_config +
-            " --config=" + config.age.secrets.newrelic.path;
+        ExecStart =
+          "${pkgs.opentelemetry-collector-contrib}/bin/otelcontribcol" +
+          " --config=" + builtins.toFile "config.yaml" otel_config +
+          " --config=" + config.age.secrets.newrelic.path;
         Restart = "always";
       };
     };
-  services.prometheus.exporters.node = {
-    enable = true;
+  services.prometheus.exporters = {
+    node = {
+      enable = true;
+      enabledCollectors = [
+        "processes"
+        "systemd"
+      ];
+    };
+    wireguard.enable = true;
+    systemd = {
+      enable = true;
+      extraFlags = [
+        "--systemd.collector.enable-ip-accounting"
+        "--systemd.collector.enable-restart-count"
+      ];
+    };
   };
 }

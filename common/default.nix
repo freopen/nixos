@@ -1,9 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, home-manager, agenix, ... }:
 {
+  imports = [
+    agenix.nixosModule
+    home-manager.nixosModules.home-manager
+  ];
+
   nix.settings = {
     auto-optimise-store = true;
     sandbox = "relaxed";
   };
+  nixpkgs.config.allowUnfree = true;
   environment = {
     systemPackages = with pkgs; [
       vim

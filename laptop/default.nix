@@ -1,9 +1,23 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, modulesPath, ... }:
 {
-  imports = [ ./sway.nix ./dev.nix ./shell.nix ];
-
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    ./sway.nix
+    ./dev.nix
+    ./shell.nix
+  ];
   boot = {
+    initrd.availableKernelModules = [
+      "nvme"
+      "xhci_pci"
+      "thunderbolt"
+      "usb_storage"
+      "usbhid"
+      "sd_mod"
+      "sdhci_pci"
+    ];
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    kernelModules = [ "kvm-amd" ];
     loader = {
       efi.canTouchEfiVariables = true;
       grub = {
@@ -15,6 +29,19 @@
       };
     };
   };
+  fileSystems."/" =
+    {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+    };
+  fileSystems."/boot" =
+    {
+      device = "/dev/disk/by-label/SYSTEM_DRV";
+      fsType = "vfat";
+    };
+  networking.useDHCP = lib.mkDefault true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.video.hidpi.enable = lib.mkDefault true;
 
   networking.networkmanager.enable = true;
 

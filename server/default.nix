@@ -1,5 +1,14 @@
-{ modulesPath, ... }: {
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
+{ modulesPath, chat_bot, chess_erdos, ... }: {
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+    ./monitoring.nix
+    ./wireguard
+    ./cloudflared.nix
+    chat_bot.nixosModules.freopen_chat_bot
+    ./chat_bot.nix
+    chess_erdos.nixosModules.default
+    ./chess_erdos.nix
+  ];
   boot.loader.grub.device = "/dev/sda";
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" ];
   boot.initrd.kernelModules = [ "nvme" ];

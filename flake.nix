@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    fup.url = "github:gytis-ivaskevicius/flake-utils-plus";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,36 +23,25 @@
     };
   };
 
-  outputs = { self, nixpkgs, fup, home-manager, agenix, chat_bot, chess_erdos, ... }@inputs:
-    fup.lib.mkFlake {
-      inherit self inputs;
-
-      channelsConfig.allowUnfree = true;
-
-      hostDefaults = {
+  outputs = { self, nixpkgs, ... }@inputs:
+  {
+    nixosConfigurations = {
+      laptop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = inputs;
         modules = [
-          agenix.nixosModule
-          home-manager.nixosModules.home-manager
           ./common
+          ./laptop
         ];
       };
-
-      hosts = {
-        laptop.modules = [
-          ./hosts/laptop.nix
-          ./desktop
-        ];
-        server.modules = [
-          ./hosts/server.nix
-          ./server/monitoring.nix
-          ./server/wireguard
-          ./server/cloudflared.nix
-          chat_bot.nixosModules.freopen_chat_bot
-          ./server/chat_bot.nix
-          chess_erdos.nixosModules.default
-          ./server/chess_erdos.nix
+      server = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = inputs;
+        modules = [
+          ./common
+          ./server
         ];
       };
     };
+  };
 }

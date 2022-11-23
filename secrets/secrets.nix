@@ -6,6 +6,5 @@ in
   "chat_bot.age".publicKeys = [ laptopKey serverKey ];
   "cloudflared.age".publicKeys = [ laptopKey serverKey ];
   "newrelic.age".publicKeys = [ laptopKey serverKey ];
-  "shadowsocks.age".publicKeys = [ laptopKey serverKey ];
   "wireguard.age".publicKeys = [ laptopKey serverKey ];
 }

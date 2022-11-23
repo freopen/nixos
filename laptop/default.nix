@@ -46,12 +46,6 @@
   networking.networkmanager.enable = true;
 
   services = {
-    xserver = {
-      layout = "us,ru";
-      xkbVariant = "altgr-intl,";
-      xkbOptions = "compose:rctrl,grp:caps_toggle";
-      libinput.enable = true;
-    };
     printing.enable = true;
     pipewire = {
       enable = true;

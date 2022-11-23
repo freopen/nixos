@@ -9,6 +9,12 @@
     wayland.windowManager.sway = {
       enable = true;
       config = {
+        input."*" = {
+          xkb_layout = "us,ru";
+          xkb_variant = "altgr-intl,";
+          xkb_options = "compose:rctrl,grp:caps_toggle";
+          xkb_numlock = "enabled";
+        };
         modifier = "Mod4";
         defaultWorkspace = "workspace number 1";
         terminal = "alacritty";

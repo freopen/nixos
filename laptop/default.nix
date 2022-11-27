@@ -1,7 +1,8 @@
-{ pkgs, lib, config, modulesPath, ... }:
+{ pkgs, lib, config, modulesPath, home-manager, ... }:
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    home-manager.nixosModules.home-manager
     ./sway.nix
     ./dev.nix
     ./shell.nix
@@ -29,21 +30,22 @@
       };
     };
   };
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-    };
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-label/SYSTEM_DRV";
-      fsType = "vfat";
-    };
-  networking.useDHCP = lib.mkDefault true;
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.video.hidpi.enable = lib.mkDefault true;
-
+  fileSystems = {
+    "/" =
+      {
+        device = "/dev/disk/by-label/nixos";
+        fsType = "btrfs";
+      };
+    "/boot" =
+      {
+        device = "/dev/disk/by-label/SYSTEM_DRV";
+        fsType = "vfat";
+      };
+  };
+  networking.hostName = "laptop";
   networking.networkmanager.enable = true;
+  hardware.cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
+  hardware.video.hidpi.enable = true;
 
   services = {
     printing.enable = true;
@@ -58,18 +60,22 @@
     extraGroups = [ "wheel" ];
   };
 
-  home-manager.users.freopen = {
-    home = {
-      username = "freopen";
-      homeDirectory = "/home/freopen";
-      stateVersion = "22.05";
-      packages = with pkgs; [
-        brightnessctl
-        firefox-wayland
-        alacritty
-        hack-font
-      ];
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.freopen = {
+      home = {
+        username = "freopen";
+        homeDirectory = "/home/freopen";
+        stateVersion = "22.05";
+        packages = with pkgs; [
+          brightnessctl
+          firefox-wayland
+          alacritty
+          hack-font
+        ];
+      };
+      programs.home-manager.enable = true;
     };
-    programs.home-manager.enable = true;
   };
 }

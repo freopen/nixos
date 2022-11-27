@@ -5,7 +5,6 @@
     home-manager.nixosModules.home-manager
     ./sway.nix
     ./dev.nix
-    ./shell.nix
   ];
   boot = {
     initrd.availableKernelModules = [

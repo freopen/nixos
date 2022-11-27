@@ -12,13 +12,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chat_bot = {
-      # url = "github:freopen/chat-bot";
-      url = "/home/freopen/Projects/chat-bot";
+      url = "github:freopen/chat-bot";
+      # url = "/home/freopen/Projects/chat-bot";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chess_erdos = {
-      # url = "github:freopen/chess-erdos";
-      url = "/home/freopen/Projects/chess-erdos";
+      url = "github:freopen/chess-erdos";
+      # url = "/home/freopen/Projects/chess-erdos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

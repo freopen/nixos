@@ -23,7 +23,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = { self, nixpkgs, agenix, ... }@inputs: {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -38,6 +38,12 @@
     };
     devShells.x86_64-linux.default =
       let pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      in pkgs.mkShell { nativeBuildInputs = with pkgs; [ nil nixfmt ]; };
+      in pkgs.mkShell {
+        nativeBuildInputs = with pkgs; [
+          nil
+          nixfmt
+          agenix.defaultPackage.x86_64-linux
+        ];
+      };
   };
 }

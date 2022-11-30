@@ -1,4 +1,15 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+let
+  laptop_lid = pkgs.writeScript "laptop_lid" ''
+    if [[ $(< /proc/acpi/button/lid/LID0/state) == *"open"* ]];
+    then
+      ACTION=enable
+    else
+      ACTION=disable
+    fi
+    swaymsg output eDP-1 $ACTION
+  '';
+in {
   programs.sway.enable = true;
 
   home-manager.users.freopen = {
@@ -23,7 +34,14 @@
           "XF86MonBrightnessUp" = "brightnessctl set +5%";
           "XF86MonBrightnessDown" = "brightnessctl set -5%";
         };
+        startup = [{
+          command = "${laptop_lid}";
+          always = true;
+        }];
       };
+      extraConfig = ''
+        bindswitch lid:toggle exec ${laptop_lid}
+      '';
     };
   };
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

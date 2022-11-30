@@ -1,5 +1,4 @@
-{ pkgs, lib, config, modulesPath, home-manager, ... }:
-{
+{ pkgs, lib, config, modulesPath, home-manager, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     home-manager.nixosModules.home-manager
@@ -30,20 +29,19 @@
     };
   };
   fileSystems = {
-    "/" =
-      {
-        device = "/dev/disk/by-label/nixos";
-        fsType = "btrfs";
-      };
-    "/boot" =
-      {
-        device = "/dev/disk/by-label/SYSTEM_DRV";
-        fsType = "vfat";
-      };
+    "/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-label/SYSTEM_DRV";
+      fsType = "vfat";
+    };
   };
   networking.hostName = "laptop";
   networking.networkmanager.enable = true;
-  hardware.cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode =
+    config.hardware.enableRedistributableFirmware;
   hardware.video.hidpi.enable = true;
 
   services = {

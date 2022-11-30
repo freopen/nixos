@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   environment = {
     systemPackages = with pkgs; [
       vim
@@ -19,18 +19,11 @@
     enable = true;
     autosuggestions = {
       enable = true;
-      strategy = [
-        "match_prev_cmd"
-        "history"
-        "completion"
-      ];
+      strategy = [ "match_prev_cmd" "history" "completion" ];
     };
     syntaxHighlighting = {
       enable = true;
-      highlighters = [
-        "main"
-        "brackets"
-      ];
+      highlighters = [ "main" "brackets" ];
     };
     enableBashCompletion = true;
   };

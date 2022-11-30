@@ -1,8 +1,5 @@
-{ lib, config, pkgs, ... }:
-{
-  age.secrets.wireguard = {
-    file = ../../secrets/wireguard.age;
-  };
+{ lib, config, pkgs, ... }: {
+  age.secrets.wireguard = { file = ../../secrets/wireguard.age; };
   networking.nat.enable = true;
   networking.nat.internalInterfaces = [ "wg0" ];
   networking.firewall.allowedUDPPorts = [ 51820 ];
@@ -18,14 +15,11 @@
       postShutdown = ''
         ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -j MASQUERADE
       '';
-      peers = lib.lists.imap0
-        (index: key: {
-          allowedIPs = [
-            "10.0.0.${toString (index + 2)}"
-          ];
-          publicKey = key;
-        })
-        (lib.strings.splitString "\n" (lib.strings.fileContents ./client_keys.txt));
+      peers = lib.lists.imap0 (index: key: {
+        allowedIPs = [ "10.0.0.${toString (index + 2)}" ];
+        publicKey = key;
+      }) (lib.strings.splitString "\n"
+        (lib.strings.fileContents ./client_keys.txt));
     };
   };
 }

@@ -23,25 +23,21 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
-  {
+  outputs = { self, nixpkgs, ... }@inputs: {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = inputs;
-        modules = [
-          ./common
-          ./laptop
-        ];
+        modules = [ ./common ./laptop ];
       };
       server = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = inputs;
-        modules = [
-          ./common
-          ./server
-        ];
+        modules = [ ./common ./server ];
       };
     };
+    devShells.x86_64-linux.default =
+      let pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      in pkgs.mkShell { nativeBuildInputs = with pkgs; [ nil nixfmt ]; };
   };
 }

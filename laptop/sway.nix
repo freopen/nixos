@@ -1,11 +1,8 @@
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   programs.sway.enable = true;
 
   home-manager.users.freopen = {
-    programs.mako = {
-      enable = true;
-    };
+    programs.mako = { enable = true; };
     wayland.windowManager.sway = {
       enable = true;
       config = {

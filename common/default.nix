@@ -1,12 +1,15 @@
-{ pkgs, home-manager, agenix, ... }:
-{
-  imports = [
-    agenix.nixosModule
-    ./shell.nix
-  ];
-  nix.settings = {
-    auto-optimise-store = true;
-    sandbox = "relaxed";
+{ pkgs, home-manager, agenix, ... }: {
+  imports = [ agenix.nixosModule ./shell.nix ];
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      sandbox = "relaxed";
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+    extraOptions = ''
+      keep-outputs = true
+      keep-derivations = true
+    '';
   };
   nixpkgs.config.allowUnfree = true;
   boot.cleanTmpDir = true;

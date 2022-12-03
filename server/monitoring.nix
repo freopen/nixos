@@ -1,6 +1,6 @@
 { pkgs, config, ... }: {
-  age.secrets.newrelic = {
-    file = ../secrets/newrelic.age;
+  age.secrets.telemetry = {
+    file = ../secrets/telemetry.age;
     owner = "opentelemetry";
     group = "opentelemetry";
   };
@@ -29,31 +29,45 @@
             ];
           }];
         }];
-        journald = { units = [ "*" ]; };
         otlp.protocols.grpc.endpoint = "localhost:4317";
+        journald = { units = [ "*" ]; };
       };
-      processors = {
-        batch = { timeout = "10s"; };
-        transform = { logs.statements = [ "set(attributes, body)" ]; };
+      processors = { batch = { timeout = "10s"; }; };
+      exporters = {
+        prometheusremotewrite = {
+          endpoint =
+            "https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push";
+          auth.authenticator = "basicauth/metrics";
+        };
+        "otlp/traces" = {
+          endpoint = "tempo-eu-west-0.grafana.net:443";
+          auth.authenticator = "basicauth/traces";
+        };
+        loki = {
+          endpoint = "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push";
+          auth.authenticator = "basicauth/logs";
+        };
       };
       service = {
         telemetry.metrics.level = "detailed";
         telemetry.logs.level = "debug";
+        extensions =
+          [ "basicauth/metrics" "basicauth/traces" "basicauth/logs" ];
         pipelines = {
           metrics = {
             receivers = [ "prometheus" ];
             processors = [ "batch" ];
-            exporters = [ "otlp" ];
-          };
-          logs = {
-            receivers = [ "journald" ];
-            processors = [ "transform" "batch" ];
-            exporters = [ "otlp" ];
+            exporters = [ "prometheusremotewrite" ];
           };
           traces = {
             receivers = [ "otlp" ];
             processors = [ "batch" ];
-            exporters = [ "otlp" ];
+            exporters = [ "otlp/traces" ];
+          };
+          logs = {
+            receivers = [ "journald" ];
+            processors = [ "batch" ];
+            exporters = [ "loki" ];
           };
         };
       };
@@ -66,7 +80,7 @@
       User = "opentelemetry";
       ExecStart = "${pkgs.opentelemetry-collector-contrib}/bin/otelcontribcol"
         + " --config=" + builtins.toFile "config.yaml" otel_config
-        + " --config=" + config.age.secrets.newrelic.path;
+        + " --config=" + config.age.secrets.telemetry.path;
       Restart = "always";
     };
   };

@@ -10,10 +10,21 @@ let
     swaymsg output eDP-1 $ACTION
   '';
 in {
+  services.greetd = {
+    enable = true;
+    settings.default_session = {
+      command = "sway";
+      user = "freopen";
+    };
+  };
   programs.sway.enable = true;
 
   home-manager.users.freopen = {
     programs.mako = { enable = true; };
+    programs.swaylock.settings = {
+      color = "#07260a";
+      show-failed-attempts = true;
+    };
     wayland.windowManager.sway = {
       enable = true;
       config = {
@@ -33,6 +44,7 @@ in {
         keybindings = lib.mkOptionDefault {
           "XF86MonBrightnessUp" = "brightnessctl set +5%";
           "XF86MonBrightnessDown" = "brightnessctl set -5%";
+          "Mod4+x" = "exec swaylock";
         };
         startup = [{
           command = "${laptop_lid}";
@@ -40,6 +52,7 @@ in {
         }];
       };
       extraConfig = ''
+        exec swaylock
         bindswitch lid:toggle exec ${laptop_lid}
       '';
     };

@@ -13,6 +13,7 @@
       sysz
       zsh-completions
     ];
+    sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
   };
   users.defaultUserShell = pkgs.zsh;
   programs.zsh = {

@@ -50,6 +50,14 @@
       enable = true;
       pulse.enable = true;
     };
+    greetd = {
+      enable = true;
+      settings.default_session = {
+        command = "sway";
+        user = "freopen";
+      };
+    };
+    gnome.gnome-keyring.enable = true;
   };
 
   users.users.freopen = {
@@ -70,6 +78,7 @@
           firefox-wayland
           alacritty
           hack-font
+          xdg-utils
         ];
       };
       programs.home-manager.enable = true;

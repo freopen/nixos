@@ -10,14 +10,8 @@ let
     swaymsg output eDP-1 $ACTION
   '';
 in {
-  services.greetd = {
-    enable = true;
-    settings.default_session = {
-      command = "sway";
-      user = "freopen";
-    };
-  };
   programs.sway.enable = true;
+  security.pam.services.swaylock.enableGnomeKeyring = true;
 
   home-manager.users.freopen = {
     programs.mako = { enable = true; };

@@ -1,6 +1,5 @@
 { pkgs, ... }: {
   home-manager.users.freopen = {
-    home = { packages = with pkgs; [ vscode ]; };
     programs = {
       direnv = {
         enable = true;
@@ -8,6 +7,10 @@
         nix-direnv.enable = true;
       };
       zsh.enable = true;
+      vscode = {
+        enable = true;
+        package = pkgs.vscode.fhs;
+      };
     };
   };
 }

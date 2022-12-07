@@ -98,4 +98,8 @@
       ];
     };
   };
+  services.netdata = {
+    enable = true;
+    config = { db."storage tiers" = 5; };
+  };
 }

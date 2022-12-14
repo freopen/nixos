@@ -7,10 +7,7 @@
         nix-direnv.enable = true;
       };
       zsh.enable = true;
-      vscode = {
-        enable = true;
-        package = pkgs.vscode.fhs;
-      };
+      vscode.enable = true;
     };
   };
 }

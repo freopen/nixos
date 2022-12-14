@@ -50,6 +50,12 @@ in {
         bindswitch lid:toggle exec ${laptop_lid}
       '';
     };
+    home.pointerCursor = {
+      package = pkgs.simp1e-cursors;
+      name = "Simp1e-Adw-Dark";
+      x11.enable = true;
+      gtk.enable = true;
+    };
   };
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

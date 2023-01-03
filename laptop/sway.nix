@@ -19,6 +19,10 @@ in {
       color = "#07260a";
       show-failed-attempts = true;
     };
+    programs.i3status-rust = {
+      enable = true;
+      bars.default = { icons = "material-nf"; };
+    };
     wayland.windowManager.sway = {
       enable = true;
       config = {
@@ -43,6 +47,11 @@ in {
         startup = [{
           command = "${laptop_lid}";
           always = true;
+        }];
+        bars = [{
+          statusCommand =
+            "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-default.toml";
+
         }];
       };
       extraConfig = ''

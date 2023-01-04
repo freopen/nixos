@@ -6,6 +6,11 @@
     ./fonts.nix
     ./sway.nix
   ];
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
   boot = {
     initrd.availableKernelModules = [
       "nvme"

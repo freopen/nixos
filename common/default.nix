@@ -13,7 +13,10 @@
   };
   nixpkgs.config.allowUnfree = true;
   boot.cleanTmpDir = true;
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 100;
+  };
   services.dbus.implementation = "broker";
   time.timeZone = "Europe/Zurich";
   i18n.defaultLocale = "en_US.UTF-8";

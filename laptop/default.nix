@@ -2,6 +2,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     home-manager.nixosModules.home-manager
+    ./bar.nix
     ./dev.nix
     ./fonts.nix
     ./sway.nix

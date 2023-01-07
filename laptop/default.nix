@@ -5,6 +5,7 @@
     ./bar.nix
     ./dev.nix
     ./fonts.nix
+    ./rofi.nix
     ./sway.nix
   ];
   nix.gc = {

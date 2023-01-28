@@ -32,7 +32,14 @@
         otlp.protocols.grpc.endpoint = "localhost:4317";
         journald = { units = [ "*" ]; };
       };
-      processors = { batch = { timeout = "10s"; }; };
+      processors = {
+        batch = { timeout = "10s"; };
+        memory_limiter = {
+          check_interval = "1s";
+          limit_mib = 100;
+        };
+      };
+      extensions = { memory_ballast = { size_mib = 50; }; };
       exporters = {
         prometheusremotewrite = {
           endpoint =
@@ -51,22 +58,26 @@
       service = {
         telemetry.metrics.level = "detailed";
         telemetry.logs.level = "debug";
-        extensions =
-          [ "basicauth/metrics" "basicauth/traces" "basicauth/logs" ];
+        extensions = [
+          "basicauth/metrics"
+          "basicauth/traces"
+          "basicauth/logs"
+          "memory_ballast"
+        ];
         pipelines = {
           metrics = {
             receivers = [ "prometheus" ];
-            processors = [ "batch" ];
+            processors = [ "memory_limiter" "batch" ];
             exporters = [ "prometheusremotewrite" ];
           };
           traces = {
             receivers = [ "otlp" ];
-            processors = [ "batch" ];
+            processors = [ "memory_limiter" "batch" ];
             exporters = [ "otlp/traces" ];
           };
           logs = {
             receivers = [ "journald" ];
-            processors = [ "batch" ];
+            processors = [ "memory_limiter" "batch" ];
             exporters = [ "loki" ];
           };
         };

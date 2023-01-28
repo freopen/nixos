@@ -40,6 +40,7 @@
     "/" = {
       device = "/dev/disk/by-label/nixos";
       fsType = "btrfs";
+      options = [ "compress-force=zstd" ];
     };
     "/boot" = {
       device = "/dev/disk/by-label/SYSTEM_DRV";

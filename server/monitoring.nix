@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, lib, config, ... }: {
   age.secrets.telemetry = {
     file = ../secrets/telemetry.age;
     owner = "opentelemetry";
@@ -15,19 +15,11 @@
     otel_config = builtins.toJSON {
       receivers = {
         prometheus.config.scrape_configs = [{
-          job_name = "prometheus_scraper";
-          static_configs = [{
-            targets = [
-              "localhost:8888" # opentelemetry-collector
-              "localhost:8001" # cloudflared
-              # Prometheus exporters:
-              "localhost:9100" # node
-              "localhost:9558" # systemd
-              "localhost:9586" # wireguard
-              # My services
-              "localhost:4001" # chess-erdos
-            ];
-          }];
+          job_name = "netdata";
+          honor_labels = true;
+          metrics_path = "/api/v1/allmetrics";
+          params = { format = [ "prometheus" ]; };
+          static_configs = [{ targets = [ "localhost:19999" ]; }];
         }];
         otlp.protocols.grpc.endpoint = "localhost:4317";
         journald = { units = [ "*" ]; };
@@ -57,7 +49,7 @@
       };
       service = {
         telemetry.metrics.level = "detailed";
-        telemetry.logs.level = "debug";
+        telemetry.logs.level = "info";
         extensions = [
           "basicauth/metrics"
           "basicauth/traces"
@@ -95,22 +87,45 @@
       Restart = "always";
     };
   };
-  services.prometheus.exporters = {
-    node = {
-      enable = true;
-      enabledCollectors = [ "processes" "systemd" ];
-    };
-    wireguard.enable = true;
-    systemd = {
-      enable = true;
-      extraFlags = [
-        "--systemd.collector.enable-ip-accounting"
-        "--systemd.collector.enable-restart-count"
-      ];
-    };
-  };
+  services.prometheus.exporters = { wireguard.enable = true; };
   services.netdata = {
     enable = true;
     config = { db."storage tiers" = 5; };
+    configDir = {
+      "go.d/prometheus.conf" = builtins.toFile "prometheus.conf"
+        (lib.generators.toYAML { } {
+          jobs = [
+            {
+              name = "wireguard_local";
+              url = "http://127.0.0.1:9586/metrics";
+            }
+            {
+              name = "opentelemetry";
+              url = "http://127.0.0.1:8888/metrics";
+            }
+            {
+              name = "cloudflared";
+              url = "http://127.0.0.1:8001/metrics";
+            }
+            {
+              name = "chess_erdos";
+              url = "http://127.0.0.1:4001/metrics";
+            }
+          ];
+        });
+      "go.d/systemdunits.conf" = builtins.toFile "systemdunits.conf"
+        (lib.generators.toYAML { } {
+          jobs = [{
+            name = "all";
+            include = [ "*" ];
+          }];
+        });
+      "go.d.conf" = builtins.toFile "go.d.conf" (lib.generators.toYAML { } {
+        enabled = true;
+        default_run = true;
+        max_procs = 0;
+        modules = { systemdunits = true; };
+      });
+    };
   };
 }

@@ -1,5 +1,5 @@
 { pkgs, home-manager, agenix, ... }: {
-  imports = [ agenix.nixosModule ./shell.nix ./build_cache.nix ];
+  imports = [ agenix.nixosModules.default ./shell.nix ./build_cache.nix ];
   nix = {
     settings = {
       auto-optimise-store = true;

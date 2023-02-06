@@ -42,7 +42,7 @@
         nativeBuildInputs = with pkgs; [
           nil
           nixfmt
-          agenix.defaultPackage.x86_64-linux
+          agenix.packages.x86_64-linux.default
         ];
       };
   };

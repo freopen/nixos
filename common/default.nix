@@ -17,6 +17,10 @@
     enable = true;
     memoryPercent = 100;
   };
+  services.ananicy = {
+    enable = true;
+    package = pkgs.ananicy-cpp;
+  };
   services.dbus.implementation = "broker";
   time.timeZone = "Europe/Zurich";
   i18n.defaultLocale = "en_US.UTF-8";

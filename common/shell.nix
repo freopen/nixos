@@ -4,7 +4,8 @@
       curl
       git
       bat
-      jaq
+      jq
+      jc
       glances
       navi
       broot

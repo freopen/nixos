@@ -83,10 +83,10 @@
         homeDirectory = "/home/freopen";
         stateVersion = "22.05";
         packages = with pkgs; [
+          alacritty
           brightnessctl
           firefox-wayland
-          alacritty
-          hack-font
+          gnome.file-roller
           xdg-utils
         ];
       };

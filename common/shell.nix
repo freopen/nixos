@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   environment = {
     systemPackages = with pkgs; [
-      vim
       curl
       git
       bat
@@ -16,6 +15,11 @@
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
   };
   users.defaultUserShell = pkgs.zsh;
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    vimAlias = true;
+  };
   programs.zsh = {
     enable = true;
     autosuggestions = {

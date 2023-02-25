@@ -24,16 +24,14 @@
     flags = [ "--no-write-lock-file" ];
     allowReboot = true;
   };
-  nix = {
-    gc = {
-      automatic = true;
-      dates = "Sun, 14:00";
-      options = "--delete-older-than 30d";
+  services.openssh = {
+    enable = true;
+    settings = {
+      X11Forwarding = false;
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
     };
-    daemonCPUSchedPolicy = "idle";
-    daemonIOSchedClass = "idle";
   };
-  services.openssh.enable = true;
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0xybsoHuUubvYkoOBNbrqz7CQmRjGIru4HMq/x0Zxo freopen@FREOPEN-DESKTOP"
   ];

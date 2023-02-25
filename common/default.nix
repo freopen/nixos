@@ -1,11 +1,34 @@
 { pkgs, home-manager, agenix, ... }: {
   imports = [ agenix.nixosModules.default ./shell.nix ./build_cache.nix ];
   nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
     settings = {
       auto-optimise-store = true;
       sandbox = "relaxed";
       experimental-features = [ "nix-command" "flakes" ];
+      connect-timeout = 5;
+      log-lines = 25;
+      min-free = 128 * 1000 * 1000;
+      max-free = 1000 * 1000 * 1000;
+      builders-use-substitutes = true;
+      trusted-substituters = [
+        "https://nix-community.cachix.org"
+        "https://cache.garnix.io"
+        "https://numtide.cachix.org"
+      ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+        "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+      ];
     };
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
+    daemonIOSchedPriority = 7;
     extraOptions = ''
       keep-outputs = true
       keep-derivations = true
@@ -24,5 +47,12 @@
   services.dbus.implementation = "broker";
   time.timeZone = "Europe/Zurich";
   i18n.defaultLocale = "en_US.UTF-8";
-  system.stateVersion = "22.05";
+  system = {
+    stateVersion = "22.05";
+    activationScripts.diff = ''
+      if [[ -e /run/current-system ]]; then
+        ${pkgs.nix}/bin/nix store diff-closures /run/current-system "$systemConfig"
+      fi
+    '';
+  };
 }

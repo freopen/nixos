@@ -8,11 +8,6 @@
     ./rofi.nix
     ./sway.nix
   ];
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
   boot = {
     initrd.availableKernelModules = [
       "nvme"
@@ -52,11 +47,13 @@
   hardware.cpu.amd.updateMicrocode =
     config.hardware.enableRedistributableFirmware;
   hardware.video.hidpi.enable = true;
+  security.rtkit.enable = true;
 
   services = {
     printing.enable = true;
     pipewire = {
       enable = true;
+      alsa.enable = true;
       pulse.enable = true;
     };
     greetd = {

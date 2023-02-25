@@ -11,6 +11,7 @@
       fd
       sysz
       zsh-completions
+      nix-output-monitor
     ];
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
   };

@@ -22,13 +22,11 @@
     kernelModules = [ "kvm-amd" ];
     loader = {
       efi.canTouchEfiVariables = true;
-      grub = {
+      systemd-boot = {
         enable = true;
-        devices = [ "nodev" ];
-        efiSupport = true;
-        useOSProber = true;
-        configurationLimit = 5;
+        configurationLimit = 10;
       };
+      timeout = 30;
     };
   };
   fileSystems = {

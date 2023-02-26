@@ -10,7 +10,6 @@
       auto-optimise-store = true;
       sandbox = "relaxed";
       experimental-features = [ "nix-command" "flakes" ];
-      connect-timeout = 5;
       log-lines = 25;
       min-free = 128 * 1000 * 1000;
       max-free = 1000 * 1000 * 1000;

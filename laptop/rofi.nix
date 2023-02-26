@@ -4,7 +4,7 @@
       enable = true;
       package = pkgs.rofi-wayland;
       plugins = with pkgs; [ rofi-emoji rofi-calc ];
-      terminal = "${pkgs.alacritty}/bin/alacritty";
+      terminal = "${pkgs.foot}/bin/foot";
       extraConfig = {
         modi = "drun,calc,emoji";
         sidebar-mode = true;

@@ -30,7 +30,7 @@ in {
         };
         modifier = "Mod4";
         defaultWorkspace = "workspace number 1";
-        terminal = "alacritty";
+        terminal = "foot";
         window = {
           titlebar = false;
           hideEdgeBorders = "both";

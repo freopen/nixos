@@ -91,7 +91,6 @@
         homeDirectory = "/home/freopen";
         stateVersion = "22.05";
         packages = with pkgs; [
-          alacritty
           brightnessctl
           firefox-wayland
           gnome.file-roller

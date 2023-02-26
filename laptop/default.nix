@@ -54,6 +54,7 @@
   security.rtkit.enable = true;
 
   services = {
+    fwupd.enable = true;
     tlp.enable = true;
     resolved.dnssec = "true";
     resolved.extraConfig = ''

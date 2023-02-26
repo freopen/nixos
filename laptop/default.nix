@@ -54,6 +54,12 @@
   security.rtkit.enable = true;
 
   services = {
+    tlp.enable = true;
+    resolved.dnssec = "true";
+    resolved.extraConfig = ''
+      [Resolve]
+      DNSOverTLS=yes
+    '';
     printing.enable = true;
     pipewire = {
       enable = true;
@@ -68,11 +74,6 @@
       };
     };
     gnome.gnome-keyring.enable = true;
-    resolved.dnssec = "true";
-    resolved.extraConfig = ''
-      [Resolve]
-      DNSOverTLS=yes
-    '';
   };
 
   users.users.freopen = {

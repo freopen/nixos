@@ -37,14 +37,9 @@
             format = "{icon} {available}";
           }
           {
-            block = "networkmanager";
-            on_click = "alacritty -e nmtui";
-            ap_format = "{ssid} {strength}";
-            device_format = "{icon}{ap}";
-          }
-          {
             block = "net";
-            format = "{speed_down;K*B} {graph_down} {speed_up;K*B} {graph_up}";
+            format =
+              "{ssid} {signal_strength} {speed_down;K*B} {graph_down} {speed_up;K*B} {graph_up}";
           }
           { block = "sound"; }
           { block = "backlight"; }

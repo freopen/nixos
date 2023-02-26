@@ -40,8 +40,14 @@
       fsType = "vfat";
     };
   };
-  networking.hostName = "laptop";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "laptop";
+    useNetworkd = true;
+    wireless.iwd.enable = true;
+    nameservers =
+      [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
+  };
+  systemd.network.wait-online.enable = false;
   hardware.cpu.amd.updateMicrocode =
     config.hardware.enableRedistributableFirmware;
   hardware.video.hidpi.enable = true;
@@ -62,6 +68,11 @@
       };
     };
     gnome.gnome-keyring.enable = true;
+    resolved.dnssec = "true";
+    resolved.extraConfig = ''
+      [Resolve]
+      DNSOverTLS=yes
+    '';
   };
 
   users.users.freopen = {

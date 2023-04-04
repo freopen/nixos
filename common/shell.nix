@@ -1,18 +1,21 @@
 { pkgs, ... }: {
   environment = {
     systemPackages = with pkgs; [
-      curl
-      git
+      atuin
       bat
-      jq
-      jc
-      glances
-      navi
       broot
+      curl
       fd
-      sysz
-      zsh-completions
+      fzf
+      git
+      glances
+      jc
+      jq
+      navi
       nix-output-monitor
+      sysz
+      thefuck
+      zsh-completions
     ];
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
   };
@@ -33,13 +36,29 @@
       highlighters = [ "main" "brackets" ];
     };
     enableBashCompletion = true;
-  };
-  programs.starship = {
-    enable = true;
-    settings = {
-      directory.truncate_to_repo = false;
-      time.disabled = false;
-      status.disabled = false;
+    promptInit = ''
+      eval "$(atuin init zsh)"
+      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+      source ${./.p10k.zsh}
+    '';
+    interactiveShellInit = ''
+      ZSH_ALIAS_FINDER_AUTOMATIC=true
+      FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
+    '';
+    ohMyZsh = {
+      enable = true;
+      plugins = [
+        "alias-finder"
+        "command-not-found"
+        "common-aliases"
+        "git"
+        "fd"
+        "fzf"
+        "rust"
+        "systemd"
+        "thefuck"
+        "vscode"
+      ];
     };
   };
 }

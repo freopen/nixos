@@ -11,50 +11,57 @@
         blocks = [
           {
             block = "focused_window";
-            show_marks = "visible";
-            max_width = 200;
+            format = "$visible_marks $title.str(max_w:200)";
           }
           {
             block = "load";
-            format = "{1m} {5m} {15m}";
+            format = "$icon $1m.eng(w:3) $5m.eng(w:3) $15m.eng(w:3)";
           }
           {
             block = "temperature";
-            collapsed = false;
-            format = "{max}";
+            format = "$icon $max";
           }
           {
             block = "cpu";
-            format = "{barchart} {frequency}";
+            format = "$icon $max_frequency.eng(w:4)";
+          }
+          {
+            block = "amd_gpu";
+            format = "$icon $utilization $vram_used_percents";
+            interval = 1;
           }
           {
             block = "memory";
-            format_mem = "{mem_avail;M} {swap_free_percents}";
-            clickable = false;
+            format = "$icon $mem_avail $icon_swap $swap_free_percents";
           }
           {
             block = "disk_space";
-            format = "{icon} {available}";
+            format = "$icon $available";
           }
           {
             block = "net";
-            format =
-              "{ssid} {signal_strength} {speed_down;K*B} {graph_down} {speed_up;K*B} {graph_up}";
+            format = "$icon $ssid $signal_strength";
           }
-          { block = "sound"; }
-          { block = "backlight"; }
+          {
+            block = "sound";
+            format = "$icon $volume";
+          }
+          {
+            block = "backlight";
+            format = "$icon $brightness";
+          }
           {
             block = "battery";
-            format = "{percentage} {time} {power}";
+            format = "$icon $percentage $time $power";
           }
           {
             block = "keyboard_layout";
             driver = "sway";
-            format = "{layout^2}";
+            format = "$layout.str(max_w:2)";
           }
           {
             block = "time";
-            format = "%a %F %T";
+            format = "$icon $timestamp.datetime(f:'%a %F %T')";
             interval = 1;
           }
         ];

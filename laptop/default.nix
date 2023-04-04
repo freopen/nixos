@@ -50,7 +50,6 @@
   systemd.network.wait-online.enable = false;
   hardware.cpu.amd.updateMicrocode =
     config.hardware.enableRedistributableFirmware;
-  hardware.video.hidpi.enable = true;
   security.rtkit.enable = true;
 
   services = {

@@ -14,7 +14,7 @@ in {
   security.pam.services.swaylock.enableGnomeKeyring = true;
 
   home-manager.users.freopen = {
-    programs.mako = { enable = true; };
+    services.mako = { enable = true; };
     programs.swaylock.settings = {
       color = "#07260a";
       show-failed-attempts = true;

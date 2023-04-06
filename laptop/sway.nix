@@ -10,6 +10,7 @@ let
     swaymsg output eDP-1 $ACTION
   '';
 in {
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   programs.sway.enable = true;
   security.pam.services.swaylock.enableGnomeKeyring = true;
 
@@ -57,5 +58,4 @@ in {
       gtk.enable = true;
     };
   };
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

@@ -13,6 +13,7 @@
       jq
       navi
       nix-output-monitor
+      pciutils
       sysz
       thefuck
       zsh-completions

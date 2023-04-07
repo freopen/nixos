@@ -58,9 +58,15 @@
     tlp = {
       enable = true;
       settings = {
-        RESTORE_DEVICE_STATE_ON_STARTUP = 1;
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_BAT = "schedutil";
         DEVICES_TO_DISABLE_ON_LAN_CONNECT = "wifi";
         DEVICES_TO_ENABLE_ON_LAN_DISCONNECT = "wifi";
+        PLATFORM_PROFILE_ON_AC = "performance";
+        PLATFORM_PROFILE_ON_BAT = "low-power";
+        RESTORE_DEVICE_STATE_ON_STARTUP = 1;
+        START_CHARGE_THRESH_BAT0 = 0;
+        STOP_CHARGE_THRESH_BAT0 = 1;
       };
     };
     resolved.dnssec = "true";

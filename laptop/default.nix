@@ -6,6 +6,7 @@
     ./dev.nix
     ./firefox.nix
     ./fonts.nix
+    ./gaming.nix
     ./rofi.nix
     ./sway.nix
   ];

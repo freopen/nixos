@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ ... }: {
+  programs.nix-ld.enable = true;
   home-manager.users.freopen = {
     programs = {
       direnv = {

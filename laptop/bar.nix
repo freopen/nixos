@@ -41,6 +41,10 @@
           {
             block = "net";
             format = "$icon $ssid $signal_strength";
+            click = [{
+              button = "left";
+              cmd = "rfkill toggle wlan";
+            }];
           }
           {
             block = "sound";

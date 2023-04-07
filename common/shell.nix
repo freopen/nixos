@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   environment = {
     systemPackages = with pkgs; [
-      atuin
       bat
       broot
       curl
@@ -38,7 +37,6 @@
     };
     enableBashCompletion = true;
     promptInit = ''
-      eval "$(atuin init zsh)"
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       source ${./.p10k.zsh}
     '';

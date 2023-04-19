@@ -7,19 +7,22 @@
   users.groups.fishnet = { };
   users.users.fishnet = {
     isSystemUser = true;
+    createHome = true;
+    home = "/var/lib/fishnet";
     group = "fishnet";
   };
   systemd.services.fishnet = {
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
+    environment = { HOME = "/var/lib/fishnet"; };
     serviceConfig = {
       User = "fishnet";
       ExecStart =
-        "${pkgs.fishnet}/bin/fishnet --key-file ${config.age.secrets.fishnet.path} -v --cores 4 run";
+        "${pkgs.fishnet}/bin/fishnet --key-file ${config.age.secrets.fishnet.path} --cores 4 run";
       Restart = "always";
       Nice = 5;
-      WorkingDirectory = "/tmp";
+      WorkingDirectory = "/var/lib/fishnet";
       PrivateTmp = true;
     };
   };

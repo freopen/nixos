@@ -8,6 +8,7 @@
     ./chat_bot.nix
     chess_erdos.nixosModules.default
     ./chess_erdos.nix
+    ./fishnet.nix
   ];
   boot.loader.grub.device = "/dev/sda";
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" ];

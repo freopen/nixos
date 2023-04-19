@@ -6,6 +6,7 @@ let
 in {
   "chat_bot.age".publicKeys = [ laptopKey serverKey ];
   "cloudflared.age".publicKeys = [ laptopKey serverKey ];
+  "fishnet.age".publicKeys = [ laptopKey serverKey ];
   "telemetry.age".publicKeys = [ laptopKey serverKey ];
   "wireguard.age".publicKeys = [ laptopKey serverKey ];
 }

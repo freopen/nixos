@@ -34,7 +34,7 @@
     '';
   };
   nixpkgs.config.allowUnfree = true;
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot = true;
   zramSwap = {
     enable = true;
     memoryPercent = 100;

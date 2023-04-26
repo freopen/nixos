@@ -53,7 +53,6 @@
         "git"
         "fd"
         "fzf"
-        "rust"
         "systemd"
         "thefuck"
         "vscode"

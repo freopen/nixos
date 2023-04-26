@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +27,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, agenix, ... }@inputs: {
+  outputs = { nixpkgs, ... }@inputs: {
     nixosConfigurations = {
       laptop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -36,14 +40,5 @@
         modules = [ ./common ./server ];
       };
     };
-    devShells.x86_64-linux.default =
-      let pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      in pkgs.mkShell {
-        nativeBuildInputs = with pkgs; [
-          nil
-          nixfmt
-          agenix.packages.x86_64-linux.default
-        ];
-      };
   };
 }

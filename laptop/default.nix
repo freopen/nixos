@@ -1,14 +1,13 @@
-{ pkgs, lib, config, modulesPath, home-manager, ... }: {
+{ pkgs, config, modulesPath, home-manager, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     home-manager.nixosModules.home-manager
-    ./bar.nix
     ./dev.nix
     ./firefox.nix
     ./fonts.nix
     ./gaming.nix
+    ./hyprland
     ./rofi.nix
-    ./sway.nix
   ];
   boot = {
     initrd.availableKernelModules = [
@@ -84,7 +83,7 @@
     greetd = {
       enable = true;
       settings.default_session = {
-        command = "sway";
+        command = "Hyprland";
         user = "freopen";
       };
     };

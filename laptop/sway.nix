@@ -16,10 +16,6 @@ in {
 
   home-manager.users.freopen = {
     services.mako = { enable = true; };
-    programs.swaylock.settings = {
-      color = "#07260a";
-      show-failed-attempts = true;
-    };
     wayland.windowManager.sway = {
       enable = true;
       config = {
@@ -50,12 +46,6 @@ in {
         exec swaylock
         bindswitch lid:toggle exec ${laptop_lid}
       '';
-    };
-    home.pointerCursor = {
-      package = pkgs.simp1e-cursors;
-      name = "Simp1e-Adw-Dark";
-      x11.enable = true;
-      gtk.enable = true;
     };
   };
 }

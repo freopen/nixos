@@ -3,11 +3,12 @@
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   security.pam.services.swaylock.enableGnomeKeyring = true;
+  programs.dconf.enable = true;
 
   home-manager.users.freopen = {
     imports = [ hyprland.homeManagerModules.default ];
     home = {
-      packages = with pkgs; [ xorg.xprop ];
+      packages = with pkgs; [ xorg.xprop networkmanagerapplet ];
       pointerCursor = {
         package = pkgs.simp1e-cursors;
         name = "Simp1e-Adw-Dark";
@@ -15,12 +16,14 @@
         gtk.enable = true;
       };
     };
-    programs.foot.enable = true;
-    programs.swaylock = {
-      enable = true;
-      settings = {
-        color = "#07260a";
-        show-failed-attempts = true;
+    programs = {
+      foot.enable = true;
+      swaylock = {
+        enable = true;
+        settings = {
+          color = "#07260a";
+          show-failed-attempts = true;
+        };
       };
     };
     services = {
@@ -55,6 +58,17 @@
         source = ${./general.conf}
         source = ${./binds.conf}
       '';
+    };
+    gtk = {
+      enable = true;
+      theme = {
+        name = "Adwaita-dark";
+        package = pkgs.gnome.gnome-themes-extra;
+      };
+      iconTheme = {
+        name = "Adwaita";
+        package = pkgs.gnome.adwaita-icon-theme;
+      };
     };
   };
 }

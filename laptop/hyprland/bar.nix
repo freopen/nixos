@@ -6,6 +6,7 @@
       package = pkgs.waybar-hyprland;
       systemd.enable = true;
       settings = [{
+        layer = "top";
         position = "bottom";
         modules-left = [ "wlr/workspaces" ];
         modules-center = [ "hyprland/window" ];

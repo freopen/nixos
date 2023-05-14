@@ -1,6 +1,7 @@
 { pkgs, hyprland, ... }: {
   imports = [ ./bar.nix ];
 
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   security.pam.services.swaylock.enableGnomeKeyring = true;
 
   home-manager.users.freopen = {
@@ -14,6 +15,7 @@
         gtk.enable = true;
       };
     };
+    programs.foot.enable = true;
     programs.swaylock = {
       enable = true;
       settings = {
@@ -35,6 +37,11 @@
         }];
       };
       dunst.enable = true;
+      udiskie = {
+        enable = true;
+        automount = true;
+        notify = true;
+      };
     };
     wayland.windowManager.hyprland = {
       enable = true;

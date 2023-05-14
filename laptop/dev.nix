@@ -25,6 +25,7 @@ in {
         nixfmt
         rust
         rust-completions
+        qmk
       ];
       sessionVariables = { LIBCLANG_PATH = "${pkgs.libclang.lib}/lib"; };
     };

@@ -7,6 +7,7 @@
     ./fonts.nix
     ./gaming.nix
     ./hyprland
+    ./networking.nix
     ./rofi.nix
   ];
   boot = {
@@ -41,14 +42,6 @@
       fsType = "vfat";
     };
   };
-  networking = {
-    hostName = "laptop";
-    useNetworkd = true;
-    wireless.iwd.enable = true;
-    nameservers =
-      [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
-  };
-  systemd.network.wait-online.enable = false;
   hardware.cpu.amd.updateMicrocode =
     config.hardware.enableRedistributableFirmware;
   security.rtkit.enable = true;
@@ -69,11 +62,6 @@
         STOP_CHARGE_THRESH_BAT0 = 1;
       };
     };
-    resolved.dnssec = "true";
-    resolved.extraConfig = ''
-      [Resolve]
-      DNSOverTLS=yes
-    '';
     printing.enable = true;
     pipewire = {
       enable = true;

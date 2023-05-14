@@ -16,7 +16,7 @@
           "memory"
           "disk"
           "backlight"
-          "wireplumber"
+          # "wireplumber"
           "battery"
           "hyprland/language"
           "tray"

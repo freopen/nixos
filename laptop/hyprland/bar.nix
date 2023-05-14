@@ -1,6 +1,9 @@
 { pkgs, hyprland, ... }: {
   nixpkgs.overlays = [ hyprland.overlays.hyprland-extras ];
   home-manager.users.freopen = { config, ... }: {
+    systemd.user.targets = {
+      tray = { Unit.Requires = [ "graphical-session-pre.target" ]; };
+    };
     programs.waybar = {
       enable = true;
       package = pkgs.waybar-hyprland;

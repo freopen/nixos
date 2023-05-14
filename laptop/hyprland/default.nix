@@ -27,6 +27,7 @@
       };
     };
     services = {
+      blueman-applet.enable = true;
       swayidle = {
         enable = true;
         systemdTarget = "graphical-session.target";

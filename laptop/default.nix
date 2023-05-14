@@ -42,11 +42,17 @@
       fsType = "vfat";
     };
   };
-  hardware.cpu.amd.updateMicrocode =
-    config.hardware.enableRedistributableFirmware;
+  hardware = {
+    cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
+    bluetooth = {
+      enable = true;
+      settings = { General.Experimental = true; };
+    };
+  };
   security.rtkit.enable = true;
 
   services = {
+    blueman.enable = true;
     fwupd.enable = true;
     tlp = {
       enable = true;

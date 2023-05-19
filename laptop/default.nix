@@ -77,7 +77,8 @@
     greetd = {
       enable = true;
       settings.default_session = {
-        command = "Hyprland";
+        command = ''
+          bash -c "Hyprland; gamescope --steam -- bash -c 'steam -tenfoot -pipewire-dmabuf & mangohud'"'';
         user = "freopen";
       };
     };

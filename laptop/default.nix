@@ -48,6 +48,7 @@
       enable = true;
       settings = { General.Experimental = true; };
     };
+    sensor.iio.enable = true;
   };
   security.rtkit.enable = true;
 

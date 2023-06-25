@@ -1,4 +1,8 @@
-{ pkgs, hyprland, ... }: {
+{ pkgs, config, hyprland, ... }:
+let
+  hyprland-pkg =
+    config.home-manager.users.freopen.wayland.windowManager.hyprland.package;
+in {
   imports = [ ./bar.nix ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -33,12 +37,19 @@
         systemdTarget = "graphical-session.target";
         events = [{
           event = "before-sleep";
-          command = "${pkgs.swaylock}/bin/swaylock";
+          command = "${pkgs.swaylock}/bin/swaylock -f";
         }];
-        timeouts = [{
-          timeout = 300;
-          command = "${pkgs.swaylock}/bin/swaylock";
-        }];
+        timeouts = [
+          {
+            timeout = 290;
+            command = "${hyprland-pkg}/bin/hyprctl dispatch dpms off";
+            resumeCommand = "${hyprland-pkg}/bin/hyprctl dispatch dpms on";
+          }
+          {
+            timeout = 300;
+            command = "${pkgs.swaylock}/bin/swaylock -f";
+          }
+        ];
       };
       dunst.enable = true;
       udiskie = {

@@ -14,7 +14,7 @@
       min-free = 128 * 1000 * 1000;
       max-free = 1000 * 1000 * 1000;
       builders-use-substitutes = true;
-      trusted-substituters = [
+      substituters = [
         "https://nix-community.cachix.org"
         "https://cache.garnix.io"
         "https://numtide.cachix.org"

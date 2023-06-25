@@ -28,7 +28,7 @@
         enable = true;
         configurationLimit = 10;
       };
-      timeout = 30;
+      timeout = 1;
     };
   };
   fileSystems = {

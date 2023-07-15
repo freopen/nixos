@@ -16,11 +16,17 @@
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
     environment = { HOME = "/var/lib/fishnet"; };
+    script = ''
+      if [ ! -f "/var/lib/fishnet/fishnet" ]; then
+        ${pkgs.curl}/bin/curl https://fishnet-releases.s3.dualstack.eu-west-3.amazonaws.com/v2.7.0/fishnet-v2.7.0-x86_64-unknown-linux-musl --output /var/lib/fishnet/fishnet
+        chmod +x /var/lib/fishnet/fishnet
+      fi
+      exec /var/lib/fishnet/fishnet --auto-update --key-file ${config.age.secrets.fishnet.path} --cores all --system-backlog short run
+    '';
     serviceConfig = {
       User = "fishnet";
-      ExecStart =
-        "${pkgs.fishnet}/bin/fishnet --key-file ${config.age.secrets.fishnet.path} --cores 3 run";
       Restart = "always";
+      KillMode = "mixed";
       Nice = 5;
       WorkingDirectory = "/var/lib/fishnet";
       PrivateTmp = true;

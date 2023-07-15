@@ -19,7 +19,7 @@
     serviceConfig = {
       User = "fishnet";
       ExecStart =
-        "${pkgs.fishnet}/bin/fishnet --key-file ${config.age.secrets.fishnet.path} --cores 4 run";
+        "${pkgs.fishnet}/bin/fishnet --key-file ${config.age.secrets.fishnet.path} --cores 3 run";
       Restart = "always";
       Nice = 5;
       WorkingDirectory = "/var/lib/fishnet";

@@ -20,6 +20,7 @@ in {
     home = {
       packages = with pkgs; [
         agenix.packages.x86_64-linux.default
+        cargo-fuzz
         clang
         nil
         nixfmt

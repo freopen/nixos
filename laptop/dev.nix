@@ -7,6 +7,7 @@ let
       complete.rust-src
       complete.rustc
       complete.rustfmt
+      complete.llvm-tools-preview
       targets.wasm32-unknown-unknown.latest.rust-std
     ]));
   rust-completions = pkgs.symlinkJoin {
@@ -20,7 +21,8 @@ in {
     home = {
       packages = with pkgs; [
         agenix.packages.x86_64-linux.default
-        cargo-fuzz
+        cargo-bolero
+        cargo-insta
         clang
         nil
         nixfmt

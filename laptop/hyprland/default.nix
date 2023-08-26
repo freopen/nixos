@@ -60,10 +60,6 @@ in {
     };
     wayland.windowManager.hyprland = {
       enable = true;
-      xwayland = {
-        enable = true;
-        hidpi = true;
-      };
       recommendedEnvironment = true;
       extraConfig = ''
         exec-once = swaylock

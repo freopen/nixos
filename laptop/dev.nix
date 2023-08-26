@@ -15,6 +15,7 @@ let
     paths = [ rust ];
   };
 in {
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   programs.nix-ld.enable = true;
   home-manager.users.freopen = {
     nixpkgs.overlays = [ fenix.overlays.default ];

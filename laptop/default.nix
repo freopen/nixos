@@ -31,6 +31,7 @@
       timeout = 1;
     };
   };
+  time.timeZone = "Europe/Zurich";
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/nixos";

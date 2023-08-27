@@ -1,20 +1,19 @@
 { nixos-hardware, ... }: {
-  imports = [ nixos-hardware.nixosModules.raspberry-pi-4 ];
+  imports = [ nixos-hardware.nixosModules.raspberry-pi-4 ./ceph.nix ];
   fileSystems."/" = {
     device = "/dev/mmcblk0p2";
     fsType = "ext4";
     options = [ "noatime" ];
   };
-  fileSystems."/boot" = {
+  fileSystems."/boot/firmware" = {
     device = "/dev/mmcblk0p1";
     fsType = "vfat";
   };
-
-  networking.hostName = "raspi";
-  # environment.noXlibs = true;
+  powerManagement.cpuFreqGovernor = "ondemand";
+  networking.hostName = "fp0";
   system.autoUpgrade = {
-    enable = false;
-    dates = "Sat, 09:00";
+    enable = true;
+    dates = "Sat, 03:00";
     flake = "github:freopen/nixos";
     flags = [ "--no-write-lock-file" ];
     allowReboot = true;

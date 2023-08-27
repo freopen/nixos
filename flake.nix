@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,7 +45,7 @@
         specialArgs = inputs;
         modules = [ ./common ./server ];
       };
-      raspi = nixpkgs.lib.nixosSystem {
+      fp0 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         specialArgs = inputs;
         modules = [ ./common ./raspi ];

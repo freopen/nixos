@@ -9,7 +9,7 @@
     device = "/dev/mmcblk0p1";
     fsType = "vfat";
   };
-  powerManagement.cpuFreqGovernor = "ondemand";
+  powerManagement.cpuFreqGovernor = "schedutil";
   networking.hostName = "fp0";
   system.autoUpgrade = {
     enable = true;

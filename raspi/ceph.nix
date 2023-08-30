@@ -22,4 +22,13 @@
       ms_bind_msgr2 = "true";
     };
   };
+  systemd.services.ceph-volumes = {
+    wants = [ "local-fs.target" ];
+    after = [ "local-fs.target" ];
+    wantedBy = [ "ceph-osd-1.service" ];
+    before = [ "ceph-osd-1.service" ];
+    path = with pkgs; [ ceph util-linux lvm2 ];
+    script = "ceph-volume lvm activate --all --no-systemd";
+    serviceConfig = { Type = "oneshot"; };
+  };
 }

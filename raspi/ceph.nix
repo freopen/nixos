@@ -8,8 +8,19 @@
     enable = true;
     global = {
       fsid = "01b48eda-04e2-46d2-9652-b36f4c3d1145";
-      monInitialMembers = "cv0";
-      monHost = "2a02:c207:3011:6723::c0:1";
+      monInitialMembers = builtins.concatStringsSep "," [ "cv0" "fp0" ];
+      monHost = builtins.concatStringsSep "," [
+        "2a02:c207:3011:6723::c0:1"
+        "2001:1620:5114:0:da3a:ddff:fe18:73f7"
+      ];
+    };
+    mon = {
+      enable = true;
+      daemons = [ "fp0" ];
+    };
+    mgr = {
+      enable = true;
+      daemons = [ "fp0" ];
     };
     osd = {
       enable = true;

@@ -40,7 +40,7 @@
         specialArgs = inputs;
         modules = [ ./common ./laptop ];
       };
-      server = nixpkgs.lib.nixosSystem {
+      fv0 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = inputs;
         modules = [ ./common ./server ];

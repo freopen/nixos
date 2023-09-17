@@ -12,12 +12,16 @@
       jq
       navi
       nix-output-monitor
+      nvd
       pciutils
       sysz
       thefuck
       zsh-completions
     ];
-    sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
+    sessionVariables = {
+      MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+      MANROFFOPT = "-c";
+    };
   };
   users.defaultUserShell = pkgs.zsh;
   programs.neovim = {

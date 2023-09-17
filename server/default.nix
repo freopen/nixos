@@ -2,7 +2,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./monitoring.nix
-    # ./ceph.nix
+    ./ceph.nix
     ./wireguard
     ./cloudflared.nix
     chat_bot.nixosModules.freopen_chat_bot

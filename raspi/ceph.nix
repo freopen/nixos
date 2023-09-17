@@ -5,6 +5,10 @@
       enable = true;
       daemons = [ "fp0" ];
     };
+    mgr = {
+      enable = true;
+      daemons = [ "fp0" ];
+    };
     osd = {
       enable = true;
       daemons = [ "1" ];

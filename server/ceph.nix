@@ -2,11 +2,11 @@
   imports = [ ../modules/ceph.nix ];
   services.ceph = {
     mon = {
-      enable = false;
+      enable = true;
       daemons = [ "fv0" ];
     };
     mgr = {
-      enable = false;
+      enable = true;
       daemons = [ "fv0" ];
     };
     rgw = {

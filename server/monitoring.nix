@@ -120,6 +120,13 @@
             include = [ "*" ];
           }];
         });
+      "go.d/nginx.conf" = builtins.toFile "nginx.conf"
+        (lib.generators.toYAML { } {
+          jobs = [{
+            name = "local";
+            url = "http://127.0.0.1/nginx_status";
+          }];
+        });
       "go.d.conf" = builtins.toFile "go.d.conf" (lib.generators.toYAML { } {
         enabled = true;
         default_run = true;

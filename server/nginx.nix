@@ -7,6 +7,15 @@
       enableACME = true;
       locations."/" = { proxyPass = "http://127.0.0.1:3001/"; };
     };
+    virtualHosts.localhost = {
+      listenAddresses = [ "127.0.0.1" ];
+      locations."/nginx_status" = {
+        extraConfig = ''
+          stub_status on;
+          access_log off;      
+        '';
+      };
+    };
   };
   security.acme = {
     acceptTerms = true;

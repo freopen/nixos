@@ -1,15 +1,16 @@
 { modulesPath, chat_bot, chess_erdos, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./monitoring.nix
     ./ceph.nix
-    ./wireguard
-    ./cloudflared.nix
-    chat_bot.nixosModules.freopen_chat_bot
     ./chat_bot.nix
-    chess_erdos.nixosModules.default
     ./chess_erdos.nix
+    # ./cloudflared.nix
     ./fishnet.nix
+    ./monitoring.nix
+    ./nginx.nix
+    ./wireguard
+    chat_bot.nixosModules.freopen_chat_bot
+    chess_erdos.nixosModules.default
   ];
   boot.loader.grub.device = "/dev/sda";
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" ];

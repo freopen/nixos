@@ -1,5 +1,6 @@
 { pkgs, ... }: {
   imports = [ ../modules/ceph.nix ];
+  networking.firewall.allowedTCPPorts = [ 8443 ];
   services.ceph = {
     mon = {
       enable = true;

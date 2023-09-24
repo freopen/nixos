@@ -1,9 +1,6 @@
 { nixos-hardware, pkgs, ... }: {
-  imports = [
-    nixos-hardware.nixosModules.raspberry-pi-4
-    ./ceph.nix
-    ./home-assistant.nix
-  ];
+  imports =
+    [ nixos-hardware.nixosModules.raspberry-pi-4 ./ceph.nix ./home-assistant ];
   fileSystems."/" = {
     device = "/dev/mmcblk0p2";
     fsType = "ext4";

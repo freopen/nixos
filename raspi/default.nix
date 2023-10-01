@@ -12,6 +12,7 @@
   };
   powerManagement.cpuFreqGovernor = "schedutil";
   networking.hostName = "fp0";
+  networking.nftables.enable = true;
   system.autoUpgrade = {
     enable = true;
     dates = "Sat, 03:00";

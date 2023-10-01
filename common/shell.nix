@@ -4,6 +4,7 @@
       bat
       broot
       curl
+      dig
       fd
       fzf
       git

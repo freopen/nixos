@@ -12,7 +12,15 @@ in {
   home-manager.users.freopen = {
     imports = [ hyprland.homeManagerModules.default ];
     home = {
-      packages = with pkgs; [ xorg.xprop networkmanagerapplet ];
+      packages = with pkgs; [
+        grim
+        networkmanagerapplet
+        slurp
+        wl-clipboard
+        xdg-desktop-portal
+        xdg-desktop-portal-hyprland
+        xorg.xprop
+      ];
       pointerCursor = {
         package = pkgs.simp1e-cursors;
         name = "Simp1e-Adw-Dark";

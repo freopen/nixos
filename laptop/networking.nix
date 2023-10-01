@@ -6,7 +6,6 @@
       wifi.backend = "iwd";
       dns = "systemd-resolved";
     };
-    wireless.iwd.enable = true;
     nameservers =
       [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
   };
@@ -17,8 +16,12 @@
     extraConfig = ''
       [Resolve]
       DNSOverTLS=yes
+      MulticastDNS=no
     '';
   };
-
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+  };
   home-manager.users.freopen.services.network-manager-applet.enable = true;
 }

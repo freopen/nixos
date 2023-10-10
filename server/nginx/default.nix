@@ -1,11 +1,21 @@
-{ ... }: {
+{ config, ... }: {
+  age.secrets.cloudflare_origin_cert = {
+    file = ../../secrets/cloudflare_origin_cert.age;
+    owner = "nginx";
+    group = "nginx";
+  };
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   services.nginx = {
     enable = true;
     virtualHosts."freopen.org" = {
       forceSSL = true;
-      enableACME = true;
+      sslCertificate = config.age.secrets.cloudflare_origin_cert.path;
+      sslCertificateKey = config.age.secrets.cloudflare_origin_cert.path;
       locations."/" = { proxyPass = "http://127.0.0.1:3001/"; };
+      extraConfig = ''
+        ssl_client_certificate ${./cloudflare_auth_origin_pull.pem};
+        ssl_verify_client on;
+      '';
     };
     virtualHosts."ceph.freopen.org" = {
       forceSSL = true;

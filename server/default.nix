@@ -4,10 +4,9 @@
     ./ceph.nix
     ./chat_bot.nix
     ./chess_erdos.nix
-    # ./cloudflared.nix
     ./fishnet.nix
     ./monitoring.nix
-    ./nginx.nix
+    ./nginx
     ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default

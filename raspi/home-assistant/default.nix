@@ -59,4 +59,14 @@
       settings.allow_anonymous = true;
     }];
   };
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    hostName = "home";
+    publish = {
+      enable = true;
+      userServices = true;
+      domain = true;
+    };
+  };
 }

@@ -9,6 +9,7 @@
       fzf
       git
       glances
+      gnumake
       jc
       jq
       navi
@@ -17,6 +18,7 @@
       pciutils
       sysz
       thefuck
+      unzip
       zsh-completions
     ];
     sessionVariables = {

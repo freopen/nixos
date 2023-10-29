@@ -29,6 +29,7 @@ in {
         cargo-binutils
         cargo-bolero
         cargo-insta
+        cargo-make
         clang
         nil
         nixfmt

@@ -100,12 +100,7 @@
         username = "freopen";
         homeDirectory = "/home/freopen";
         stateVersion = "22.05";
-        packages = with pkgs; [
-          brightnessctl
-          gnome.file-roller
-          xdg-utils
-          obsidian
-        ];
+        packages = with pkgs; [ brightnessctl gnome.file-roller xdg-utils ];
       };
       programs.home-manager.enable = true;
     };

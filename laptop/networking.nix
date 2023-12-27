@@ -22,7 +22,7 @@
   };
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
   };
   home-manager.users.freopen.services.network-manager-applet.enable = true;
 }

@@ -68,7 +68,6 @@ in {
     };
     wayland.windowManager.hyprland = {
       enable = true;
-      recommendedEnvironment = true;
       extraConfig = ''
         exec-once = swaylock
         source = ${./general.conf}

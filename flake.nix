@@ -27,8 +27,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chess_erdos = {
-      # url = "github:freopen/chess-erdos";
-      url = "/home/freopen/Projects/chess-erdos";
+      url = "github:freopen/chess-erdos";
+      # url = "/home/freopen/Projects/chess-erdos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

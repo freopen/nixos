@@ -2,12 +2,17 @@
   imports =
     [ nixos-hardware.nixosModules.raspberry-pi-4 ./ceph.nix ./home-assistant ];
   fileSystems."/" = {
-    device = "/dev/mmcblk0p2";
+    device = "/dev/disk/by-label/root";
+    fsType = "btrfs";
+    options = [ "compress-force=zstd" ];
+  };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/NIXOS_SD";
     fsType = "ext4";
     options = [ "noatime" ];
   };
   fileSystems."/boot/firmware" = {
-    device = "/dev/mmcblk0p1";
+    device = "/dev/disk/by-label/FIRMWARE";
     fsType = "vfat";
   };
   powerManagement.cpuFreqGovernor = "schedutil";

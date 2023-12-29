@@ -30,8 +30,13 @@
       };
       timeout = 1;
     };
+    tmp.useTmpfs = true;
   };
   time.timeZone = "Europe/Zurich";
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 16 * 1024;
+  }];
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/nixos";

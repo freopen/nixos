@@ -5,6 +5,8 @@
     LIBVA_DRIVER_NAME = "radeonsi";
     VDPAU_DRIVER = "radeonsi";
   };
+  systemd.user.tmpfiles.users.freopen.rules =
+    [ "e /home/freopen/Downloads - - - 90d -" ];
   home-manager.users.freopen.programs.firefox = {
     enable = true;
     package = pkgs.firefox-devedition;

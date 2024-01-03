@@ -1,5 +1,7 @@
 { ... }: {
   imports = [ ../modules/ceph.nix ];
+  # Ceph Dashboard
+  networking.firewall.allowedTCPPorts = [ 8100 ];
   services.ceph = {
     mon = {
       enable = true;

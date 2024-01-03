@@ -8,14 +8,19 @@
     home = {
       packages = with pkgs; [
         agenix.packages.x86_64-linux.default
+        binaryen
         cargo-binutils
         cargo-insta
         cargo-make
         clang
         nil
         nixfmt
+        nodePackages.pnpm
+        protobuf
         rustup
         qmk
+        wasm-bindgen-cli
+        wasm-pack
       ];
       sessionVariables = { LIBCLANG_PATH = "${pkgs.libclang.lib}/lib"; };
     };

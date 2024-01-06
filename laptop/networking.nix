@@ -24,5 +24,4 @@
     enable = true;
     nssmdns = true;
   };
-  home-manager.users.freopen.services.network-manager-applet.enable = true;
 }

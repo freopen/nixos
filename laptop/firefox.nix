@@ -7,8 +7,5 @@
   };
   systemd.user.tmpfiles.users.freopen.rules =
     [ "e /home/freopen/Downloads - - - 90d -" ];
-  home-manager.users.freopen.programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-devedition;
-  };
+  home-manager.users.freopen.programs.firefox.enable = true;
 }

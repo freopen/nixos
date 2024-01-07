@@ -1,5 +1,10 @@
 { pkgs, agenix, ... }: {
-  imports = [ agenix.nixosModules.default ./shell.nix ./build_cache.nix ];
+  imports = [
+    agenix.nixosModules.default
+    ./build_cache.nix
+    ./shell.nix
+    ./unstable_overlay.nix
+  ];
   nix = {
     gc = {
       automatic = true;

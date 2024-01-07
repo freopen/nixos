@@ -11,16 +11,17 @@
       enable = true;
       daemons = [ "fv0" ];
     };
-    rgw = {
-      enable = false;
+    mds = {
+      enable = true;
       daemons = [ "fv0" ];
-    };
-    client = {
-      enable = false;
       extraConfig = {
-        "client.radosgw.fv0" = {
-          rgw_frontends = "beast endpoint=127.0.0.1:7480";
-        };
+        debug_mds = "20";
+        debug_monc = "20";
+        debug_mds_log = "20";
+        debug_auth = "20";
+        debug_crypto = "20";
+        debug_client = "20";
+        debug_default = "20";
       };
     };
   };

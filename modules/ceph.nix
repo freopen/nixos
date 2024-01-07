@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  environment.systemPackages = with pkgs; [ ceph ];
+  environment.systemPackages = [ pkgs.unstable.ceph ];
   networking.firewall.allowedTCPPorts = [ 3300 ];
   networking.firewall.allowedTCPPortRanges = [{
     from = 6800;
@@ -7,6 +7,7 @@
   }];
   services.ceph = {
     enable = true;
+
     global = {
       fsid = "01b48eda-04e2-46d2-9652-b36f4c3d1145";
       monInitialMembers = builtins.concatStringsSep "," [ "cv0" "fp0" "fv0" ];

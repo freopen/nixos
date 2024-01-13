@@ -1,4 +1,4 @@
-{ ... }: {
+{ config, pkgs, ... }: {
   imports = [ ../modules/ceph.nix ];
   # Ceph Dashboard
   networking.firewall.allowedTCPPorts = [ 8100 ];
@@ -11,18 +11,37 @@
       enable = true;
       daemons = [ "fv0" ];
     };
-    mds = {
+    rgw = {
       enable = true;
       daemons = [ "fv0" ];
+    };
+    client = {
+      enable = true;
       extraConfig = {
-        debug_mds = "20";
-        debug_monc = "20";
-        debug_mds_log = "20";
-        debug_auth = "20";
-        debug_crypto = "20";
-        debug_client = "20";
-        debug_default = "20";
+        "client.fv0" = { rgw_frontends = "beast endpoint=127.0.0.1:7480"; };
       };
+    };
+  };
+  environment.systemPackages = [ pkgs.rclone ];
+  age.secrets.rclone.file = ../secrets/rclone.age;
+  users.groups.ceph-mount = { };
+  systemd.tmpfiles.rules = [ "d /mnt/ceph 0770 root ceph-mount - -" ];
+  systemd.services.ceph-mount = {
+    wants = [ "local-fs.target" ];
+    path = [ pkgs.fuse3 ];
+    serviceConfig = {
+      Type = "notify";
+      ExecStart = ''
+        ${pkgs.rclone}/bin/rclone mount \
+          crypt: /mnt/ceph \
+          --config=${config.age.secrets.rclone.path} \
+          --cache-dir=/var/cache/rclone \
+          --vfs-cache-mode=full \
+          --vfs-cache-max-age=30d \
+          --vfs-cache-min-free-space 10G
+      '';
+      ExecStop = "fusermount -u /mnt/ceph";
+      Restart = "on-failure";
     };
   };
 }

@@ -24,8 +24,7 @@
   };
   environment.systemPackages = [ pkgs.rclone ];
   age.secrets.rclone.file = ../secrets/rclone.age;
-  users.groups.ceph-mount = { };
-  systemd.tmpfiles.rules = [ "d /mnt/ceph 0770 root ceph-mount - -" ];
+  users.groups.ceph-mount.gid = 986;
   systemd.services.ceph-mount = {
     wants = [ "local-fs.target" ];
     path = [ pkgs.fuse3 ];
@@ -36,6 +35,11 @@
           crypt: /mnt/ceph \
           --config=${config.age.secrets.rclone.path} \
           --cache-dir=/var/cache/rclone \
+          --gid 986 \
+          --file-perms 0660 \
+          --dir-perms 0770 \
+          --umask 0000 \
+          --allow-other \
           --vfs-cache-mode=full \
           --vfs-cache-max-age=30d \
           --vfs-cache-min-free-space 10G

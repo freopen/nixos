@@ -7,6 +7,7 @@
     ./fishnet.nix
     ./monitoring.nix
     ./nginx
+    ./photoprism.nix
     ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default

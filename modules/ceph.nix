@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  environment.systemPackages = [ pkgs.unstable.ceph ];
+  environment.systemPackages = [ pkgs.ceph ];
   networking.firewall.allowedTCPPorts = [ 3300 ];
   networking.firewall.allowedTCPPortRanges = [{
     from = 6800;

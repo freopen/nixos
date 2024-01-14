@@ -5,9 +5,10 @@
     ./chat_bot.nix
     ./chess_erdos.nix
     ./fishnet.nix
+    ./immich.nix
     ./monitoring.nix
     ./nginx
-    ./photoprism.nix
+    # ./photoprism.nix
     ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default
@@ -31,6 +32,7 @@
       via = "fe80::1";
     }];
   };
+  time.timeZone = "UTC";
   system.autoUpgrade = {
     enable = true;
     dates = "Sat, 09:00";

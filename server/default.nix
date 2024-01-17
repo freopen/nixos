@@ -20,6 +20,10 @@
     device = "/dev/sda3";
     fsType = "ext4";
   };
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 32 * 1024;
+  }];
   networking.hostName = "fv0";
   networking.interfaces.ens18.ipv6 = {
     addresses = [{

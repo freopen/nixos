@@ -26,6 +26,7 @@
   age.secrets.rclone.file = ../secrets/rclone.age;
   users.groups.ceph-mount.gid = 986;
   systemd.services.ceph-mount = {
+    wantedBy = [ "multi-user.target" ];
     wants = [ "local-fs.target" ];
     path = [ pkgs.fuse3 ];
     serviceConfig = {

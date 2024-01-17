@@ -16,6 +16,7 @@
       nix-output-monitor
       nvd
       pciutils
+      s3cmd
       sysz
       thefuck
       unzip

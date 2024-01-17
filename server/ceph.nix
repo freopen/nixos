@@ -33,15 +33,17 @@
       ExecStart = ''
         ${pkgs.rclone}/bin/rclone mount \
           crypt: /mnt/ceph \
-          --config=${config.age.secrets.rclone.path} \
-          --cache-dir=/var/cache/rclone \
+          --config ${config.age.secrets.rclone.path} \
+          --cache-dir /var/cache/rclone \
           --gid 986 \
           --file-perms 0660 \
           --dir-perms 0770 \
           --umask 0000 \
           --allow-other \
-          --vfs-cache-mode=full \
-          --vfs-cache-max-age=30d \
+          --dir-cache-time 30d \
+          --poll-interval 0 \
+          --vfs-cache-mode full \
+          --vfs-cache-max-age 30d \
           --vfs-cache-min-free-space 10G
       '';
       ExecStop = "fusermount -u /mnt/ceph";

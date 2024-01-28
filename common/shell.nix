@@ -20,6 +20,7 @@
       sysz
       thefuck
       unzip
+      usbutils
       zsh-completions
     ];
     sessionVariables = {

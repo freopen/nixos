@@ -7,6 +7,13 @@
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   services.nginx = {
     enable = true;
+    recommendedTlsSettings = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedGzipSettings = true;
+    recommendedBrotliSettings = true;
+    recommendedZstdSettings = true;
+    proxyTimeout = "600s";
     virtualHosts."freopen.org" = {
       forceSSL = true;
       sslCertificate = config.age.secrets.cloudflare_origin_cert.path;

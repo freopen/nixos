@@ -1,24 +1,39 @@
-{ nixos-hardware, pkgs, ... }: {
-  imports = [ nixos-hardware.nixosModules.raspberry-pi-4 ./home-assistant ];
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/root";
-    fsType = "btrfs";
-    options = [ "compress-force=zstd" ];
+{ nixos-hardware, impermanence, pkgs, ... }: {
+  imports = [
+    nixos-hardware.nixosModules.raspberry-pi-4
+    impermanence.nixosModules.impermanence
+    ./home-assistant
+    ./nginx.nix
+  ];
+  fileSystems = {
+    "/" = {
+      device = "none";
+      fsType = "tmpfs";
+      options = [ "defaults" "size=50%" "mode=755" ];
+    };
+    "/nix" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "btrfs";
+      options = [ "subvol=/nix" "compress-force=zstd" ];
+    };
+    "/persist" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      neededForBoot = true;
+      fsType = "btrfs";
+      options = [ "subvol=/persist" "compress-force=zstd" ];
+    };
+    "/boot" = {
+      device = "/dev/disk/by-label/FIRMWARE";
+      fsType = "vfat";
+    };
   };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/NIXOS_SD";
-    fsType = "ext4";
-    options = [ "noatime" ];
-  };
-  fileSystems."/boot/firmware" = {
-    device = "/dev/disk/by-label/FIRMWARE";
-    fsType = "vfat";
-  };
+
+  boot.loader.generic-extlinux-compatible.configurationLimit = 3;
   powerManagement.cpuFreqGovernor = "schedutil";
   networking.hostName = "fp0";
   networking.nftables.enable = true;
   system.autoUpgrade = {
-    enable = true;
+    enable = false;
     dates = "Sat, 03:00";
     flake = "github:freopen/nixos";
     flags = [ "--no-write-lock-file" ];
@@ -45,7 +60,7 @@
       enable_uart=1
       avoid_warnings=1
     '';
-    bootdir = "/boot/firmware";
+    bootdir = "/boot";
   in ''
     (cd ${pkgs.raspberrypifw}/share/raspberrypi/boot && cp bootcode.bin fixup*.dat start*.elf ${bootdir}/)
     # Add the config
@@ -60,5 +75,20 @@
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0xybsoHuUubvYkoOBNbrqz7CQmRjGIru4HMq/x0Zxo freopen@FREOPEN-DESKTOP"
   ];
-  age.identityPaths = [ "/root/.ssh/id_ed25519" ];
+  age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+  environment.persistence."/persist" = {
+    directories = [
+      "/var/log"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/var/lib/systemd/timers"
+      "/root"
+    ];
+    files = [
+      "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+      "/var/lib/logrotate.status"
+    ];
+  };
 }

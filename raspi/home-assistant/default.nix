@@ -1,23 +1,19 @@
 { config, ... }: {
   imports = [ ./light.nix ];
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  services.nginx = {
-    enable = true;
-    virtualHosts."home.freopen.org" = {
-      forceSSL = true;
-      enableACME = true;
-      extraConfig = ''
-        proxy_buffering off;
-      '';
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:8123/";
-        proxyWebsockets = true;
-      };
-    };
+  environment.persistence."/persist" = {
+    directories =
+      [ "/var/lib/hass" "/var/lib/mosquitto" "/var/lib/zigbee2mqtt" ];
   };
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "freopen@freopen.org";
+  services.nginx.virtualHosts."home.freopen.org" = {
+    forceSSL = true;
+    enableACME = true;
+    extraConfig = ''
+      proxy_buffering off;
+    '';
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:8123/";
+      proxyWebsockets = true;
+    };
   };
   services.home-assistant = {
     enable = true;

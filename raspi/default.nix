@@ -1,6 +1,5 @@
 { nixos-hardware, pkgs, ... }: {
-  imports =
-    [ nixos-hardware.nixosModules.raspberry-pi-4 ./ceph.nix ./home-assistant ];
+  imports = [ nixos-hardware.nixosModules.raspberry-pi-4 ./home-assistant ];
   fileSystems."/" = {
     device = "/dev/disk/by-label/root";
     fsType = "btrfs";

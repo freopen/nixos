@@ -1,14 +1,12 @@
 { modulesPath, chat_bot, chess_erdos, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./ceph.nix
     ./chat_bot.nix
     ./chess_erdos.nix
     ./fishnet.nix
     ./immich.nix
     ./monitoring.nix
     ./nginx
-    # ./photoprism.nix
     ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default

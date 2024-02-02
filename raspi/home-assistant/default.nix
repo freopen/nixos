@@ -17,7 +17,8 @@
   };
   services.home-assistant = {
     enable = true;
-    extraComponents = [ "esphome" "met" "radio_browser" "mqtt" ];
+    extraComponents =
+      [ "default_config" "esphome" "met" "mqtt" "radio_browser" ];
     config = {
       http = {
         server_host = "127.0.0.1";
@@ -43,8 +44,12 @@
       serial.port = "/dev/ttyUSB0";
       frontend.port = 8080;
       availability = true;
-      advanced.network_key =
-        "!${config.age.secrets.zigbee_network_key.path} network_key";
+      advanced = {
+        network_key =
+          "!${config.age.secrets.zigbee_network_key.path} network_key";
+        log_output = [ "syslog" ];
+
+      };
     };
   };
   services.mosquitto = {

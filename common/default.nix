@@ -41,14 +41,11 @@
     '';
   };
   nixpkgs.config.allowUnfree = true;
+  networking.firewall.logRefusedConnections = false;
   boot.tmp.cleanOnBoot = true;
   zramSwap = {
     enable = true;
     memoryPercent = 100;
-  };
-  services.ananicy = {
-    enable = true;
-    package = pkgs.ananicy-cpp;
   };
   services.dbus.implementation = "broker";
   i18n.defaultLocale = "en_US.UTF-8";

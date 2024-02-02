@@ -14,13 +14,13 @@
     "/nix" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "btrfs";
-      options = [ "subvol=/nix" "compress-force=zstd" ];
+      options = [ "subvol=/nix" "compress-force=zstd" "noatime" ];
     };
     "/persist" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       neededForBoot = true;
       fsType = "btrfs";
-      options = [ "subvol=/persist" "compress-force=zstd" ];
+      options = [ "subvol=/persist" "compress-force=zstd" "noatime" ];
     };
     "/boot" = {
       device = "/dev/disk/by-label/FIRMWARE";
@@ -33,12 +33,13 @@
   networking.hostName = "fp0";
   networking.nftables.enable = true;
   system.autoUpgrade = {
-    enable = false;
+    enable = true;
     dates = "Sat, 03:00";
     flake = "github:freopen/nixos";
     flags = [ "--no-write-lock-file" ];
     allowReboot = true;
   };
+  services.journald.console = "/dev/tty1";
   services.openssh = {
     enable = true;
     settings = {
@@ -77,8 +78,9 @@
   ];
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
   environment.persistence."/persist" = {
+    hideMounts = true;
     directories = [
-      "/var/log"
+      "/var/log/journal"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
@@ -88,7 +90,9 @@
       "/etc/machine-id"
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
-      "/var/lib/logrotate.status"
     ];
   };
+  systemd.additionalUpstreamSystemUnits = [ "systemd-time-wait-sync.service" ];
+  systemd.services.systemd-time-wait-sync.wantedBy = [ "multi-user.target" ];
+  systemd.targets.timers.after = [ "time-sync.target" ];
 }

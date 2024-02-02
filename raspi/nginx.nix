@@ -6,6 +6,10 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedGzipSettings = true;
+    logError = "syslog:server=unix:/dev/log";
+    appendHttpConfig = ''
+      access_log syslog:server=unix:/dev/log combined;
+    '';
   };
   security.acme = {
     acceptTerms = true;

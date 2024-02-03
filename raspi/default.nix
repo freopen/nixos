@@ -4,6 +4,7 @@
     impermanence.nixosModules.impermanence
     ./home-assistant
     ./nginx.nix
+    ./storage.nix
   ];
   fileSystems = {
     "/" = {

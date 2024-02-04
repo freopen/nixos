@@ -18,7 +18,6 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
     chat_bot = {
       url = "github:freopen/chat-bot";
       # url = "/home/freopen/Projects/chat-bot";

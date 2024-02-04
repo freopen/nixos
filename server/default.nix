@@ -7,6 +7,7 @@
     ./immich.nix
     ./monitoring.nix
     ./nginx
+    ./rclone.nix
     ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default

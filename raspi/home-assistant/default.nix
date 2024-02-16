@@ -26,6 +26,10 @@
         use_x_forwarded_for = true;
       };
       default_config = { };
+      recorder = {
+        exclude = { entity_globs = [ "*" ]; };
+        commit_interval = 60 * 60;
+      };
     };
   };
   age.secrets.zigbee_network_key = {

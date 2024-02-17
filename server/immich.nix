@@ -1,14 +1,9 @@
 { pkgs, ... }: {
-  virtualisation.podman = {
-    enable = true;
-    defaultNetwork.settings.dns_enabled = true;
-  };
+  virtualisation.podman = { enable = true; };
   users.users.immich = {
     isNormalUser = true;
     group = "immich";
-    extraGroups = [ "ceph-mount" ];
-    linger = true;
-    packages = [ pkgs.podman-compose ];
+    extraGroups = [ "rclone" ];
   };
   users.groups.immich = { };
   services.nginx.virtualHosts."photos.freopen.org" = {

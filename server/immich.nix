@@ -1,22 +1,20 @@
-{ pkgs, lib, ... }:
-let
-  uid = 15015;
-  gid = 15015;
-in {
+{ pkgs, lib, ... }: {
   virtualisation.podman = { enable = true; };
   users = {
     users.immich = {
-      inherit uid;
-      isNormalUser = true;
-      linger = true;
       group = "immich";
       extraGroups = [ "rclone" "redis-immich" ];
+      isSystemUser = true;
+      linger = true;
+      home = "/var/lib/immich";
+      autoSubUidGidRange = true;
     };
-    groups.immich = { inherit gid; };
+    groups.immich = { };
   };
   systemd.tmpfiles.rules = [
     "d /var/lib/immich 0770 immich immich"
     "d /var/lib/immich/library 0770 immich immich"
+    "d /var/lib/immich/model-cache 0770 immich immich"
   ];
   systemd.mounts = [{
     what = "/mnt/rclone/immich";
@@ -26,7 +24,10 @@ in {
     after = [ "rclone.service" ];
   }];
   services = {
-    redis.servers.immich = { enable = true; };
+    redis.servers.immich = {
+      enable = true;
+      user = "immich";
+    };
     postgresql = {
       ensureUsers = [{
         name = "immich";
@@ -38,7 +39,7 @@ in {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        proxyPass = "http://127.0.0.1:3001/";
+        proxyPass = "http://127.0.0.1:5001/";
         proxyWebsockets = true;
         extraConfig = ''
           client_max_body_size 10000M;
@@ -47,31 +48,68 @@ in {
       };
     };
   };
-  environment.etc = let
-    toINI = lib.generators.toINI { listsAsDuplicateKeys = true; };
-    version = "v1.94.1";
-  in {
-    "containers/systemd/users/${toString uid}/immich-server.container".text =
-      toINI {
-        Container = {
-          Image = "ghcr.io/immich-app/immich-server:${version}";
-          Exec = "start.sh immich";
-          Network = "host";
-          Environment = [
-            "DB_URL=socket://immich:@/run/postgresql?db=immich"
-            "REDIS_SOCKET=/run/redis-immich/redis.sock"
-          ];
-          Volume = [
-            "/var/lib/immich/library:/usr/src/app/upload"
-            "/run/postgresql:/run/postgresql"
-            "/run/redis-immich:/run/redis-immich"
-          ];
-        };
-        Service = {
-          User = "immich";
-          TimeoutStartSec = 900;
-          RuntimeDirectory = "immich";
-        };
+  systemd.services = let
+    podman = "${pkgs.podman}/bin/podman";
+    version = "1.95.1";
+    immich_unit = exec: {
+      environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
+      postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
+      path = [ "/run/wrappers" ];
+      requires = [ "redis-immich.service" "postgresql.service" ];
+      after = [ "redis-immich.service" "postgresql.service" ];
+      unitConfig = { RequiresMountsFor = "/var/lib/immich/library"; };
+      serviceConfig = {
+        ExecStart = "${podman} run ${
+            lib.cli.toGNUCommandLineShell { } {
+              name = "%N";
+              cidfile = "/run/immich/%N/%N.cid";
+              replace = true;
+              rm = true;
+              cgroupns = "host";
+              cgroups = "disabled";
+              network = "host";
+              userns = "keep-id";
+              detach = true;
+              sdnotify = "conmon";
+              volume = [
+                "/var/lib/immich/library:/usr/src/app/upload"
+                "/var/lib/immich/model-cache:/cache"
+                "/run/postgresql:/run/postgresql"
+                "/run/redis-immich:/run/redis-immich"
+              ];
+              env = [
+                "DB_URL=socket://immich:@/run/postgresql?db=immich"
+                "REDIS_SOCKET=/run/redis-immich/redis.sock"
+                "PORT=5000"
+                "SERVER_PORT=5001"
+                "MICROSERVICES_PORT=5002"
+                "MACHINE_LEARNING_PORT=5003"
+              ];
+            }
+          } ${exec}";
+        Type = "notify";
+        NotifyAccess = "all";
+        User = "immich";
+        RuntimeDirectory = "immich/%N";
+        TimeoutStartSec = 900;
+        Delegate = true;
+        SyslogIdentifier = "%N";
       };
+    };
+  in {
+    immich-server = immich_unit
+      "ghcr.io/immich-app/immich-server:v${version} start.sh immich";
+    immich-microservices = immich_unit
+      "ghcr.io/immich-app/immich-server:v${version} start.sh microservices";
+    immich-machine-learning =
+      immich_unit "ghcr.io/immich-app/immich-machine-learning:v${version}";
+  };
+  systemd.targets.immich = {
+    requires = [
+      "immich-server.service"
+      "immich-microservices.service"
+      "immich-machine-learning.service"
+    ];
+    wantedBy = [ "multi-user.target" ];
   };
 }

@@ -1,20 +1,24 @@
 { lib, pkgs, ... }: {
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_14;
+    package = pkgs.postgresql_15;
+    ensureUsers = [{
+      name = "root";
+      ensureClauses.superuser = true;
+    }];
     extraPlugins = [
       # https://github.com/diogotcorreia/dotfiles/blob/nixos/packages/pgvecto-rs.nix
-      (let major = lib.versions.major pkgs.postgresql_14.version;
+      (let major = lib.versions.major pkgs.postgresql_15.version;
       in pkgs.postgresql.stdenv.mkDerivation rec {
         pname = "pgvecto-rs";
-        version = "0.1.11";
+        version = "0.2.0";
 
         buildInputs = [ pkgs.dpkg ];
 
         src = pkgs.fetchurl {
           url =
-            "https://github.com/tensorchord/pgvecto.rs/releases/download/v${version}/vectors-pg${major}-v${version}-x86_64-unknown-linux-gnu.deb";
-          hash = "sha256-8YRC1Cd9i0BGUJwLmUoPVshdD4nN66VV3p48ziy3ZbA=";
+            "https://github.com/tensorchord/pgvecto.rs/releases/download/v${version}/vectors-pg${major}_${version}_amd64.deb";
+          hash = "sha256-uPE76ofzAevJMHSjFHYJQWUh5NZotaD9dhaX84uDFiQ=";
         };
 
         dontUnpack = true;
@@ -38,5 +42,8 @@
       })
     ];
     settings = { shared_preload_libraries = "vectors.so"; };
+    initialScript = builtins.toFile "init-sql-script" ''
+      CREATE EXTENSION IF NOT EXISTS vectors;
+    '';
   };
 }

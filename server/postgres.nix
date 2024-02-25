@@ -46,4 +46,21 @@
       CREATE EXTENSION IF NOT EXISTS vectors;
     '';
   };
+  users.users.postgres.extraGroups = [ "rclone" ];
+  systemd.mounts = [{
+    what = "/mnt/rclone/postgresql";
+    where = "/var/lib/postgresql-backup";
+    options = "bind";
+    bindsTo = [ "rclone.service" ];
+    after = [ "rclone.service" ];
+    requiredBy = [ "postgresqlBackup.service" ];
+    before = [ "postgresqlBackup.service" ];
+  }];
+  services.postgresqlBackup = {
+    enable = true;
+    startAt = "*-*-* 14:00:00";
+    location = "/var/lib/postgresql-backup";
+    compression = "zstd";
+    compressionLevel = 10;
+  };
 }

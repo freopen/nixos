@@ -6,6 +6,12 @@
     zfs.extraPools = [ "storage" ];
   };
   networking.hostId = "e0488d0f";
+  services.zfs = {
+    autoScrub = {
+      enable = true;
+      interval = "Wed *-*-* 14:00:00";
+    };
+  };
   users = {
     users = {
       storage-freopen = {

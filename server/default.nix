@@ -5,6 +5,7 @@
     ./chess_erdos.nix
     ./fishnet.nix
     ./immich.nix
+    ./miniflux.nix
     ./monitoring.nix
     ./nginx
     ./postgres.nix

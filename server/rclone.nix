@@ -55,6 +55,8 @@ in {
       ExecStart = ''
         ${pkgs.rclone}/bin/rclone mount \
           storage: /mnt/rclone \
+          --rc \
+          --rc-enable-metrics \
           --config ${rcloneConfig} \
           --cache-dir /var/lib/rclone \
           --allow-other \

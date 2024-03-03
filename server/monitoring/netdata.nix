@@ -33,6 +33,10 @@
               name = "chess_erdos";
               url = "http://127.0.0.1:4001/metrics";
             }
+            {
+              name = "rclone";
+              url = "http://127.0.0.1:5572/metrics";
+            }
           ];
         };
         "go.d/systemdunits.conf" = {

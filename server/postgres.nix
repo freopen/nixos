@@ -44,6 +44,8 @@
     settings = { shared_preload_libraries = "vectors.so"; };
     initialScript = builtins.toFile "init-sql-script" ''
       CREATE EXTENSION IF NOT EXISTS vectors;
+      CREATE USER netdata;
+      GRANT pg_monitor TO netdata;
     '';
   };
   users.users.postgres.extraGroups = [ "rclone" ];

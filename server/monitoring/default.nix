@@ -1,6 +1,7 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, config, ... }: {
+  imports = [ ./netdata.nix ];
   age.secrets.telemetry = {
-    file = ../secrets/telemetry.age;
+    file = ../../secrets/telemetry.age;
     owner = "opentelemetry";
     group = "opentelemetry";
   };
@@ -88,51 +89,4 @@
     };
   };
   services.prometheus.exporters = { wireguard.enable = true; };
-  services.netdata = {
-    enable = true;
-    config = { db."storage tiers" = 5; };
-    configDir = {
-      "go.d/prometheus.conf" = builtins.toFile "prometheus.conf"
-        (lib.generators.toYAML { } {
-          jobs = [
-            {
-              name = "wireguard_local";
-              url = "http://127.0.0.1:9586/metrics";
-            }
-            {
-              name = "opentelemetry";
-              url = "http://127.0.0.1:8888/metrics";
-            }
-            {
-              name = "cloudflared";
-              url = "http://127.0.0.1:8001/metrics";
-            }
-            {
-              name = "chess_erdos";
-              url = "http://127.0.0.1:4001/metrics";
-            }
-          ];
-        });
-      "go.d/systemdunits.conf" = builtins.toFile "systemdunits.conf"
-        (lib.generators.toYAML { } {
-          jobs = [{
-            name = "all";
-            include = [ "*" ];
-          }];
-        });
-      "go.d/nginx.conf" = builtins.toFile "nginx.conf"
-        (lib.generators.toYAML { } {
-          jobs = [{
-            name = "local";
-            url = "http://127.0.0.1/nginx_status";
-          }];
-        });
-      "go.d.conf" = builtins.toFile "go.d.conf" (lib.generators.toYAML { } {
-        enabled = true;
-        default_run = true;
-        max_procs = 0;
-        modules = { systemdunits = true; };
-      });
-    };
-  };
 }

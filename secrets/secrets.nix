@@ -10,6 +10,7 @@ in {
   "cloudflare_origin_cert.age".publicKeys = [ laptopKey serverKey ];
   "fishnet.age".publicKeys = [ laptopKey serverKey ];
   "miniflux.age".publicKeys = [ laptopKey serverKey ];
+  "netdata.age".publicKeys = [ laptopKey serverKey ];
   "rclone.age".publicKeys = [ laptopKey serverKey ];
   "telemetry.age".publicKeys = [ laptopKey serverKey ];
   "wireguard.age".publicKeys = [ laptopKey serverKey ];

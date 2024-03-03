@@ -6,7 +6,7 @@
     ./fishnet.nix
     ./immich.nix
     ./miniflux.nix
-    ./monitoring.nix
+    ./monitoring
     ./nginx
     ./postgres.nix
     ./rclone.nix

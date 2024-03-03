@@ -12,6 +12,21 @@
       interval = "Wed *-*-* 14:00:00";
     };
   };
+  services.sanoid = {
+    enable = true;
+    interval = "*-*-* 14:00:00";
+    datasets.storage = {
+      autosnap = true;
+      autoprune = true;
+      prune_defer = 80;
+      frequently = 0;
+      hourly = 0;
+      daily = 30;
+      weekly = 12;
+      monthly = 12;
+      yearly = 0;
+    };
+  };
   users = {
     users = {
       storage-freopen = {

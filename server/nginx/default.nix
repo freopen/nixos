@@ -24,17 +24,6 @@
         ssl_verify_client on;
       '';
     };
-    virtualHosts."ceph.freopen.org" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "https://ceph-dashboard";
-        extraConfig = ''
-          proxy_ssl_trusted_certificate ${./ceph-dashboard.pem};
-          proxy_next_upstream error http_503;
-        '';
-      };
-    };
     virtualHosts.localhost = {
       listenAddresses = [ "127.0.0.1" ];
       locations."/nginx_status" = {
@@ -42,12 +31,6 @@
           stub_status on;
           access_log off;
         '';
-      };
-    };
-    upstreams.ceph-dashboard = {
-      servers = {
-        "127.0.0.1:8100" = { };
-        "[2a02:c207:3011:6723::c0:1]:8100" = { backup = true; };
       };
     };
   };

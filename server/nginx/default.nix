@@ -1,9 +1,4 @@
-{ config, ... }: {
-  age.secrets.cloudflare_origin_cert = {
-    file = ../../secrets/cloudflare_origin_cert.age;
-    owner = "nginx";
-    group = "nginx";
-  };
+{ config, lib, ... }: {
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   services.nginx = {
     enable = true;
@@ -16,8 +11,7 @@
     proxyTimeout = "600s";
     virtualHosts."freopen.org" = {
       forceSSL = true;
-      sslCertificate = config.age.secrets.cloudflare_origin_cert.path;
-      sslCertificateKey = config.age.secrets.cloudflare_origin_cert.path;
+      useACMEHost = "freopen.org";
       locations."/" = { proxyPass = "http://127.0.0.1:3001/"; };
       extraConfig = ''
         ssl_client_certificate ${./cloudflare_auth_origin_pull.pem};
@@ -34,8 +28,16 @@
       };
     };
   };
+  users.users.nginx.extraGroups = [ "acme" ];
   security.acme = {
     acceptTerms = true;
     defaults.email = "freopen@freopen.org";
+    certs."freopen.org" = {
+      webroot = "/var/lib/acme/acme-challenge";
+      extraDomainNames = builtins.attrNames (lib.attrsets.filterAttrs
+        (domain: vhost:
+          vhost.useACMEHost == "freopen.org" && domain != "freopen.org")
+        config.services.nginx.virtualHosts);
+    };
   };
 }

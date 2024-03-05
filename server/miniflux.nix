@@ -17,7 +17,7 @@
   };
   services.nginx.virtualHosts."rss.freopen.org" = {
     forceSSL = true;
-    enableACME = true;
+    useACMEHost = "freopen.org";
     locations."/".proxyPass = "http://127.0.0.1:6000/";
   };
 }

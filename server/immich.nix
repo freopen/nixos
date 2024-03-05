@@ -37,7 +37,7 @@
     };
     nginx.virtualHosts."photos.freopen.org" = {
       forceSSL = true;
-      enableACME = true;
+      useACMEHost = "freopen.org";
       locations."/" = {
         proxyPass = "http://127.0.0.1:5001/";
         proxyWebsockets = true;

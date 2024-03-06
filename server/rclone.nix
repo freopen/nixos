@@ -26,7 +26,6 @@ let
 in {
   age.secrets.rclone = {
     file = ../secrets/rclone.age;
-    mode = "600";
     owner = "rclone";
     group = "rclone";
   };

@@ -4,6 +4,7 @@
     ./chat_bot.nix
     ./chess_erdos.nix
     ./fishnet.nix
+    ./fv0_ports.nix
     ./immich.nix
     ./miniflux.nix
     ./monitoring

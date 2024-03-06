@@ -12,7 +12,7 @@
       db."storage tiers" = 5;
       ml.enabled = true;
     };
-    configDir = builtins.mapAttrs (file: config:
+    configDir = (builtins.mapAttrs (file: config:
       builtins.toFile (builtins.baseNameOf file)
       (lib.generators.toYAML { } config)) {
         "go.d/prometheus.conf" = {
@@ -57,7 +57,13 @@
           max_procs = 0;
           modules = { systemdunits = true; };
         };
-      };
+      }) // (builtins.mapAttrs (file: config:
+        builtins.toFile (builtins.baseNameOf file)
+        (lib.generators.toINI { } config)) {
+          "stream.conf" = {
+            "fc4f3cb4-a7ac-4c86-8ff8-308cb3310d83".enabled = true;
+          };
+        });
     enableAnalyticsReporting = true;
   };
 }

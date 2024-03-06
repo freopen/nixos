@@ -1,5 +1,6 @@
 { pkgs, agenix, ... }: {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  virtualisation.vmVariant.virtualisation.cores = 15;
   programs.nix-ld.enable = true;
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", MODE="0664", GROUP="plugdev"

@@ -23,7 +23,7 @@
             -o ServerAliveInterval=60 \
             -o ExitOnForwardFailure=yes \
             -o StrictHostKeyChecking=no \
-            -R 19999 \
+            -R 127.0.0.1:19999:127.0.0.1:19999 \
             -i ${config.age.secrets.fv0_ports.path} \
             fv0-ports@fp0.freopen.org'';
     };

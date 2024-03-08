@@ -4,6 +4,12 @@
     owner = "netdata";
     group = "netdata";
   };
+  age.secrets.netdata_stream_fv0 = {
+    file = ../../secrets/netdata_stream_fv0.age;
+    owner = "netdata";
+    group = "netdata";
+  };
+  networking.firewall.allowedTCPPorts = [ 19999 ];
   services.netdata = {
     enable = true;
     package = pkgs.netdataCloud;
@@ -11,6 +17,13 @@
     config = {
       db."storage tiers" = 5;
       ml.enabled = true;
+      web =
+        let certs = config.security.acme.certs."netdata.freopen.org".directory;
+        in {
+          "bind to" = "*=streaming^SSL=force";
+          "ssl key" = "${certs}/key.pem";
+          "ssl certificate" = "${certs}/fullchain.pem";
+        };
     };
     configDir = (builtins.mapAttrs (file: config:
       builtins.toFile (builtins.baseNameOf file)
@@ -57,13 +70,18 @@
           max_procs = 0;
           modules = { systemdunits = true; };
         };
-      }) // (builtins.mapAttrs (file: config:
-        builtins.toFile (builtins.baseNameOf file)
-        (lib.generators.toINI { } config)) {
-          "stream.conf" = {
-            "fc4f3cb4-a7ac-4c86-8ff8-308cb3310d83".enabled = true;
-          };
-        });
+      }) // {
+        "stream.conf" = config.age.secrets.netdata_stream_fv0.path;
+      };
     enableAnalyticsReporting = true;
+  };
+  users.groups.netdata-cert.members = [ "netdata" "nginx" ];
+  security.acme.certs."netdata.freopen.org" = {
+    webroot = "/var/lib/acme/acme-challenge";
+    group = "netdata-cert";
+  };
+  services.nginx.virtualHosts."netdata.freopen.org" = {
+    forceSSL = true;
+    useACMEHost = "netdata.freopen.org";
   };
 }

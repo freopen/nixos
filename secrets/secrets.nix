@@ -10,6 +10,8 @@ in {
   "fishnet.age".publicKeys = [ laptopKey serverKey ];
   "miniflux.age".publicKeys = [ laptopKey serverKey ];
   "netdata.age".publicKeys = [ laptopKey serverKey ];
+  "netdata_stream_fp0.age".publicKeys = [ laptopKey raspiKey ];
+  "netdata_stream_fv0.age".publicKeys = [ laptopKey serverKey ];
   "fv0_ports.age".publicKeys = [ laptopKey serverKey ];
   "rclone.age".publicKeys = [ laptopKey serverKey ];
   "telemetry.age".publicKeys = [ laptopKey serverKey ];

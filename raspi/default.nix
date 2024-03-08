@@ -79,14 +79,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0xybsoHuUubvYkoOBNbrqz7CQmRjGIru4HMq/x0Zxo freopen@FREOPEN-DESKTOP"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5PxIXYZI8n8IQxAZRT5l9s3mlQ0/JGyTv1xMg4NHnh JuiceSSH"
   ];
-  users.users.fv0-ports = {
-    isSystemUser = true;
-    group = "fv0-ports";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMIInbZIsN4/14kjcsGan6IBndSz9x3pQHmJW7odaZ0 fv0-ports"
-    ];
-  };
-  users.groups.fv0-ports = { };
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
   environment.persistence."/persist" = {
     hideMounts = true;

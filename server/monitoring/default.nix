@@ -20,7 +20,7 @@
           honor_labels = true;
           metrics_path = "/api/v1/allmetrics";
           params = { format = [ "prometheus" ]; };
-          static_configs = [{ targets = [ "localhost:19999" ]; }];
+          static_configs = [{ targets = [ "localhost:19998" ]; }];
         }];
         otlp.protocols.grpc.endpoint = "localhost:4317";
         journald = { units = [ "*" ]; };

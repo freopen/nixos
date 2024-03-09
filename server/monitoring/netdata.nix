@@ -20,7 +20,8 @@
       web =
         let certs = config.security.acme.certs."netdata.freopen.org".directory;
         in {
-          "bind to" = "*=streaming^SSL=force";
+          "bind to" =
+            "*=streaming^SSL=force localhost:19998=dashboard^SSL=optional";
           "ssl key" = "${certs}/key.pem";
           "ssl certificate" = "${certs}/fullchain.pem";
         };

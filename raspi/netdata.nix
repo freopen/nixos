@@ -18,4 +18,12 @@
     };
     configDir = { "stream.conf" = config.age.secrets.netdata_stream_fp0.path; };
   };
+  environment.persistence."/persist".files =
+    [ "/var/lib/netdata/registry/netdata.public.unique.id" ];
+  systemd.tmpfiles.rules = [ "d /var/log/smartd 0750 root netdata - -" ];
+  services.smartd = {
+    enable = true;
+    extraOptions =
+      [ "-A /var/log/smartd/" "--interval=${builtins.toString (4 * 60 * 60)}" ];
+  };
 }

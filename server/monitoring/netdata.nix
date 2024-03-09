@@ -17,6 +17,7 @@
     config = {
       db."storage tiers" = 5;
       ml.enabled = true;
+      "plugin:go.d"."command options" = "-d";
       web =
         let certs = config.security.acme.certs."netdata.freopen.org".directory;
         in {
@@ -65,17 +66,28 @@
             url = "http://127.0.0.1/nginx_status";
           }];
         };
+        "go.d/web_log.conf" = {
+          jobs = [{
+            name = "nginx";
+            path = "/var/log/nginx/access.log";
+            parser.log_type = "json";
+          }];
+        };
         "go.d.conf" = {
           enabled = true;
           default_run = true;
           max_procs = 0;
-          modules = { systemdunits = true; };
+          modules = {
+            systemdunits = true;
+            web_log = true;
+          };
         };
       }) // {
         "stream.conf" = config.age.secrets.netdata_stream_fv0.path;
       };
     enableAnalyticsReporting = true;
   };
+  users.users.netdata.extraGroups = [ "nginx" ];
   users.groups.netdata-cert.members = [ "netdata" "nginx" ];
   security.acme.certs."netdata.freopen.org" = {
     webroot = "/var/lib/acme/acme-challenge";

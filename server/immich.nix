@@ -50,7 +50,7 @@
   };
   systemd.services = let
     podman = "${pkgs.podman}/bin/podman";
-    version = "1.95.1";
+    version = "1.98.1";
     immich_unit = exec: {
       environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
       postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";

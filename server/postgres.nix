@@ -11,14 +11,14 @@
       (let major = lib.versions.major pkgs.postgresql_15.version;
       in pkgs.postgresql.stdenv.mkDerivation rec {
         pname = "pgvecto-rs";
-        version = "0.2.0";
+        version = "0.2.1";
 
         buildInputs = [ pkgs.dpkg ];
 
         src = pkgs.fetchurl {
           url =
             "https://github.com/tensorchord/pgvecto.rs/releases/download/v${version}/vectors-pg${major}_${version}_amd64.deb";
-          hash = "sha256-uPE76ofzAevJMHSjFHYJQWUh5NZotaD9dhaX84uDFiQ=";
+          hash = "sha256-b4WbycGenKyWAJOlEJ4iOJLs2NaukdydOzjLBtqjcT0=";
         };
 
         dontUnpack = true;
@@ -42,11 +42,6 @@
       })
     ];
     settings = { shared_preload_libraries = "vectors.so"; };
-    initialScript = builtins.toFile "init-sql-script" ''
-      CREATE EXTENSION IF NOT EXISTS vectors;
-      CREATE USER netdata;
-      GRANT pg_monitor TO netdata;
-    '';
   };
   users.users.postgres.extraGroups = [ "rclone" ];
   systemd.mounts = [{

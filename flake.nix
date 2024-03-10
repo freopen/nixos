@@ -40,12 +40,12 @@
       fv0 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = inputs;
-        modules = [ ./common ./server ];
+        modules = [ ./common ./fv0 ];
       };
       fp0 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         specialArgs = inputs;
-        modules = [ ./common ./raspi ];
+        modules = [ ./common ./fp0 ];
       };
     };
   };

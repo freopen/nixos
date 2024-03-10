@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, ... }: {
   age.secrets.netdata_stream_fp0 = {
     file = ../secrets/netdata_stream_fp0.age;
     owner = "netdata";
@@ -16,13 +16,10 @@
       };
       ml.enabled = false;
     };
-    configDir = (builtins.mapAttrs (file: config:
-      builtins.toFile (builtins.baseNameOf file)
-      (lib.generators.toYAML { } config)) {
-        "python.d/smartd_log.conf" = { update_every = 60 * 60; };
-      }) // {
-        "stream.conf" = config.age.secrets.netdata_stream_fp0.path;
-      };
+    configs = {
+      "python.d/smartd_log.conf" = { update_every = 60 * 60; };
+      "stream.conf" = config.age.secrets.netdata_stream_fp0.path;
+    };
   };
   environment.persistence."/persist".files =
     [ "/var/lib/netdata/registry/netdata.public.unique.id" ];

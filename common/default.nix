@@ -1,5 +1,6 @@
 { pkgs, agenix, ... }: {
   imports = [
+    ../modules
     agenix.nixosModules.default
     ./build_cache.nix
     ./shell.nix

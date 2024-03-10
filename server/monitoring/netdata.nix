@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, pkgs, ... }: {
   age.secrets.netdata = {
     file = ../../secrets/netdata.age;
     owner = "netdata";
@@ -27,64 +27,61 @@
           "ssl certificate" = "${certs}/fullchain.pem";
         };
     };
-    configDir = (builtins.mapAttrs (file: config:
-      builtins.toFile (builtins.baseNameOf file)
-      (lib.generators.toYAML { } config)) {
-        "go.d/prometheus.conf" = {
-          jobs = [
-            {
-              name = "wireguard_local";
-              url = "http://127.0.0.1:9586/metrics";
-            }
-            {
-              name = "opentelemetry";
-              url = "http://127.0.0.1:8888/metrics";
-            }
-            {
-              name = "cloudflared";
-              url = "http://127.0.0.1:8001/metrics";
-            }
-            {
-              name = "chess_erdos";
-              url = "http://127.0.0.1:4001/metrics";
-            }
-            {
-              name = "rclone";
-              url = "http://127.0.0.1:5572/metrics";
-            }
-          ];
-        };
-        "go.d/systemdunits.conf" = {
-          jobs = [{
-            name = "all";
-            include = [ "*" ];
-          }];
-        };
-        "go.d/nginx.conf" = {
-          jobs = [{
-            name = "local";
-            url = "http://127.0.0.1/nginx_status";
-          }];
-        };
-        "go.d/web_log.conf" = {
-          jobs = [{
-            name = "nginx";
-            path = "/var/log/nginx/access.log";
-            parser.log_type = "json";
-          }];
-        };
-        "go.d.conf" = {
-          enabled = true;
-          default_run = true;
-          max_procs = 0;
-          modules = {
-            systemdunits = true;
-            web_log = true;
-          };
-        };
-      }) // {
-        "stream.conf" = config.age.secrets.netdata_stream_fv0.path;
+    configs = {
+      "go.d/prometheus.conf" = {
+        jobs = [
+          {
+            name = "wireguard_local";
+            url = "http://127.0.0.1:9586/metrics";
+          }
+          {
+            name = "opentelemetry";
+            url = "http://127.0.0.1:8888/metrics";
+          }
+          {
+            name = "cloudflared";
+            url = "http://127.0.0.1:8001/metrics";
+          }
+          {
+            name = "chess_erdos";
+            url = "http://127.0.0.1:4001/metrics";
+          }
+          {
+            name = "rclone";
+            url = "http://127.0.0.1:5572/metrics";
+          }
+        ];
       };
+      "go.d/systemdunits.conf" = {
+        jobs = [{
+          name = "all";
+          include = [ "*" ];
+        }];
+      };
+      "go.d/nginx.conf" = {
+        jobs = [{
+          name = "local";
+          url = "http://127.0.0.1/nginx_status";
+        }];
+      };
+      "go.d/web_log.conf" = {
+        jobs = [{
+          name = "nginx";
+          path = "/var/log/nginx/access.log";
+          parser.log_type = "json";
+        }];
+      };
+      "go.d.conf" = {
+        enabled = true;
+        default_run = true;
+        max_procs = 0;
+        modules = {
+          systemdunits = true;
+          web_log = true;
+        };
+      };
+      "stream.conf" = config.age.secrets.netdata_stream_fv0.path;
+    };
     enableAnalyticsReporting = true;
   };
   users.users.netdata.extraGroups = [ "nginx" ];

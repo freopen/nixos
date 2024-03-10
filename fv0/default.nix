@@ -1,4 +1,4 @@
-{ modulesPath, chat_bot, chess_erdos, ... }: {
+{ modulesPath, chat_bot, chess_erdos, const, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./chat_bot.nix
@@ -53,9 +53,9 @@
       KbdInteractiveAuthentication = false;
     };
   };
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0xybsoHuUubvYkoOBNbrqz7CQmRjGIru4HMq/x0Zxo freopen@FREOPEN-DESKTOP"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5PxIXYZI8n8IQxAZRT5l9s3mlQ0/JGyTv1xMg4NHnh JuiceSSH"
+  users.users.root.openssh.authorizedKeys.keys = with const.ssh; [
+    laptop
+    phone
   ];
   age.identityPaths = [ "/root/.ssh/id_ed25519" ];
 }

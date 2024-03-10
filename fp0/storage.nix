@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, const, ... }: {
   boot = {
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     supportedFilesystems = [ "zfs" ];
@@ -31,9 +31,7 @@
     users = {
       storage-freopen = {
         isNormalUser = true;
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIODN8vHk/HWHOH9vdV4/3LKoLdk13WiSmGEvYgSmt2va storage-freopen"
-        ];
+        openssh.authorizedKeys.keys = [ const.ssh.storage-freopen ];
         home = "/storage/freopen";
         createHome = true;
         group = "storage-freopen";

@@ -1,4 +1,4 @@
-{ nixos-hardware, impermanence, pkgs, ... }: {
+{ nixos-hardware, impermanence, pkgs, const, ... }: {
   imports = [
     nixos-hardware.nixosModules.raspberry-pi-4
     impermanence.nixosModules.impermanence
@@ -75,9 +75,9 @@
     # https://github.com/NixOS/nixpkgs/issues/254921
     # BOOTFS=${bootdir} ${pkgs.raspberrypi-eeprom}/bin/rpi-eeprom-update -a
   '';
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0xybsoHuUubvYkoOBNbrqz7CQmRjGIru4HMq/x0Zxo freopen@FREOPEN-DESKTOP"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN5PxIXYZI8n8IQxAZRT5l9s3mlQ0/JGyTv1xMg4NHnh JuiceSSH"
+  users.users.root.openssh.authorizedKeys.keys = with const.ssh; [
+    laptop
+    phone
   ];
   age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
   environment.persistence."/persist" = {

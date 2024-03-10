@@ -1,20 +1,21 @@
 let
-  laptopKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0xybsoHuUubvYkoOBNbrqz7CQmRjGIru4HMq/x0Zxo";
-  serverKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqM6ywcMh+wcEIxV2nu9rFV5ybZbmQf51a8n5JmcIOi";
-  raspiKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPxDLiP9ar9f7ks9UUA4yJHX0qypjBxKij5/Gck4A6U root@fp0";
-in {
-  "chat_bot.age".publicKeys = [ laptopKey serverKey ];
-  "fishnet.age".publicKeys = [ laptopKey serverKey ];
-  "miniflux.age".publicKeys = [ laptopKey serverKey ];
-  "netdata.age".publicKeys = [ laptopKey serverKey ];
-  "netdata_stream_fp0.age".publicKeys = [ laptopKey raspiKey ];
-  "netdata_stream_fv0.age".publicKeys = [ laptopKey serverKey ];
-  "fv0_ports.age".publicKeys = [ laptopKey serverKey ];
-  "rclone.age".publicKeys = [ laptopKey serverKey ];
-  "telemetry.age".publicKeys = [ laptopKey serverKey ];
-  "wireguard.age".publicKeys = [ laptopKey serverKey ];
-  "zigbee_network_key.age".publicKeys = [ laptopKey raspiKey ];
-}
+  ssh = (import ../const.nix).ssh;
+  common = with ssh; [ laptop phone ];
+  setKeys = names: keys:
+    builtins.listToAttrs (builtins.map (x: {
+      name = "${x}.age";
+      value = { publicKeys = keys; };
+    }) names);
+in (setKeys [
+  "chat_bot"
+  "fishnet"
+  "miniflux"
+  "netdata"
+  "netdata_stream_fv0"
+  "fv0_ports"
+  "rclone"
+  "telemetry"
+  "wireguard"
+] (common ++ [ ssh.fv0 ]))
+// (setKeys [ "netdata_stream_fp0" "zigbee_network_key" ]
+  (common ++ [ ssh.fp0 ]))

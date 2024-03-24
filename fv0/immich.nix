@@ -13,15 +13,16 @@
   };
   systemd.tmpfiles.rules = [
     "d /var/lib/immich 0770 immich immich"
-    "d /var/lib/immich/library 0770 immich immich"
+    "d /var/lib/immich/library 0550 immich immich"
     "d /var/lib/immich/model-cache 0770 immich immich"
   ];
   systemd.mounts = [{
     what = "/mnt/rclone/immich";
     where = "/var/lib/immich/library";
-    options = "bind";
-    bindsTo = [ "rclone.service" ];
+    options = "bind,_netdev";
+    partOf = [ "rclone.service" ];
     after = [ "rclone.service" ];
+    unitConfig = { ConditionPathExists = "/mnt/rclone/immich"; };
   }];
   services = {
     redis.servers.immich = {
@@ -94,6 +95,7 @@
         TimeoutStartSec = 900;
         Delegate = true;
         SyslogIdentifier = "%N";
+        Restart = "on-failure";
       };
     };
   in {

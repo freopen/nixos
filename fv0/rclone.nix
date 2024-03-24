@@ -42,8 +42,9 @@ in {
     [ "d /mnt 0750 root mounters - -" "d /mnt/rclone 0700 rclone rclone - -" ];
   systemd.services.rclone = {
     wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
+    after = [ "network-online.target" "run-wrappers.mount" ];
     wants = [ "network-online.target" ];
+    requires = [ "run-wrappers.mount" ];
     path = [ "/run/wrappers" ];
     serviceConfig = {
       User = "rclone";
@@ -64,6 +65,7 @@ in {
           --umask 0000 \
           --dir-cache-time 30d \
           --poll-interval 0 \
+          --vfs-fast-fingerprint \
           --vfs-cache-mode full \
           --vfs-cache-max-age 30d \
           --vfs-cache-min-free-space 10G

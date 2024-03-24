@@ -47,11 +47,12 @@
   systemd.mounts = [{
     what = "/mnt/rclone/postgresql";
     where = "/var/lib/postgresql-backup";
-    options = "bind";
-    bindsTo = [ "rclone.service" ];
+    options = "bind,_netdev";
+    partOf = [ "rclone.service" ];
     after = [ "rclone.service" ];
     requiredBy = [ "postgresqlBackup.service" ];
     before = [ "postgresqlBackup.service" ];
+    unitConfig = { ConditionPathExists = "/mnt/rclone/postgresql"; };
   }];
   services.postgresqlBackup = {
     enable = true;

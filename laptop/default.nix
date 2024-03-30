@@ -6,7 +6,7 @@
     ./firefox.nix
     ./fonts.nix
     ./gaming.nix
-    ./kde.nix
+    ./gnome.nix
     ./networking.nix
   ];
   boot = {

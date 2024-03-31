@@ -1,4 +1,4 @@
-{ pkgs, config, modulesPath, home-manager, ... }: {
+{ self, pkgs, config, modulesPath, home-manager, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     home-manager.nixosModules.home-manager
@@ -67,7 +67,18 @@
       pulse.enable = true;
     };
   };
-
+  system.autoUpgrade = {
+    enable = true;
+    flake = self.outPath;
+    flags = [
+      "--update-input"
+      "nixpkgs"
+      "--no-write-lock-file"
+      "-L" # print build logs
+    ];
+    dates = "weekly";
+    operation = "boot";
+  };
   users.users.freopen = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];

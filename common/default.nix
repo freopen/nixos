@@ -6,7 +6,9 @@
     ./shell.nix
     ./unstable_overlay.nix
   ];
+  systemd.tmpfiles.rules = [ "L+ /etc/nixPath - - - - ${pkgs.path}" ];
   nix = {
+    nixPath = [ "nixpkgs=/etc/nixPath" ];
     gc = {
       automatic = true;
       dates = "weekly";

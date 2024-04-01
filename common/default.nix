@@ -4,7 +4,7 @@
     agenix.nixosModules.default
     ./build_cache.nix
     ./shell.nix
-    ./unstable_overlay.nix
+    ./pkgs_overlay.nix
   ];
   systemd.tmpfiles.rules = [ "L+ /etc/nixPath - - - - ${pkgs.path}" ];
   nix = {

@@ -1,5 +1,5 @@
 { config, ... }: {
-  imports = [ ./light.nix ];
+  imports = [ ./light.nix ./xiaomi.nix ];
   environment.persistence."/persist" = {
     directories =
       [ "/var/lib/hass" "/var/lib/mosquitto" "/var/lib/zigbee2mqtt" ];

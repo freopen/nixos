@@ -11,6 +11,7 @@
       ++ (with pkgs.gnomeExtensions; [
         dash-to-panel
         clipboard-indicator
+        power-profile-switcher
         vitals
       ]);
   };

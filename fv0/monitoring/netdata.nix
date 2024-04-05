@@ -12,7 +12,7 @@
   networking.firewall.allowedTCPPorts = [ 19999 ];
   services.netdata = {
     enable = true;
-    package = pkgs.netdataCloud;
+    package = pkgs.unstable.netdataCloud;
     claimTokenFile = config.age.secrets.netdata.path;
     config = {
       db."storage tiers" = 5;

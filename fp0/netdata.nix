@@ -6,7 +6,7 @@
   };
   services.netdata = {
     enable = true;
-    package = pkgs.netdata;
+    package = pkgs.unstable.netdata;
     config = {
       web.mode = "none";
       db = {

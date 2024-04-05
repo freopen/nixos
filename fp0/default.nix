@@ -5,7 +5,7 @@
     ./home-assistant
     ./netdata.nix
     ./nginx.nix
-    ./storage.nix
+    # ./storage.nix
   ];
   fileSystems = {
     "/" = {

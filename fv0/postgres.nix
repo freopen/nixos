@@ -55,7 +55,7 @@
     unitConfig = { ConditionPathExists = "/mnt/rclone/postgresql"; };
   }];
   services.postgresqlBackup = {
-    enable = true;
+    enable = false;
     startAt = "*-*-* 14:00:00";
     location = "/var/lib/postgresql-backup";
     compression = "zstd";

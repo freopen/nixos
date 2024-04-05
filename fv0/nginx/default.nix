@@ -62,7 +62,7 @@
       extraDomainNames = builtins.attrNames (lib.attrsets.filterAttrs
         (domain: vhost:
           vhost.useACMEHost == "freopen.org" && domain != "freopen.org")
-        config.services.nginx.virtualHosts);
+        config.services.nginx.virtualHosts) ++ [ "photos.freopen.org" ];
     };
   };
 }

@@ -6,6 +6,7 @@
         config.allowUnfree = true;
       };
       xiaomi_miot = final.callPackage ../pkgs/xiaomi_miot.nix { };
+      renterd = final.callPackage ../pkgs/renterd.nix { };
     })
   ];
 }

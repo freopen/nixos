@@ -14,6 +14,7 @@ in (setKeys [
   "netdata_stream_fv0"
   "fv0_ports"
   "rclone"
+  "renterd"
   "telemetry"
   "wireguard"
 ] (common ++ [ ssh.fv0 ]))

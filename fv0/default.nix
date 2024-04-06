@@ -4,13 +4,13 @@
     ./chat_bot.nix
     ./chess_erdos.nix
     ./fishnet.nix
-    # ./immich.nix
+    ./immich.nix
     ./miniflux.nix
     ./monitoring
     ./nginx
     ./postgres.nix
     ./renterd.nix
-    # ./rclone.nix
+    ./rclone.nix
     ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default

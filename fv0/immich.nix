@@ -13,17 +13,19 @@
   };
   systemd.tmpfiles.rules = [
     "d /var/lib/immich 0770 immich immich"
-    "d /var/lib/immich/library 0550 immich immich"
+    "d /var/lib/immich/library 0770 immich immich"
+    "d /var/lib/immich/library/library 0550 immich immich"
+    "d /var/lib/immich/library/thumbs 0550 immich immich"
     "d /var/lib/immich/model-cache 0770 immich immich"
   ];
-  systemd.mounts = [{
-    what = "/mnt/rclone/immich";
-    where = "/var/lib/immich/library";
+  systemd.mounts = map (dir: {
+    what = "/mnt/rclone/immich/${dir}";
+    where = "/var/lib/immich/library/${dir}";
     options = "bind,_netdev";
     partOf = [ "rclone.service" ];
     after = [ "rclone.service" ];
-    unitConfig = { ConditionPathExists = "/mnt/rclone/immich"; };
-  }];
+    unitConfig = { ConditionPathExists = "/mnt/rclone/immich/${dir}"; };
+  }) [ "library" "thumbs" ];
   services = {
     redis.servers.immich = {
       enable = true;
@@ -51,14 +53,17 @@
   };
   systemd.services = let
     podman = "${pkgs.podman}/bin/podman";
-    version = "1.98.1";
+    version = "1.101.0";
     immich_unit = exec: {
       environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
       postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
       path = [ "/run/wrappers" ];
       requires = [ "redis-immich.service" "postgresql.service" ];
       after = [ "redis-immich.service" "postgresql.service" ];
-      unitConfig = { RequiresMountsFor = "/var/lib/immich/library"; };
+      unitConfig = {
+        RequiresMountsFor =
+          "/var/lib/immich/library/library /var/lib/immich/library/thumbs";
+      };
       serviceConfig = {
         ExecStart = "${podman} run ${
             lib.cli.toGNUCommandLineShell { } {

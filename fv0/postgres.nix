@@ -43,19 +43,8 @@
     ];
     settings = { shared_preload_libraries = "vectors.so"; };
   };
-  users.users.postgres.extraGroups = [ "rclone" ];
-  systemd.mounts = [{
-    what = "/mnt/rclone/postgresql";
-    where = "/var/lib/postgresql-backup";
-    options = "bind,_netdev";
-    partOf = [ "rclone.service" ];
-    after = [ "rclone.service" ];
-    requiredBy = [ "postgresqlBackup.service" ];
-    before = [ "postgresqlBackup.service" ];
-    unitConfig = { ConditionPathExists = "/mnt/rclone/postgresql"; };
-  }];
   services.postgresqlBackup = {
-    enable = false;
+    enable = true;
     startAt = "*-*-* 14:00:00";
     location = "/var/lib/postgresql-backup";
     compression = "zstd";

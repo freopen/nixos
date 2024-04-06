@@ -1,25 +1,15 @@
 { config, lib, pkgs, ... }:
 let
   rcloneConfig = builtins.toFile "rclone.conf" (lib.generators.toINI { } {
-    storage-freopen = {
-      type = "sftp";
-      host = "fp0.freopen.org";
-      user = "storage-freopen";
-      shell_type = "unix";
-      md5sum_command = "md5sum";
-      sha1sum_command = "sha1sum";
-      copy_is_hardlink = "true";
+    sia = {
+      type = "s3";
+      provider = "Other";
+      endpoint = "http://127.0.0.1:3200";
+      acl = "private";
     };
-    # storage-encrypted = {
-    #   type = "union";
-    #   upstreams = "storage-freopen:";
-    #   action_policy = "all";
-    #   create_policy = "all";
-    #   search_policy = "ff";
-    # };
     storage = {
       type = "crypt";
-      remote = "storage-freopen:fv0";
+      remote = "sia:fv0";
       filename_encoding = "base64";
     };
   });
@@ -63,11 +53,11 @@ in {
           --dir-perms 0770 \
           --file-perms 0660 \
           --umask 0000 \
-          --dir-cache-time 30d \
+          --dir-cache-time 720d \
           --poll-interval 0 \
           --vfs-fast-fingerprint \
           --vfs-cache-mode full \
-          --vfs-cache-max-age 30d \
+          --vfs-cache-max-age 720d \
           --vfs-cache-min-free-space 10G
       '';
       ExecStop = "fusermount -u /rclone";

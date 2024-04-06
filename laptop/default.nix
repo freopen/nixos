@@ -1,4 +1,4 @@
-{ self, pkgs, config, modulesPath, home-manager, ... }: {
+{ self, pkgs, config, modulesPath, home-manager, lib, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     home-manager.nixosModules.home-manager
@@ -76,9 +76,11 @@
       "--no-write-lock-file"
       "-L" # print build logs
     ];
-    dates = "weekly";
+    persistent = false;
     operation = "boot";
   };
+  systemd.timers.nixos-upgrade.timerConfig.OnBootSec = "1h";
+  systemd.services.nixos-upgrade.startAt = lib.mkForce [ ];
   users.users.freopen = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];

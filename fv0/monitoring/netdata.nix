@@ -17,7 +17,6 @@
     config = {
       db."storage tiers" = 5;
       ml.enabled = true;
-      "plugin:go.d"."command options" = "-d";
       web =
         let certs = config.security.acme.certs."netdata.freopen.org".directory;
         in {

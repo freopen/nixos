@@ -62,6 +62,7 @@ in {
       '';
       ExecStop = "fusermount -u /rclone";
       Restart = "on-failure";
+      TimeoutStartSec = 60 * 60;
     };
   };
 }

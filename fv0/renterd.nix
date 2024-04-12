@@ -25,6 +25,7 @@
       Restart = "always";
       RestartSec = 15;
       TimeoutStopSec = 120;
+      LogFilterPatterns = "~(HEAD OBJECT)";
     };
   };
 }

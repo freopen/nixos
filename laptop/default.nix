@@ -79,7 +79,10 @@
     persistent = false;
     operation = "boot";
   };
-  systemd.timers.nixos-upgrade.timerConfig.OnBootSec = "1h";
+  systemd.timers.nixos-upgrade = {
+    timerConfig.OnBootSec = "1h";
+    wantedBy = [ "timers.target" ];
+  };
   systemd.services.nixos-upgrade.startAt = lib.mkForce [ ];
   users.users.freopen = {
     isNormalUser = true;

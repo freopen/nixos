@@ -2,10 +2,16 @@
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
-    ensureUsers = [{
-      name = "root";
-      ensureClauses.superuser = true;
-    }];
+    ensureUsers = [
+      {
+        name = "root";
+        ensureClauses.superuser = true;
+      }
+      {
+        name = "pgadmin";
+        ensureClauses.superuser = true;
+      }
+    ];
     extraPlugins = [
       # https://github.com/diogotcorreia/dotfiles/blob/nixos/packages/pgvecto-rs.nix
       (let major = lib.versions.major pkgs.postgresql_15.version;

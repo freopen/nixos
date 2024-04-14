@@ -9,6 +9,7 @@ let
 in (setKeys [
   "chat_bot"
   "fishnet"
+  "google_cloud_storage"
   "miniflux"
   "netdata"
   "netdata_stream_fv0"

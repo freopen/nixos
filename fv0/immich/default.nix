@@ -1,15 +1,11 @@
 { pkgs, lib, ... }:
 let
-  config = {
+  immichConfig = builtins.toFile "immich-config.json" (builtins.toJSON {
     logging.level = "warn";
-    ffmpeg.transcode = "disabled";
-    image = {
-      colorspace = "p3";
-      previewFormat = "jpeg";
-      previewSize = 720;
-      quality = 80;
-      thumbnailFormat = "webp";
-      thumbnailSize = 250;
+    storageTemplate = {
+      enabled = true;
+      template =
+        "{{y}}/{{MM}}-{{dd}}/{{yy}}{{MM}}{{dd}}_{{HH}}{{mm}}{{ss}}_{{filename}}";
     };
     job = {
       backgroundTask.concurrency = 5;
@@ -23,10 +19,15 @@ let
       thumbnailGeneration.concurrency = 5;
       videoConversion.concurrency = 1;
     };
-    library = {
-      scan.enabled = false;
-      watch.enabled = false;
+    image = {
+      colorspace = "p3";
+      previewFormat = "jpeg";
+      previewSize = 720;
+      quality = 80;
+      thumbnailFormat = "webp";
+      thumbnailSize = 250;
     };
+    ffmpeg.transcode = "disabled";
     machineLearning = {
       clip = {
         enabled = true;
@@ -42,46 +43,32 @@ let
       };
       url = "http://127.0.0.1:5003";
     };
-    newVersionCheck.enabled = false;
-    server.externalDomain = "https://photos.freopen.org";
-    storageTemplate = {
-      enabled = true;
-      template =
-        "{{y}}/{{MM}}-{{dd}}/{{yy}}{{MM}}{{dd}}_{{HH}}{{mm}}{{ss}}_{{filename}}";
+    library = {
+      scan.enabled = false;
+      watch.enabled = false;
     };
     trash = {
       days = 9999999999999;
       enabled = true;
     };
-  };
+    server.externalDomain = "https://photos.freopen.org";
+    newVersionCheck.enabled = false;
+  });
 in {
-  virtualisation.podman = { enable = true; };
+  imports = [ ./rclone.nix ];
   users = {
-    users.immich = {
-      group = "immich";
-      extraGroups = [ "rclone" "redis-immich" ];
-      isSystemUser = true;
-      linger = true;
-      home = "/var/lib/immich";
-      autoSubUidGidRange = true;
+    users = {
+      immich = {
+        group = "immich";
+        extraGroups = [ "rclone" "redis-immich" ];
+        isSystemUser = true;
+        linger = true;
+        home = "/var/lib/immich";
+        autoSubUidGidRange = true;
+      };
     };
-    groups.immich = { };
+    groups = { immich = { }; };
   };
-  systemd.tmpfiles.rules = [
-    "d /var/lib/immich 0770 immich immich"
-    "d /var/lib/immich/library 0770 immich immich"
-    "d /var/lib/immich/library/library 0550 immich immich"
-    "d /var/lib/immich/library/thumbs 0550 immich immich"
-    "d /var/lib/immich/model-cache 0770 immich immich"
-  ];
-  systemd.mounts = map (dir: {
-    what = "/mnt/rclone/immich/${dir}";
-    where = "/var/lib/immich/library/${dir}";
-    options = "bind,_netdev";
-    bindsTo = [ "rclone.service" ];
-    after = [ "rclone.service" ];
-    unitConfig = { ConditionPathExists = "/mnt/rclone/immich/${dir}"; };
-  }) [ "library" "thumbs" ];
   services = {
     redis.servers.immich = {
       enable = true;
@@ -107,6 +94,12 @@ in {
       };
     };
   };
+  systemd.tmpfiles.rules = [
+    "d /var/lib/immich 0770 immich immich"
+    "d /var/lib/immich/upload 0770 immich immich"
+    "d /var/lib/immich/model-cache 0770 immich immich"
+  ];
+  virtualisation.podman.enable = true;
   systemd.services = let
     podman = "${pkgs.podman}/bin/podman";
     version = "main";
@@ -118,19 +111,10 @@ in {
         "immich.target"
         "redis-immich.service"
         "postgresql.service"
-        "var-lib-immich-library-thumbs.mount"
-        "var-lib-immich-library-library.mount"
+        "immich-rclone.service"
       ];
-      after = [
-        "redis-immich.service"
-        "postgresql.service"
-        "var-lib-immich-library-thumbs.mount"
-        "var-lib-immich-library-library.mount"
-      ];
-      unitConfig = {
-        RequiresMountsFor =
-          "/var/lib/immich/library/library /var/lib/immich/library/thumbs";
-      };
+      after =
+        [ "redis-immich.service" "postgresql.service" "immich-rclone.service" ];
       serviceConfig = {
         ExecStart = "${podman} run ${
             lib.cli.toGNUCommandLineShell { } {
@@ -145,13 +129,13 @@ in {
               detach = true;
               sdnotify = "conmon";
               volume = [
-                "/var/lib/immich/library:/usr/src/app/upload"
+                "/var/lib/immich/upload:/usr/src/app/upload"
+                "/var/lib/immich/cloud/library:/usr/src/app/upload/library"
+                "/var/lib/immich/cloud/thumbs:/usr/src/app/upload/thumbs"
                 "/var/lib/immich/model-cache:/cache"
                 "/run/postgresql:/run/postgresql"
                 "/run/redis-immich:/run/redis-immich"
-                "${
-                  builtins.toFile "immich-config.json" (builtins.toJSON config)
-                }:/immich-config.json"
+                "${immichConfig}:/immich-config.json"
               ];
               env = [
                 "DB_URL=socket://immich:@/run/postgresql?db=immich"

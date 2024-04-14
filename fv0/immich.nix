@@ -1,4 +1,60 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+let
+  config = {
+    logging.level = "warn";
+    ffmpeg.transcode = "disabled";
+    image = {
+      colorspace = "p3";
+      previewFormat = "jpeg";
+      previewSize = 720;
+      quality = 80;
+      thumbnailFormat = "webp";
+      thumbnailSize = 250;
+    };
+    job = {
+      backgroundTask.concurrency = 5;
+      faceDetection.concurrency = 1;
+      library.concurrency = 1;
+      metadataExtraction.concurrency = 1;
+      migration.concurrency = 1;
+      search.concurrency = 5;
+      sidecar.concurrency = 1;
+      smartSearch.concurrency = 1;
+      thumbnailGeneration.concurrency = 5;
+      videoConversion.concurrency = 1;
+    };
+    library = {
+      scan.enabled = false;
+      watch.enabled = false;
+    };
+    machineLearning = {
+      clip = {
+        enabled = true;
+        modelName = "XLM-Roberta-Large-Vit-B-16Plus";
+      };
+      enabled = true;
+      facialRecognition = {
+        enabled = true;
+        maxDistance = 0.5;
+        minFaces = 3;
+        minScore = 0.7;
+        modelName = "buffalo_l";
+      };
+      url = "http://127.0.0.1:5003";
+    };
+    newVersionCheck.enabled = false;
+    server.externalDomain = "https://photos.freopen.org";
+    storageTemplate = {
+      enabled = true;
+      template =
+        "{{y}}/{{MM}}-{{dd}}/{{yy}}{{MM}}{{dd}}_{{HH}}{{mm}}{{ss}}_{{filename}}";
+    };
+    trash = {
+      days = 9999999999999;
+      enabled = true;
+    };
+  };
+in {
   virtualisation.podman = { enable = true; };
   users = {
     users.immich = {
@@ -22,7 +78,7 @@
     what = "/mnt/rclone/immich/${dir}";
     where = "/var/lib/immich/library/${dir}";
     options = "bind,_netdev";
-    partOf = [ "rclone.service" ];
+    bindsTo = [ "rclone.service" ];
     after = [ "rclone.service" ];
     unitConfig = { ConditionPathExists = "/mnt/rclone/immich/${dir}"; };
   }) [ "library" "thumbs" ];
@@ -53,13 +109,24 @@
   };
   systemd.services = let
     podman = "${pkgs.podman}/bin/podman";
-    version = "1.101.0";
+    version = "main";
     immich_unit = exec: {
       environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
       postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
       path = [ "/run/wrappers" ];
-      requires = [ "redis-immich.service" "postgresql.service" ];
-      after = [ "redis-immich.service" "postgresql.service" ];
+      bindsTo = [
+        "immich.target"
+        "redis-immich.service"
+        "postgresql.service"
+        "var-lib-immich-library-thumbs.mount"
+        "var-lib-immich-library-library.mount"
+      ];
+      after = [
+        "redis-immich.service"
+        "postgresql.service"
+        "var-lib-immich-library-thumbs.mount"
+        "var-lib-immich-library-library.mount"
+      ];
       unitConfig = {
         RequiresMountsFor =
           "/var/lib/immich/library/library /var/lib/immich/library/thumbs";
@@ -82,6 +149,9 @@
                 "/var/lib/immich/model-cache:/cache"
                 "/run/postgresql:/run/postgresql"
                 "/run/redis-immich:/run/redis-immich"
+                "${
+                  builtins.toFile "immich-config.json" (builtins.toJSON config)
+                }:/immich-config.json"
               ];
               env = [
                 "DB_URL=socket://immich:@/run/postgresql?db=immich"
@@ -90,6 +160,7 @@
                 "SERVER_PORT=5001"
                 "MICROSERVICES_PORT=5002"
                 "MACHINE_LEARNING_PORT=5003"
+                "IMMICH_CONFIG_FILE=/immich-config.json"
               ];
             }
           } ${exec}";
@@ -104,15 +175,20 @@
       };
     };
   in {
-    immich-server = immich_unit
-      "ghcr.io/immich-app/immich-server:v${version} start.sh immich";
+    immich-server =
+      immich_unit "ghcr.io/immich-app/immich-server:${version} start.sh immich";
     immich-microservices = immich_unit
-      "ghcr.io/immich-app/immich-server:v${version} start.sh microservices";
+      "ghcr.io/immich-app/immich-server:${version} start.sh microservices";
     immich-machine-learning =
-      immich_unit "ghcr.io/immich-app/immich-machine-learning:v${version}";
+      immich_unit "ghcr.io/immich-app/immich-machine-learning:${version}";
   };
   systemd.targets.immich = {
-    requires = [
+    after = [
+      "immich-server.service"
+      "immich-microservices.service"
+      "immich-machine-learning.service"
+    ];
+    bindsTo = [
       "immich-server.service"
       "immich-microservices.service"
       "immich-machine-learning.service"

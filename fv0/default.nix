@@ -9,8 +9,6 @@
     ./monitoring
     ./nginx
     ./postgres.nix
-    ./renterd.nix
-    # ./rclone.nix
     ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default

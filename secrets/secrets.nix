@@ -13,7 +13,6 @@ in (setKeys [
   "miniflux"
   "netdata"
   "netdata_stream_fv0"
-  "fv0_ports"
   "rclone"
   "renterd"
   "telemetry"

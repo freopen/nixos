@@ -27,10 +27,10 @@
       User = "fishnet";
       Restart = "always";
       KillMode = "mixed";
-      Nice = 5;
+      CPUSchedulingPolicy = "idle";
+      IOSchedulingClass = "idle";
       WorkingDirectory = "/var/lib/fishnet";
       PrivateTmp = true;
     };
   };
-
 }

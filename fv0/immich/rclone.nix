@@ -64,7 +64,6 @@ in {
           poll-interval = 0;
           vfs-fast-fingerprint = true;
         };
-      ExecStop = "fusermount -u /rclone";
       Restart = "on-failure";
       TimeoutStartSec = 60 * 60;
     };

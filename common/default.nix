@@ -45,6 +45,7 @@
     memoryPercent = 100;
   };
   services.dbus.implementation = "broker";
+  services.journald.extraConfig = "SystemMaxUse=1G";
   i18n.defaultLocale = "en_US.UTF-8";
   system = {
     stateVersion = "22.05";

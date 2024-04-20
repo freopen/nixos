@@ -106,7 +106,15 @@
     backup-service = type: startAt: {
       script = let
         cmd = repo:
-          "${pkgs.pgbackrest}/bin/pgbackrest --stanza=localdb --type=${type} --repo=${repo} backup";
+          builtins.concatStringsSep " " [
+            "${pkgs.util-linux}/bin/flock"
+            "$RUNTIME_DIRECTORY/backup.lock"
+            "${pkgs.pgbackrest}/bin/pgbackrest"
+            "--stanza=localdb"
+            "--type=${type}"
+            "--repo=${repo}"
+            "backup"
+          ];
       in ''
         ${cmd "1"}
         ${cmd "2"}
@@ -116,6 +124,7 @@
       serviceConfig = {
         Type = "oneshot";
         User = "postgres";
+        RuntimeDirectory = "pgbackrest";
       };
     };
   in {

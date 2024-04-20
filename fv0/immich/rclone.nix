@@ -65,11 +65,26 @@ in {
           vfs-fast-fingerprint = true;
           no-modtime = true;
           transfers = 1;
-          tpslimit = 0.1;
+          tpslimit = 1;
           tpslimit-burst = 1000;
         };
       Restart = "on-failure";
       TimeoutStartSec = 60 * 60;
     };
+  };
+  networking.nftables.preCheckRuleset =
+    "sed 's/skuid immich-rclone/skuid nobody/g' -i ruleset.conf";
+  networking.nftables.tables.ratelimit = {
+    name = "ratelimit";
+    family = "inet";
+    content = ''
+      limit lim_gcp {
+        rate over 100 kbytes/second burst 1024 mbytes
+      }
+      chain immich-rclone {
+        type filter hook input priority filter; policy accept;
+        meta skuid immich-rclone ct direction reply limit name "lim_gcp" log drop
+      }
+    '';
   };
 }

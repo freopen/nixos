@@ -26,7 +26,10 @@
   }];
   networking = {
     useNetworkd = true;
-    nftables.enable = true;
+    nftables = {
+      enable = true;
+      flushRuleset = false;
+    };
     hostName = "fv0";
     interfaces.ens18.ipv6 = {
       addresses = [{

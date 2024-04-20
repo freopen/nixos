@@ -102,7 +102,7 @@ in {
   virtualisation.podman.enable = true;
   systemd.services = let
     podman = "${pkgs.podman}/bin/podman";
-    version = "main";
+    version = "v1.102.0";
     immich_unit = exec: {
       environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
       postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";

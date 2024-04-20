@@ -38,10 +38,7 @@
   };
   time.timeZone = "UTC";
   system.autoUpgrade = {
-    enable = true;
     dates = "Sat, 09:00";
-    flake = "github:freopen/nixos";
-    flags = [ "--no-write-lock-file" ];
     allowReboot = true;
   };
   services.openssh = {

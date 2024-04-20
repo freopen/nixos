@@ -1,4 +1,4 @@
-{ pkgs, agenix, ... }: {
+{ self, pkgs, agenix, ... }: {
   imports = [
     ../modules
     agenix.nixosModules.default
@@ -54,5 +54,15 @@
         ${pkgs.nix}/bin/nix store diff-closures /run/current-system "$systemConfig"
       fi
     '';
+    autoUpgrade = {
+      enable = true;
+      flake = self.outPath;
+      flags = [
+        "--update-input"
+        "nixpkgs"
+        "--no-write-lock-file"
+        "-L" # print build logs
+      ];
+    };
   };
 }

@@ -1,4 +1,4 @@
-{ self, pkgs, config, modulesPath, home-manager, lib, ... }: {
+{ pkgs, config, modulesPath, home-manager, lib, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     home-manager.nixosModules.home-manager
@@ -68,14 +68,6 @@
     };
   };
   system.autoUpgrade = {
-    enable = true;
-    flake = self.outPath;
-    flags = [
-      "--update-input"
-      "nixpkgs"
-      "--no-write-lock-file"
-      "-L" # print build logs
-    ];
     persistent = false;
     operation = "boot";
   };

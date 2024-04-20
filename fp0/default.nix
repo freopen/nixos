@@ -35,10 +35,7 @@
   networking.hostName = "fp0";
   networking.nftables.enable = true;
   system.autoUpgrade = {
-    enable = true;
     dates = "Sat, 03:00";
-    flake = "github:freopen/nixos";
-    flags = [ "--no-write-lock-file" ];
     allowReboot = true;
   };
   services.journald.console = "/dev/tty1";

@@ -24,17 +24,21 @@
     device = "/var/lib/swapfile";
     size = 32 * 1024;
   }];
-  networking.hostName = "fv0";
-  networking.interfaces.ens18.ipv6 = {
-    addresses = [{
-      address = "2a02:c206:2101:9040::1";
-      prefixLength = 64;
-    }];
-    routes = [{
-      address = "::";
-      prefixLength = 0;
-      via = "fe80::1";
-    }];
+  networking = {
+    useNetworkd = true;
+    nftables.enable = true;
+    hostName = "fv0";
+    interfaces.ens18.ipv6 = {
+      addresses = [{
+        address = "2a02:c206:2101:9040::1";
+        prefixLength = 64;
+      }];
+      routes = [{
+        address = "::";
+        prefixLength = 0;
+        via = "fe80::1";
+      }];
+    };
   };
   time.timeZone = "UTC";
   system.autoUpgrade = {

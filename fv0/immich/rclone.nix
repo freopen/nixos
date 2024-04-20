@@ -63,6 +63,10 @@ in {
           dir-cache-time = "720d";
           poll-interval = 0;
           vfs-fast-fingerprint = true;
+          no-modtime = true;
+          transfers = 1;
+          tpslimit = 0.1;
+          tpslimit-burst = 1000;
         };
       Restart = "on-failure";
       TimeoutStartSec = 60 * 60;

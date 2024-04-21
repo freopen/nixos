@@ -102,8 +102,8 @@ in {
   virtualisation.podman.enable = true;
   systemd.services = let
     podman = "${pkgs.podman}/bin/podman";
-    version = "v1.102.0";
-    immich_unit = exec: {
+    version = "v1.102.3";
+    immich_unit = { container ? "immich-server", exec ? "", metricsPort ? 0 }: {
       environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
       postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
       path = [ "/run/wrappers" ];
@@ -138,16 +138,17 @@ in {
                 "${immichConfig}:/immich-config.json"
               ];
               env = [
+                "IMMICH_CONFIG_FILE=/immich-config.json"
                 "DB_URL=socket://immich:@/run/postgresql?db=immich"
                 "REDIS_SOCKET=/run/redis-immich/redis.sock"
-                "PORT=5000"
                 "SERVER_PORT=5001"
                 "MICROSERVICES_PORT=5002"
                 "MACHINE_LEARNING_PORT=5003"
-                "IMMICH_CONFIG_FILE=/immich-config.json"
+                "IMMICH_METRICS=true"
+                "IMMICH_METRICS_PORT=${builtins.toString metricsPort}"
               ];
             }
-          } ${exec}";
+          } ghcr.io/immich-app/${container}:${version} ${exec}";
         Type = "notify";
         NotifyAccess = "all";
         User = "immich";
@@ -159,12 +160,16 @@ in {
       };
     };
   in {
-    immich-server =
-      immich_unit "ghcr.io/immich-app/immich-server:${version} start.sh immich";
-    immich-microservices = immich_unit
-      "ghcr.io/immich-app/immich-server:${version} start.sh microservices";
+    immich-server = immich_unit {
+      exec = "start.sh immich";
+      metricsPort = 5004;
+    };
+    immich-microservices = immich_unit {
+      exec = "start.sh microservices";
+      metricsPort = 5005;
+    };
     immich-machine-learning =
-      immich_unit "ghcr.io/immich-app/immich-machine-learning:${version}";
+      immich_unit { container = "immich-machine-learning"; };
   };
   systemd.targets.immich = {
     after = [

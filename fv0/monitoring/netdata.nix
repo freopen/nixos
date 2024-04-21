@@ -49,6 +49,14 @@
             name = "rclone";
             url = "http://127.0.0.1:5572/metrics";
           }
+          {
+            name = "immich-server";
+            url = "http://127.0.0.1:5004/metrics";
+          }
+          {
+            name = "immich-microservices";
+            url = "http://127.0.0.1:5005/metrics";
+          }
         ];
       };
       "go.d/systemdunits.conf" = {

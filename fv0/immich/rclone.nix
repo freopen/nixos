@@ -62,6 +62,7 @@ in {
           vfs-cache-max-age = "720d";
           dir-cache-time = "720d";
           poll-interval = 0;
+          vfs-write-back = "10m";
           vfs-fast-fingerprint = true;
           no-modtime = true;
           transfers = 1;

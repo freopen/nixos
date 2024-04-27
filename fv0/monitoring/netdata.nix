@@ -36,6 +36,10 @@
           "ssl key" = "${certs}/key.pem";
           "ssl certificate" = "${certs}/fullchain.pem";
         };
+      plugins = {
+        "netdata monitoring" = true;
+        "netdata monitoring extended" = true;
+      };
     };
     configs = {
       "go.d/prometheus.conf" = {

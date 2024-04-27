@@ -15,6 +15,7 @@
         cargo-make
         clang
         nil
+        nixcfg-apply
         nixfmt
         nodePackages.pnpm
         protobuf

@@ -6,6 +6,7 @@
         config.allowUnfree = true;
       };
       xiaomi_miot = final.callPackage ../pkgs/xiaomi_miot.nix { };
+      nixcfg-apply = final.callPackage ../pkgs/nixcfg-apply.nix { };
     })
   ];
 }

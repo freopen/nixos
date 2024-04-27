@@ -13,12 +13,9 @@
       jc
       jq
       navi
-      nix-output-monitor
-      nvd
+      nix-diff
       pciutils
-      s3cmd
       sysz
-      thefuck
       unzip
       usbutils
       zsh-completions
@@ -63,7 +60,6 @@
         "fd"
         "fzf"
         "systemd"
-        "thefuck"
         "vscode"
       ];
     };

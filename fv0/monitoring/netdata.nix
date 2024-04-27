@@ -15,7 +15,18 @@
     package = pkgs.unstable.netdataCloud;
     claimTokenFile = config.age.secrets.netdata.path;
     config = {
-      db."storage tiers" = 5;
+      global = { "process scheduling policy" = "keep"; };
+      db = {
+        mode = "dbengine";
+        "storage tiers" = 4;
+        "dbengine multihost disk space MB" = 256;
+        "dbengine tier 1 multihost disk space MB" = 256;
+        "dbengine tier 2 multihost disk space MB" = 256;
+        "dbengine tier 3 multihost disk space MB" = 256;
+        "dbengine tier 1 update every iterations" = 60;
+        "dbengine tier 2 update every iterations" = 60;
+        "dbengine tier 3 update every iterations" = 12;
+      };
       ml.enabled = true;
       web =
         let certs = config.security.acme.certs."netdata.freopen.org".directory;

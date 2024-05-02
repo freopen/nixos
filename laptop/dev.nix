@@ -7,8 +7,7 @@
   '';
   home-manager.users.freopen = {
     home = {
-      packages = with pkgs; [
-        agenix.packages.x86_64-linux.default
+      packages = [ agenix.packages.x86_64-linux.default ] ++ (with pkgs; [
         binaryen
         cargo-binutils
         cargo-insta
@@ -16,6 +15,7 @@
         clang
         nil
         nixcfg-apply
+        unstable.nixd
         nixfmt
         nodePackages.pnpm
         protobuf
@@ -23,7 +23,7 @@
         qmk
         wasm-bindgen-cli
         wasm-pack
-      ];
+      ]);
       sessionVariables = { LIBCLANG_PATH = "${pkgs.libclang.lib}/lib"; };
     };
     programs = {

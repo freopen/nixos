@@ -1,9 +1,11 @@
-{ lib, config, ... }:
-with lib; {
+{ lib, config, ... }: {
   options = {
-    services.netdata.configs = mkOption {
-      type = types.attrsOf
-        (types.oneOf [ types.path types.str (types.attrsOf types.anything) ]);
+    services.netdata.configs = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.oneOf [
+        lib.types.path
+        lib.types.str
+        (lib.types.attrsOf lib.types.anything)
+      ]);
       default = { };
     };
   };
@@ -14,8 +16,8 @@ with lib; {
       else
         builtins.toFile (builtins.baseNameOf file)
         (if (builtins.match "(go.d|python.d)(.conf|/.*)" file) != null then
-          generators.toYAML { } data
+          lib.generators.toYAML { } data
         else
-          generators.toINI { } data)) config.services.netdata.configs;
+          lib.generators.toINI { } data)) config.services.netdata.configs;
   };
 }

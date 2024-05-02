@@ -1,4 +1,4 @@
-{ config, pkgs, const, ... }: {
+{ pkgs, ... }: {
   boot = {
     # kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     # supportedFilesystems = [ "zfs" ];

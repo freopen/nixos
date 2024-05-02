@@ -3,6 +3,7 @@
     systemPackages = with pkgs; [
       bat
       broot
+      chafa
       curl
       dig
       fd
@@ -48,7 +49,7 @@
     '';
     interactiveShellInit = ''
       ZSH_ALIAS_FINDER_AUTOMATIC=true
-      FZF_DEFAULT_OPTS="--preview 'bat --color=always {}'"
+      FZF_DEFAULT_OPTS="--preview '${pkgs.fzf-preview}/bin/fzf-preview {}'"
     '';
     ohMyZsh = {
       enable = true;

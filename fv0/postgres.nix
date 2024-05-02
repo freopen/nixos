@@ -56,13 +56,6 @@
       wal_level = "replica";
     };
   };
-  services.postgresqlBackup = {
-    enable = true;
-    startAt = "*-*-* 14:00:00";
-    location = "/var/lib/postgresql-backup";
-    compression = "zstd";
-    compressionLevel = 10;
-  };
   services.pgadmin = {
     enable = true;
     initialEmail = "freopen@freopen.org";
@@ -85,11 +78,17 @@
         repo2-type = "s3";
         repo2-s3-endpoint =
           "https://b8ff5676aceb94ed88fc4b5a2f7a2658.r2.cloudflarestorage.com";
-        repo2-s3-bucket = "fv0-pgbackup";
+        repo2-s3-bucket = "fv0-pgbackrest";
         repo2-s3-region = "auto";
         repo2-cipher-type = "aes-256-cbc";
+        repo2-storage-upload-chunk-size = "128MiB";
         repo2-retention-full = 2;
         repo2-retention-diff = 5;
+        repo2-path = "/";
+        repo2-bundle = "y";
+        repo2-bundle-limit = "20MiB";
+        repo2-bundle-size = "100MiB";
+        repo2-block = "y";
       };
     };
   };
@@ -105,31 +104,31 @@
   systemd.services = let
     backup-service = type: startAt: {
       script = let
-        cmd = repo:
-          builtins.concatStringsSep " " [
-            "${pkgs.util-linux}/bin/flock"
-            "$RUNTIME_DIRECTORY/backup.lock"
-            "${pkgs.pgbackrest}/bin/pgbackrest"
-            "--stanza=localdb"
-            "--type=${type}"
-            "--repo=${repo}"
-            "backup"
-          ];
+        cmd = repo: ''
+          ${pkgs.pgbackrest}/bin/pgbackrest \
+              --stanza=localdb \
+              --type=${type} \
+              --repo=${repo} \
+              backup
+        '';
       in ''
         ${cmd "1"}
         ${cmd "2"}
+        ${pkgs.pgbackrest}/bin/pgbackrest \
+            --stanza=localdb \
+            --output=text \
+            --verbose \
+            verify
       '';
       requisite = [ "postgresql.service" ];
       startAt = startAt;
       serviceConfig = {
         Type = "oneshot";
         User = "postgres";
-        RuntimeDirectory = "pgbackrest";
       };
     };
   in {
-    postgresql-backup-monthly = backup-service "full" "monthly";
-    postgresql-backup-daily = backup-service "diff" "daily";
-    postgresql-backup-hourly = backup-service "incr" "hourly";
+    postgresql-backup-monthly = backup-service "full" "*-*-01 00:00:00";
+    postgresql-backup-daily = backup-service "diff" "*-*-02..31 00:00:00";
   };
 }

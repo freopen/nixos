@@ -5,9 +5,14 @@
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", MODE="0664", GROUP="plugdev"
   '';
+  environment = {
+    variables = { CARGO_INSTALL_ROOT = "~/.local"; };
+    localBinInPath = true;
+  };
   home-manager.users.freopen = {
     home = {
       packages = [ agenix.packages.x86_64-linux.default ] ++ (with pkgs; [
+        unstable.aflplusplus
         binaryen
         cargo-binutils
         cargo-insta

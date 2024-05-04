@@ -12,6 +12,7 @@
         cargo-binutils
         cargo-insta
         cargo-make
+        cargo-update
         clang
         nil
         nixcfg-apply

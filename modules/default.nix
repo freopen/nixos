@@ -1,1 +1,4 @@
-{ ... }: { imports = [ ./netdata.nix ]; }
+{ ... }:
+{
+  imports = [ ./netdata.nix ];
+}

@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   age.secrets.miniflux.file = ../secrets/miniflux.age;
   users.users.miniflux = {
     isSystemUser = true;

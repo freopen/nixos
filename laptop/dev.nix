@@ -1,6 +1,8 @@
 { pkgs, agenix, ... }:
-let afl-fuzz = pkgs.writeShellScriptBin "afl-fuzz" "cargo-afl afl fuzz $@";
-in {
+let
+  afl-fuzz = pkgs.writeShellScriptBin "afl-fuzz" "cargo-afl afl fuzz $@";
+in
+{
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   virtualisation.vmVariant.virtualisation.cores = 15;
   programs.nix-ld.enable = true;
@@ -8,12 +10,18 @@ in {
     SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", MODE="0664", GROUP="plugdev"
   '';
   environment = {
-    variables = { CARGO_INSTALL_ROOT = "/home/freopen/.local"; };
+    variables = {
+      CARGO_INSTALL_ROOT = "/home/freopen/.local";
+    };
     localBinInPath = true;
   };
   home-manager.users.freopen = {
     home = {
-      packages = [ agenix.packages.x86_64-linux.default afl-fuzz ]
+      packages =
+        [
+          agenix.packages.x86_64-linux.default
+          afl-fuzz
+        ]
         ++ (with pkgs; [
           binaryen
           cargo-binutils
@@ -24,7 +32,7 @@ in {
           nil
           nixcfg-apply
           unstable.nixd
-          nixfmt-classic
+          nixfmt-rfc-style
           nodePackages.pnpm
           protobuf
           rustup
@@ -33,7 +41,9 @@ in {
           wasm-bindgen-cli
           wasm-pack
         ]);
-      sessionVariables = { LIBCLANG_PATH = "${pkgs.libclang.lib}/lib"; };
+      sessionVariables = {
+        LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+      };
     };
     programs = {
       zsh.enable = true;

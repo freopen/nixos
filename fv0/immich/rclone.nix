@@ -1,19 +1,27 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  rcloneConfig = builtins.toFile "rclone.conf" (lib.generators.toINI { } {
-    gcs = {
-      type = "gcs";
-      service_account_file = config.age.secrets.google_cloud_storage.path;
-      no_check_bucket = true;
-      bucket_policy_only = true;
-    };
-    crypt = {
-      type = "crypt";
-      remote = "gcs:immich";
-      filename_encryption = "off";
-    };
-  });
-in {
+  rcloneConfig = builtins.toFile "rclone.conf" (
+    lib.generators.toINI { } {
+      gcs = {
+        type = "gcs";
+        service_account_file = config.age.secrets.google_cloud_storage.path;
+        no_check_bucket = true;
+        bucket_policy_only = true;
+      };
+      crypt = {
+        type = "crypt";
+        remote = "gcs:immich";
+        filename_encryption = "off";
+      };
+    }
+  );
+in
+{
   age.secrets.rclone = {
     file = ../../secrets/rclone.age;
     owner = "immich-rclone";
@@ -36,7 +44,10 @@ in {
   environment.systemPackages = [ pkgs.fuse3 ];
   programs.fuse.userAllowOther = true;
   systemd.services.immich-rclone = {
-    after = [ "network-online.target" "run-wrappers.mount" ];
+    after = [
+      "network-online.target"
+      "run-wrappers.mount"
+    ];
     wants = [ "network-online.target" ];
     requires = [ "run-wrappers.mount" ];
     path = [ "/run/wrappers" ];
@@ -69,14 +80,12 @@ in {
           tpslimit = 1;
           tpslimit-burst = 1000;
         };
-      ExecStartPost =
-        "${pkgs.rclone}/bin/rclone rc vfs/refresh dir=thumbs recursive=true";
+      ExecStartPost = "${pkgs.rclone}/bin/rclone rc vfs/refresh dir=thumbs recursive=true";
       Restart = "on-failure";
       TimeoutStartSec = 60 * 60;
     };
   };
-  networking.nftables.preCheckRuleset =
-    "sed 's/skuid immich-rclone/skuid nobody/g' -i ruleset.conf";
+  networking.nftables.preCheckRuleset = "sed 's/skuid immich-rclone/skuid nobody/g' -i ruleset.conf";
   networking.nftables.tables.ratelimit = {
     name = "ratelimit";
     family = "inet";

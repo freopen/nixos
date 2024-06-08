@@ -1,4 +1,10 @@
-{ self, pkgs, agenix, ... }: {
+{
+  self,
+  pkgs,
+  agenix,
+  ...
+}:
+{
   imports = [
     ../modules
     agenix.nixosModules.default
@@ -17,13 +23,18 @@
     settings = {
       auto-optimise-store = true;
       sandbox = "relaxed";
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       log-lines = 25;
       min-free = 128 * 1000 * 1000;
       max-free = 1000 * 1000 * 1000;
       builders-use-substitutes = true;
-      substituters =
-        [ "https://nix-community.cachix.org" "https://numtide.cachix.org" ];
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://numtide.cachix.org"
+      ];
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="

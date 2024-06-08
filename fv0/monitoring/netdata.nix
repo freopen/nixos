@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   age.secrets.netdata = {
     file = ../../secrets/netdata.age;
     owner = "netdata";
@@ -15,7 +16,9 @@
     package = pkgs.unstable.netdataCloud;
     claimTokenFile = config.age.secrets.netdata.path;
     config = {
-      global = { "process scheduling policy" = "keep"; };
+      global = {
+        "process scheduling policy" = "keep";
+      };
       db = {
         mode = "dbengine";
         "storage tiers" = 4;
@@ -29,10 +32,11 @@
       };
       ml.enabled = true;
       web =
-        let certs = config.security.acme.certs."netdata.freopen.org".directory;
-        in {
-          "bind to" =
-            "*=streaming^SSL=force localhost:19998=dashboard^SSL=optional";
+        let
+          certs = config.security.acme.certs."netdata.freopen.org".directory;
+        in
+        {
+          "bind to" = "*=streaming^SSL=force localhost:19998=dashboard^SSL=optional";
           "ssl key" = "${certs}/key.pem";
           "ssl certificate" = "${certs}/fullchain.pem";
         };
@@ -75,23 +79,29 @@
         ];
       };
       "go.d/systemdunits.conf" = {
-        jobs = [{
-          name = "all";
-          include = [ "*" ];
-        }];
+        jobs = [
+          {
+            name = "all";
+            include = [ "*" ];
+          }
+        ];
       };
       "go.d/nginx.conf" = {
-        jobs = [{
-          name = "local";
-          url = "http://127.0.0.1/nginx_status";
-        }];
+        jobs = [
+          {
+            name = "local";
+            url = "http://127.0.0.1/nginx_status";
+          }
+        ];
       };
       "go.d/web_log.conf" = {
-        jobs = [{
-          name = "nginx";
-          path = "/var/log/nginx/access.log";
-          parser.log_type = "json";
-        }];
+        jobs = [
+          {
+            name = "nginx";
+            path = "/var/log/nginx/access.log";
+            parser.log_type = "json";
+          }
+        ];
       };
       "go.d.conf" = {
         enabled = true;
@@ -107,7 +117,10 @@
     enableAnalyticsReporting = true;
   };
   users.users.netdata.extraGroups = [ "nginx" ];
-  users.groups.netdata-cert.members = [ "netdata" "nginx" ];
+  users.groups.netdata-cert.members = [
+    "netdata"
+    "nginx"
+  ];
   security.acme.certs."netdata.freopen.org" = {
     webroot = "/var/lib/acme/acme-challenge";
     group = "netdata-cert";

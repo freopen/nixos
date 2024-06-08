@@ -1,4 +1,5 @@
-{ lib, config, ... }: {
+{ lib, config, ... }:
+{
   age.secrets.wireguard = {
     file = ../../secrets/wireguard.age;
     owner = "systemd-network";
@@ -20,8 +21,7 @@
           AllowedIPs = [ "10.0.0.${toString (index + 2)}" ];
           PublicKey = key;
         };
-      }) (lib.strings.splitString "\n"
-        (lib.strings.fileContents ./client_keys.txt));
+      }) (lib.strings.splitString "\n" (lib.strings.fileContents ./client_keys.txt));
     };
     networks.wg0 = {
       matchConfig.Name = "wg0";

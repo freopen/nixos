@@ -1,5 +1,10 @@
 # https://github.com/azuwis/nix-config/blob/master/pkgs/xiaomi_miot/default.nix
-{ lib, buildHomeAssistantComponent, fetchFromGitHub, home-assistant, }:
+{
+  lib,
+  buildHomeAssistantComponent,
+  fetchFromGitHub,
+  home-assistant,
+}:
 
 buildHomeAssistantComponent rec {
   owner = "al-one";
@@ -23,8 +28,7 @@ buildHomeAssistantComponent rec {
   dontBuild = true;
 
   meta = with lib; {
-    description =
-      "Automatic integrate all Xiaomi devices to HomeAssistant via miot-spec, support Wi-Fi, BLE, ZigBee devices.";
+    description = "Automatic integrate all Xiaomi devices to HomeAssistant via miot-spec, support Wi-Fi, BLE, ZigBee devices.";
     homepage = "https://github.com/al-one/hass-xiaomi-miot";
     maintainers = with maintainers; [ azuwis ];
     license = licenses.asl20;

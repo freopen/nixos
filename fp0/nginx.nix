@@ -1,5 +1,9 @@
-{ ... }: {
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+{ ... }:
+{
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
   services.nginx = {
     enable = true;
     recommendedTlsSettings = true;
@@ -15,5 +19,7 @@
     acceptTerms = true;
     defaults.email = "freopen@freopen.org";
   };
-  environment.persistence."/persist" = { directories = [ "/var/lib/acme" ]; };
+  environment.persistence."/persist" = {
+    directories = [ "/var/lib/acme" ];
+  };
 }

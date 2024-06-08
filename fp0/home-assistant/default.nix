@@ -1,8 +1,15 @@
-{ config, ... }: {
-  imports = [ ./light.nix ./xiaomi.nix ];
+{ config, ... }:
+{
+  imports = [
+    ./light.nix
+    ./xiaomi.nix
+  ];
   environment.persistence."/persist" = {
-    directories =
-      [ "/var/lib/hass" "/var/lib/mosquitto" "/var/lib/zigbee2mqtt" ];
+    directories = [
+      "/var/lib/hass"
+      "/var/lib/mosquitto"
+      "/var/lib/zigbee2mqtt"
+    ];
   };
   services.nginx.virtualHosts."home.freopen.org" = {
     forceSSL = true;
@@ -17,8 +24,13 @@
   };
   services.home-assistant = {
     enable = true;
-    extraComponents =
-      [ "default_config" "esphome" "met" "mqtt" "radio_browser" ];
+    extraComponents = [
+      "default_config"
+      "esphome"
+      "met"
+      "mqtt"
+      "radio_browser"
+    ];
     config = {
       http = {
         server_host = "127.0.0.1";
@@ -27,7 +39,9 @@
       };
       default_config = { };
       recorder = {
-        exclude = { entity_globs = [ "*" ]; };
+        exclude = {
+          entity_globs = [ "*" ];
+        };
         commit_interval = 60 * 60;
       };
     };
@@ -49,19 +63,20 @@
       frontend.port = 8080;
       availability = true;
       advanced = {
-        network_key =
-          "!${config.age.secrets.zigbee_network_key.path} network_key";
+        network_key = "!${config.age.secrets.zigbee_network_key.path} network_key";
         log_output = [ "syslog" ];
       };
     };
   };
   services.mosquitto = {
     enable = true;
-    listeners = [{
-      acl = [ "pattern readwrite #" ];
-      omitPasswordAuth = true;
-      settings.allow_anonymous = true;
-    }];
+    listeners = [
+      {
+        acl = [ "pattern readwrite #" ];
+        omitPasswordAuth = true;
+        settings.allow_anonymous = true;
+      }
+    ];
   };
   services.avahi = {
     enable = true;

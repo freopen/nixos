@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   system.activationScripts.build_cache = ''
     PATH="${pkgs.acl}/bin:$PATH"
     mkdir -p /var/cache/build

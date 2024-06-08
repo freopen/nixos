@@ -1,4 +1,5 @@
-{ nixpkgs-unstable, ... }: {
+{ nixpkgs-unstable, ... }:
+{
   nixpkgs.overlays = [
     (final: prev: {
       unstable = import nixpkgs-unstable {

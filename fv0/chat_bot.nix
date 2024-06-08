@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   age.secrets.chat_bot = {
     file = ../secrets/chat_bot.age;
     owner = "freopen_chat_bot";

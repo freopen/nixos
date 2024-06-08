@@ -1,73 +1,80 @@
 { pkgs, lib, ... }:
 let
-  immichConfig = builtins.toFile "immich-config.json" (builtins.toJSON {
-    logging.level = "warn";
-    storageTemplate = {
-      enabled = true;
-      template =
-        "{{y}}/{{MM}}-{{dd}}/{{yy}}{{MM}}{{dd}}_{{HH}}{{mm}}{{ss}}_{{filename}}";
-    };
-    job = {
-      backgroundTask.concurrency = 5;
-      faceDetection.concurrency = 1;
-      library.concurrency = 1;
-      metadataExtraction.concurrency = 1;
-      migration.concurrency = 1;
-      search.concurrency = 5;
-      sidecar.concurrency = 1;
-      smartSearch.concurrency = 1;
-      thumbnailGeneration.concurrency = 5;
-      videoConversion.concurrency = 1;
-    };
-    image = {
-      colorspace = "p3";
-      previewFormat = "jpeg";
-      previewSize = 720;
-      quality = 80;
-      thumbnailFormat = "webp";
-      thumbnailSize = 250;
-    };
-    ffmpeg.transcode = "disabled";
-    machineLearning = {
-      clip = {
+  immichConfig = builtins.toFile "immich-config.json" (
+    builtins.toJSON {
+      logging.level = "warn";
+      storageTemplate = {
         enabled = true;
-        modelName = "XLM-Roberta-Large-Vit-B-16Plus";
+        template = "{{y}}/{{MM}}-{{dd}}/{{yy}}{{MM}}{{dd}}_{{HH}}{{mm}}{{ss}}_{{filename}}";
       };
-      enabled = true;
-      facialRecognition = {
+      job = {
+        backgroundTask.concurrency = 5;
+        faceDetection.concurrency = 1;
+        library.concurrency = 1;
+        metadataExtraction.concurrency = 1;
+        migration.concurrency = 1;
+        search.concurrency = 5;
+        sidecar.concurrency = 1;
+        smartSearch.concurrency = 1;
+        thumbnailGeneration.concurrency = 5;
+        videoConversion.concurrency = 1;
+      };
+      image = {
+        colorspace = "p3";
+        previewFormat = "jpeg";
+        previewSize = 720;
+        quality = 80;
+        thumbnailFormat = "webp";
+        thumbnailSize = 250;
+      };
+      ffmpeg.transcode = "disabled";
+      machineLearning = {
+        clip = {
+          enabled = true;
+          modelName = "XLM-Roberta-Large-Vit-B-16Plus";
+        };
         enabled = true;
-        maxDistance = 0.5;
-        minFaces = 3;
-        minScore = 0.7;
-        modelName = "buffalo_l";
+        facialRecognition = {
+          enabled = true;
+          maxDistance = 0.5;
+          minFaces = 3;
+          minScore = 0.7;
+          modelName = "buffalo_l";
+        };
+        url = "http://127.0.0.1:5003";
       };
-      url = "http://127.0.0.1:5003";
-    };
-    library = {
-      scan.enabled = false;
-      watch.enabled = false;
-    };
-    trash = {
-      days = 9999999999999;
-      enabled = true;
-    };
-    server.externalDomain = "https://photos.freopen.org";
-    newVersionCheck.enabled = false;
-  });
-in {
+      library = {
+        scan.enabled = false;
+        watch.enabled = false;
+      };
+      trash = {
+        days = 9999999999999;
+        enabled = true;
+      };
+      server.externalDomain = "https://photos.freopen.org";
+      newVersionCheck.enabled = false;
+    }
+  );
+in
+{
   imports = [ ./rclone.nix ];
   users = {
     users = {
       immich = {
         group = "immich";
-        extraGroups = [ "rclone" "redis-immich" ];
+        extraGroups = [
+          "rclone"
+          "redis-immich"
+        ];
         isSystemUser = true;
         linger = true;
         home = "/var/lib/immich";
         autoSubUidGidRange = true;
       };
     };
-    groups = { immich = { }; };
+    groups = {
+      immich = { };
+    };
   };
   services = {
     redis.servers.immich = {
@@ -75,10 +82,12 @@ in {
       user = "immich";
     };
     postgresql = {
-      ensureUsers = [{
-        name = "immich";
-        ensureDBOwnership = true;
-      }];
+      ensureUsers = [
+        {
+          name = "immich";
+          ensureDBOwnership = true;
+        }
+      ];
       ensureDatabases = [ "immich" ];
     };
     nginx.virtualHosts."photos.freopen.org" = {
@@ -100,27 +109,35 @@ in {
     "d /var/lib/immich/model-cache 0770 immich immich"
   ];
   virtualisation.podman.enable = true;
-  systemd.services = let
-    podman = "${pkgs.podman}/bin/podman";
-    version = "v1.105.1";
-    immich_unit =
-      { container ? "immich-server", exec ? "", metricsPort ? 0, }: {
-        environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
-        postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
-        path = [ "/run/wrappers" ];
-        bindsTo = [
-          "immich.target"
-          "redis-immich.service"
-          "postgresql.service"
-          "immich-rclone.service"
-        ];
-        after = [
-          "redis-immich.service"
-          "postgresql.service"
-          "immich-rclone.service"
-        ];
-        serviceConfig = {
-          ExecStart = "${podman} run ${
+  systemd.services =
+    let
+      podman = "${pkgs.podman}/bin/podman";
+      version = "v1.105.1";
+      immich_unit =
+        {
+          container ? "immich-server",
+          exec ? "",
+          metricsPort ? 0,
+        }:
+        {
+          environment = {
+            PODMAN_SYSTEMD_UNIT = "%n";
+          };
+          postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
+          path = [ "/run/wrappers" ];
+          bindsTo = [
+            "immich.target"
+            "redis-immich.service"
+            "postgresql.service"
+            "immich-rclone.service"
+          ];
+          after = [
+            "redis-immich.service"
+            "postgresql.service"
+            "immich-rclone.service"
+          ];
+          serviceConfig = {
+            ExecStart = "${podman} run ${
               lib.cli.toGNUCommandLineShell { } {
                 name = "%N";
                 cidfile = "/run/immich/%N/%N.cid";
@@ -153,28 +170,28 @@ in {
                 ];
               }
             } ghcr.io/immich-app/${container}:${version} ${exec}";
-          Type = "notify";
-          NotifyAccess = "all";
-          User = "immich";
-          RuntimeDirectory = "immich/%N";
-          TimeoutStartSec = 900;
-          Delegate = true;
-          SyslogIdentifier = "%N";
-          Restart = "on-failure";
+            Type = "notify";
+            NotifyAccess = "all";
+            User = "immich";
+            RuntimeDirectory = "immich/%N";
+            TimeoutStartSec = 900;
+            Delegate = true;
+            SyslogIdentifier = "%N";
+            Restart = "on-failure";
+          };
         };
+    in
+    {
+      immich-server = immich_unit {
+        exec = "start.sh immich";
+        metricsPort = 5004;
       };
-  in {
-    immich-server = immich_unit {
-      exec = "start.sh immich";
-      metricsPort = 5004;
+      immich-microservices = immich_unit {
+        exec = "start.sh microservices";
+        metricsPort = 5005;
+      };
+      immich-machine-learning = immich_unit { container = "immich-machine-learning"; };
     };
-    immich-microservices = immich_unit {
-      exec = "start.sh microservices";
-      metricsPort = 5005;
-    };
-    immich-machine-learning =
-      immich_unit { container = "immich-machine-learning"; };
-  };
   systemd.targets.immich = {
     after = [
       "immich-server.service"

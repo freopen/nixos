@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   age.secrets.fishnet = {
     file = ../secrets/fishnet.age;
     owner = "fishnet";
@@ -15,7 +16,9 @@
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
-    environment = { HOME = "/var/lib/fishnet"; };
+    environment = {
+      HOME = "/var/lib/fishnet";
+    };
     script = ''
       if [ ! -f "/var/lib/fishnet/fishnet" ]; then
         ${pkgs.curl}/bin/curl https://fishnet-releases.s3.dualstack.eu-west-3.amazonaws.com/v2.7.0/fishnet-v2.7.0-x86_64-unknown-linux-musl --output /var/lib/fishnet/fishnet

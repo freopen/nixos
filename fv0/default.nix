@@ -1,4 +1,11 @@
-{ modulesPath, chat_bot, chess_erdos, const, ... }: {
+{
+  modulesPath,
+  chat_bot,
+  chess_erdos,
+  const,
+  ...
+}:
+{
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./chat_bot.nix
@@ -14,16 +21,22 @@
     chess_erdos.nixosModules.default
   ];
   boot.loader.grub.device = "/dev/sda";
-  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "xen_blkfront" ];
+  boot.initrd.availableKernelModules = [
+    "ata_piix"
+    "uhci_hcd"
+    "xen_blkfront"
+  ];
   boot.initrd.kernelModules = [ "nvme" ];
   fileSystems."/" = {
     device = "/dev/sda3";
     fsType = "ext4";
   };
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 32 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 32 * 1024;
+    }
+  ];
   networking = {
     useNetworkd = true;
     nftables = {
@@ -32,15 +45,19 @@
     };
     hostName = "fv0";
     interfaces.ens18.ipv6 = {
-      addresses = [{
-        address = "2a02:c206:2101:9040::1";
-        prefixLength = 64;
-      }];
-      routes = [{
-        address = "::";
-        prefixLength = 0;
-        via = "fe80::1";
-      }];
+      addresses = [
+        {
+          address = "2a02:c206:2101:9040::1";
+          prefixLength = 64;
+        }
+      ];
+      routes = [
+        {
+          address = "::";
+          prefixLength = 0;
+          via = "fe80::1";
+        }
+      ];
     };
   };
   time.timeZone = "UTC";

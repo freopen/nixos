@@ -1,4 +1,12 @@
-{ pkgs, config, modulesPath, home-manager, lib, ... }: {
+{
+  pkgs,
+  config,
+  modulesPath,
+  home-manager,
+  lib,
+  ...
+}:
+{
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     home-manager.nixosModules.home-manager
@@ -33,10 +41,12 @@
     # tmp.useTmpfs = true;
   };
   time.timeZone = "Europe/Zurich";
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 16 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/nixos";
@@ -52,7 +62,9 @@
     cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
     bluetooth = {
       enable = true;
-      settings = { General.Experimental = true; };
+      settings = {
+        General.Experimental = true;
+      };
     };
     sensor.iio.enable = true;
   };

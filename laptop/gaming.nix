@@ -1,9 +1,14 @@
-{ ... }: {
+{ ... }:
+{
   programs.steam = {
     enable = true;
-    gamescopeSession = { enable = true; };
+    gamescopeSession = {
+      enable = true;
+    };
   };
-  programs.gamescope = { capSysNice = true; };
+  programs.gamescope = {
+    capSysNice = true;
+  };
   home-manager.users.freopen = {
     programs.mangohud = {
       enable = true;

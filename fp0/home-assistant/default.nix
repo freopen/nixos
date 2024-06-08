@@ -52,7 +52,6 @@
         network_key =
           "!${config.age.secrets.zigbee_network_key.path} network_key";
         log_output = [ "syslog" ];
-
       };
     };
   };

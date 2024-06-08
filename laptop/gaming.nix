@@ -1,11 +1,10 @@
-{ pkgs, ... }: {
+{ ... }: {
   programs.steam = {
     enable = true;
     gamescopeSession = { enable = true; };
   };
   programs.gamescope = { capSysNice = true; };
   home-manager.users.freopen = {
-    home.packages = with pkgs; [ prismlauncher minecraft ];
     programs.mangohud = {
       enable = true;
       settings = {
@@ -25,5 +24,4 @@
       };
     };
   };
-
 }

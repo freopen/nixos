@@ -24,7 +24,7 @@ in {
           nil
           nixcfg-apply
           unstable.nixd
-          nixfmt
+          nixfmt-classic
           nodePackages.pnpm
           protobuf
           rustup

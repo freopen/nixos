@@ -103,62 +103,66 @@ in {
   systemd.services = let
     podman = "${pkgs.podman}/bin/podman";
     version = "v1.105.1";
-    immich_unit = { container ? "immich-server", exec ? "", metricsPort ? 0 }: {
-      environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
-      postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
-      path = [ "/run/wrappers" ];
-      bindsTo = [
-        "immich.target"
-        "redis-immich.service"
-        "postgresql.service"
-        "immich-rclone.service"
-      ];
-      after =
-        [ "redis-immich.service" "postgresql.service" "immich-rclone.service" ];
-      serviceConfig = {
-        ExecStart = "${podman} run ${
-            lib.cli.toGNUCommandLineShell { } {
-              name = "%N";
-              cidfile = "/run/immich/%N/%N.cid";
-              replace = true;
-              rm = true;
-              cgroupns = "host";
-              cgroups = "disabled";
-              network = "host";
-              userns = "keep-id";
-              detach = true;
-              sdnotify = "conmon";
-              volume = [
-                "/var/lib/immich/upload:/usr/src/app/upload"
-                "/var/lib/immich/cloud/library:/usr/src/app/upload/library"
-                "/var/lib/immich/cloud/thumbs:/usr/src/app/upload/thumbs"
-                "/var/lib/immich/model-cache:/cache"
-                "/run/postgresql:/run/postgresql"
-                "/run/redis-immich:/run/redis-immich"
-                "${immichConfig}:/immich-config.json"
-              ];
-              env = [
-                "IMMICH_CONFIG_FILE=/immich-config.json"
-                "DB_URL=socket://immich:@/run/postgresql?db=immich"
-                "REDIS_SOCKET=/run/redis-immich/redis.sock"
-                "SERVER_PORT=5001"
-                "MICROSERVICES_PORT=5002"
-                "MACHINE_LEARNING_PORT=5003"
-                "IMMICH_METRICS=true"
-                "IMMICH_METRICS_PORT=${builtins.toString metricsPort}"
-              ];
-            }
-          } ghcr.io/immich-app/${container}:${version} ${exec}";
-        Type = "notify";
-        NotifyAccess = "all";
-        User = "immich";
-        RuntimeDirectory = "immich/%N";
-        TimeoutStartSec = 900;
-        Delegate = true;
-        SyslogIdentifier = "%N";
-        Restart = "on-failure";
+    immich_unit =
+      { container ? "immich-server", exec ? "", metricsPort ? 0, }: {
+        environment = { PODMAN_SYSTEMD_UNIT = "%n"; };
+        postStop = "${podman} rm -f -i --cidfile=/run/immich/%N/%N.cid";
+        path = [ "/run/wrappers" ];
+        bindsTo = [
+          "immich.target"
+          "redis-immich.service"
+          "postgresql.service"
+          "immich-rclone.service"
+        ];
+        after = [
+          "redis-immich.service"
+          "postgresql.service"
+          "immich-rclone.service"
+        ];
+        serviceConfig = {
+          ExecStart = "${podman} run ${
+              lib.cli.toGNUCommandLineShell { } {
+                name = "%N";
+                cidfile = "/run/immich/%N/%N.cid";
+                replace = true;
+                rm = true;
+                cgroupns = "host";
+                cgroups = "disabled";
+                network = "host";
+                userns = "keep-id";
+                detach = true;
+                sdnotify = "conmon";
+                volume = [
+                  "/var/lib/immich/upload:/usr/src/app/upload"
+                  "/var/lib/immich/cloud/library:/usr/src/app/upload/library"
+                  "/var/lib/immich/cloud/thumbs:/usr/src/app/upload/thumbs"
+                  "/var/lib/immich/model-cache:/cache"
+                  "/run/postgresql:/run/postgresql"
+                  "/run/redis-immich:/run/redis-immich"
+                  "${immichConfig}:/immich-config.json"
+                ];
+                env = [
+                  "IMMICH_CONFIG_FILE=/immich-config.json"
+                  "DB_URL=socket://immich:@/run/postgresql?db=immich"
+                  "REDIS_SOCKET=/run/redis-immich/redis.sock"
+                  "SERVER_PORT=5001"
+                  "MICROSERVICES_PORT=5002"
+                  "MACHINE_LEARNING_PORT=5003"
+                  "IMMICH_METRICS=true"
+                  "IMMICH_METRICS_PORT=${builtins.toString metricsPort}"
+                ];
+              }
+            } ghcr.io/immich-app/${container}:${version} ${exec}";
+          Type = "notify";
+          NotifyAccess = "all";
+          User = "immich";
+          RuntimeDirectory = "immich/%N";
+          TimeoutStartSec = 900;
+          Delegate = true;
+          SyslogIdentifier = "%N";
+          Restart = "on-failure";
+        };
       };
-    };
   in {
     immich-server = immich_unit {
       exec = "start.sh immich";

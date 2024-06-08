@@ -57,7 +57,7 @@
     };
   };
   services.pgadmin = {
-    enable = true;
+    enable = false;
     initialEmail = "freopen@freopen.org";
     initialPasswordFile = builtins.toFile "pgadmin-init-pass" "";
   };

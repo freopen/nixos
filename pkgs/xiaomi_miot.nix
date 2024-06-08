@@ -1,5 +1,5 @@
 # https://github.com/azuwis/nix-config/blob/master/pkgs/xiaomi_miot/default.nix
-{ lib, buildHomeAssistantComponent, fetchFromGitHub, home-assistant }:
+{ lib, buildHomeAssistantComponent, fetchFromGitHub, home-assistant, }:
 
 buildHomeAssistantComponent rec {
   owner = "al-one";

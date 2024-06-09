@@ -101,7 +101,6 @@
   environment.persistence."/persist" = {
     hideMounts = true;
     directories = [
-      "/var/log/journal"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"

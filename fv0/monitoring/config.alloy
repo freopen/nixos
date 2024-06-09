@@ -1,0 +1,67 @@
+tracing {
+    write_to = [otelcol.processor.batch.default.input]
+}
+
+local.file "grafana_key" {
+    filename = "/run/agenix/grafana"
+    is_secret = true
+}
+
+loki.source.journal "journald" {
+    forward_to = [loki.write.grafana.receiver]
+    relabel_rules = loki.relabel.journald.rules
+    format_as_json = true
+}
+
+loki.relabel "journald" {
+    forward_to = []
+    rule {
+        source_labels = ["__journal__systemd_unit"]
+        target_label = "unit"
+    }
+    rule {
+        source_labels = ["__journal_priority_keyword"]
+        target_label = "level"
+    }
+    rule {
+        source_labels = ["__journal__hostname"]
+        target_label = "host"
+    }
+}
+
+loki.write "grafana" {
+  endpoint {
+    url = "https://logs-prod-eu-west-0.grafana.net/loki/api/v1/push"
+    basic_auth {
+      username = "336555"
+      password = local.file.grafana_key.content
+    }
+  }
+}
+
+otelcol.receiver.otlp "default" {
+    grpc {
+        endpoint = "127.0.0.1:4317"
+    }
+    output {
+        traces  = [otelcol.processor.batch.default.input]
+    }
+}
+
+otelcol.processor.batch "default" {
+    output {
+        traces  = [otelcol.exporter.otlp.default.input]
+    }
+}
+
+otelcol.auth.basic "grafana" {
+    username = 333068
+    password = local.file.grafana_key.content
+}
+
+otelcol.exporter.otlp "default" {
+  client {
+    endpoint = "tempo-eu-west-0.grafana.net:443"
+    auth = otelcol.auth.basic.grafana.handler
+  }
+}

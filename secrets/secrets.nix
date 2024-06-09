@@ -19,13 +19,13 @@ in
   "chat_bot"
   "fishnet"
   "google_cloud_storage"
+  "grafana"
   "miniflux"
   "netdata"
   "netdata_stream_fv0"
   "pgbackrest"
   "rclone"
   "renterd"
-  "telemetry"
   "wireguard"
 ] (common ++ [ ssh.fv0 ]))
 // (setKeys [

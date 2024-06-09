@@ -53,8 +53,8 @@
             url = "http://127.0.0.1:9586/metrics";
           }
           {
-            name = "opentelemetry";
-            url = "http://127.0.0.1:8888/metrics";
+            name = "grafana-alloy";
+            url = "http://127.0.0.1:12345/metrics";
           }
           {
             name = "cloudflared";
@@ -128,5 +128,8 @@
   services.nginx.virtualHosts."netdata.freopen.org" = {
     forceSSL = true;
     useACMEHost = "netdata.freopen.org";
+  };
+  services.prometheus.exporters = {
+    wireguard.enable = true;
   };
 }

@@ -117,4 +117,5 @@
   systemd.services.systemd-time-wait-sync.wantedBy = [ "multi-user.target" ];
   systemd.targets.timers.after = [ "time-sync.target" ];
   services.grafana-alloy-freopen.enable = true;
+  services.journald.storage = "volatile";
 }

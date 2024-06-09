@@ -1,4 +1,7 @@
 { ... }:
 {
-  imports = [ ./netdata.nix ];
+  imports = [
+    ./alloy.nix
+    ./netdata.nix
+  ];
 }

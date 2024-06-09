@@ -116,4 +116,5 @@
   systemd.additionalUpstreamSystemUnits = [ "systemd-time-wait-sync.service" ];
   systemd.services.systemd-time-wait-sync.wantedBy = [ "multi-user.target" ];
   systemd.targets.timers.after = [ "time-sync.target" ];
+  services.grafana-alloy-freopen.enable = true;
 }

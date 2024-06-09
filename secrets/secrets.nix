@@ -19,7 +19,6 @@ in
   "chat_bot"
   "fishnet"
   "google_cloud_storage"
-  "grafana"
   "miniflux"
   "netdata"
   "netdata_stream_fv0"
@@ -32,3 +31,10 @@ in
   "netdata_stream_fp0"
   "zigbee_network_key"
 ] (common ++ [ ssh.fp0 ]))
+// (setKeys [ "grafana" ] (
+  common
+  ++ [
+    ssh.fv0
+    ssh.fp0
+  ]
+))

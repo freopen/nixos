@@ -112,13 +112,9 @@ in
   systemd.services =
     let
       podman = "${pkgs.podman}/bin/podman";
-      version = "v1.105.1";
+      version = "v1.106.4";
       immich_unit =
-        {
-          container ? "immich-server",
-          exec ? "",
-          metricsPort ? 0,
-        }:
+        { container, port }:
         {
           environment = {
             PODMAN_SYSTEMD_UNIT = "%n";
@@ -162,14 +158,14 @@ in
                   "IMMICH_CONFIG_FILE=/immich-config.json"
                   "DB_URL=socket://immich:@/run/postgresql?db=immich"
                   "REDIS_SOCKET=/run/redis-immich/redis.sock"
-                  "SERVER_PORT=5001"
-                  "MICROSERVICES_PORT=5002"
-                  "MACHINE_LEARNING_PORT=5003"
+                  "IMMICH_HOST=127.0.0.1"
+                  "IMMICH_PORT=${builtins.toString port}"
                   "IMMICH_METRICS=true"
-                  "IMMICH_METRICS_PORT=${builtins.toString metricsPort}"
+                  "IMMICH_API_METRICS_PORT=5004"
+                  "IMMICH_MICROSERVICES_METRICS_PORT=5005"
                 ];
               }
-            } ghcr.io/immich-app/${container}:${version} ${exec}";
+            } ghcr.io/immich-app/${container}:${version}";
             Type = "notify";
             NotifyAccess = "all";
             User = "immich";
@@ -183,24 +179,21 @@ in
     in
     {
       immich-server = immich_unit {
-        exec = "start.sh immich";
-        metricsPort = 5004;
+        container = "immich-server";
+        port = 5001;
       };
-      immich-microservices = immich_unit {
-        exec = "start.sh microservices";
-        metricsPort = 5005;
+      immich-machine-learning = immich_unit {
+        container = "immich-machine-learning";
+        port = 5003;
       };
-      immich-machine-learning = immich_unit { container = "immich-machine-learning"; };
     };
   systemd.targets.immich = {
     after = [
       "immich-server.service"
-      "immich-microservices.service"
       "immich-machine-learning.service"
     ];
     bindsTo = [
       "immich-server.service"
-      "immich-microservices.service"
       "immich-machine-learning.service"
     ];
     wantedBy = [ "multi-user.target" ];

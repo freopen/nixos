@@ -9,9 +9,9 @@
   imports = [
     nixos-hardware.nixosModules.raspberry-pi-4
     impermanence.nixosModules.impermanence
+    ./cloudflared.nix
     ./home-assistant
     ./netdata.nix
-    ./nginx.nix
     # ./storage.nix
   ];
   fileSystems = {

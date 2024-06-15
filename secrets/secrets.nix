@@ -28,6 +28,7 @@ in
   "wireguard"
 ] (common ++ [ ssh.fv0 ]))
 // (setKeys [
+  "cloudflared_fp0"
   "netdata_stream_fp0"
   "zigbee_network_key"
 ] (common ++ [ ssh.fp0 ]))

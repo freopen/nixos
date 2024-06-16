@@ -47,6 +47,7 @@
     };
     configs = {
       "go.d/prometheus.conf" = {
+        autodetection_retry = 60;
         jobs = [
           {
             name = "wireguard_local";

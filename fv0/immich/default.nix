@@ -198,4 +198,24 @@ in
     ];
     wantedBy = [ "multi-user.target" ];
   };
+  networking.nftables.preCheckRuleset = ''
+    sed 's/skuid immich-rclone/skuid nobody/g' -i ruleset.conf
+  '';
+  networking.nftables.tables.ratelimit = {
+    name = "ratelimit";
+    family = "inet";
+    content = ''
+      limit lim_gcp {
+        rate over 100 kbytes/second burst 1024 mbytes
+      }
+      limit lim_immich_ingress {
+        rate over 1 mbytes/second burst 1024 mbytes
+      }
+      chain immich {
+        type filter hook input priority filter; policy accept;
+        meta skuid immich-rclone ct direction reply limit name "lim_gcp" log drop
+        tcp dport 5001 ct direction original limit name "lim_immich_ingress" log drop
+      }
+    '';
+  };
 }

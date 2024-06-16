@@ -76,27 +76,15 @@ in
           vfs-write-back = "10m";
           vfs-fast-fingerprint = true;
           no-modtime = true;
+          no-update-modtime = true;
+          no-update-dir-modtime = true;
           transfers = 1;
-          tpslimit = 1;
+          tpslimit = 10;
           tpslimit-burst = 1000;
         };
       ExecStartPost = "${pkgs.rclone}/bin/rclone rc vfs/refresh dir=thumbs recursive=true";
       Restart = "on-failure";
       TimeoutStartSec = 60 * 60;
     };
-  };
-  networking.nftables.preCheckRuleset = "sed 's/skuid immich-rclone/skuid nobody/g' -i ruleset.conf";
-  networking.nftables.tables.ratelimit = {
-    name = "ratelimit";
-    family = "inet";
-    content = ''
-      limit lim_gcp {
-        rate over 100 kbytes/second burst 1024 mbytes
-      }
-      chain immich-rclone {
-        type filter hook input priority filter; policy accept;
-        meta skuid immich-rclone ct direction reply limit name "lim_gcp" log drop
-      }
-    '';
   };
 }

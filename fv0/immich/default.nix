@@ -140,6 +140,7 @@ in
                 cidfile = "/run/immich/%N/%N.cid";
                 replace = true;
                 rm = true;
+                rmi = true;
                 cgroupns = "host";
                 cgroups = "disabled";
                 network = "host";
@@ -182,16 +183,16 @@ in
       immich-server = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-server";
-          imageDigest = "sha256:248a6da7dadeb57f90eacd5635ecc65e63d4c3646a6c94a362bb57cba1b314fa";
-          sha256 = "sha256-bsXuWRxJKsL5pHUN0aEduzyLissg7w3Orx30/cnM8yI=";
+          imageDigest = "sha256:9de91632ea5c0aabcd5558cab8b270f6bde00679fc6bdc35806fb49367e4a583";
+          sha256 = "sha256-/fV+tIRLkH2/jeqKRe6tMbA9pu7ngb3TUUWxyVBL6Vg=";
         };
         port = 5001;
       };
       immich-machine-learning = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-machine-learning";
-          imageDigest = "sha256:4dc544396bf08cd92066f83a270155201d80512add127ca9fac2d3e56694d2a4";
-          sha256 = "sha256-x8qTfiS+x3I/un0OtDq05RT+sHqBYY+06N0OoXSvDNw=";
+          imageDigest = "sha256:794c3fc4a1da9925f1fdd4ac13fd0646f11a5f682bd50e1cd7e2283f3332ac65";
+          sha256 = "sha256-egutjC7O1ajpoL7UrvZxZkBCjytk3UkDsfdYHkGZmuA=";
         };
         port = 5003;
       };

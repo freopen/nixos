@@ -97,8 +97,10 @@ in
         proxyPass = "http://127.0.0.1:5001/";
         proxyWebsockets = true;
         extraConfig = ''
-          client_max_body_size 10000M;
-          proxy_buffering off;
+          client_max_body_size 50000M;
+          proxy_read_timeout 600s;
+          proxy_send_timeout 600s;
+          send_timeout 600s;
         '';
       };
     };
@@ -112,7 +114,7 @@ in
   systemd.services =
     let
       podman = "${pkgs.podman}/bin/podman";
-      version = "v1.107.2";
+      version = "v1.108.0";
       immich_unit =
         { container, port }:
         {

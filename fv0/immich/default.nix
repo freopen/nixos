@@ -114,7 +114,6 @@ in
   systemd.services =
     let
       podman = "${pkgs.podman}/bin/podman";
-      version = "v1.108.0";
       immich_unit =
         { container, port }:
         {
@@ -167,7 +166,7 @@ in
                   "IMMICH_MICROSERVICES_METRICS_PORT=5005"
                 ];
               }
-            } ghcr.io/immich-app/${container}:${version}";
+            } docker-archive:${container}";
             Type = "notify";
             NotifyAccess = "all";
             User = "immich";
@@ -181,11 +180,19 @@ in
     in
     {
       immich-server = immich_unit {
-        container = "immich-server";
+        container = pkgs.dockerTools.pullImage {
+          imageName = "ghcr.io/immich-app/immich-server";
+          imageDigest = "sha256:248a6da7dadeb57f90eacd5635ecc65e63d4c3646a6c94a362bb57cba1b314fa";
+          sha256 = "sha256-bsXuWRxJKsL5pHUN0aEduzyLissg7w3Orx30/cnM8yI=";
+        };
         port = 5001;
       };
       immich-machine-learning = immich_unit {
-        container = "immich-machine-learning";
+        container = pkgs.dockerTools.pullImage {
+          imageName = "ghcr.io/immich-app/immich-machine-learning";
+          imageDigest = "sha256:4dc544396bf08cd92066f83a270155201d80512add127ca9fac2d3e56694d2a4";
+          sha256 = "sha256-x8qTfiS+x3I/un0OtDq05RT+sHqBYY+06N0OoXSvDNw=";
+        };
         port = 5003;
       };
     };

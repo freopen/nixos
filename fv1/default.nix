@@ -1,6 +1,9 @@
 { modulesPath, const, ... }:
 {
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+    ./otel.nix
+  ];
   boot.initrd.availableKernelModules = [
     "ata_piix"
     "uhci_hcd"
@@ -69,5 +72,4 @@
     laptop
     phone
   ];
-  age.identityPaths = [ "/root/.ssh/id_ed25519" ];
 }

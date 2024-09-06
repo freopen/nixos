@@ -33,6 +33,10 @@
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
   };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/boot";
+    fsType = "vfat";
+  };
   swapDevices = [
     {
       device = "/nix/swapfile";
@@ -46,6 +50,21 @@
       flushRuleset = false;
     };
     hostName = "fv2";
+    interfaces.ens3.ipv4 = {
+      addresses = [
+        {
+          address = "152.53.102.232";
+          prefixLength = 64;
+        }
+      ];
+      routes = [
+        {
+          address = "0.0.0.0";
+          prefixLength = 0;
+          via = "152.53.100.1";
+        }
+      ];
+    };
     interfaces.ens3.ipv6 = {
       addresses = [
         {
@@ -61,6 +80,12 @@
         }
       ];
     };
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "2606:4700:4700::1111"
+      "2606:4700:4700::1001"
+    ];
   };
   time.timeZone = "UTC";
   system.autoUpgrade = {

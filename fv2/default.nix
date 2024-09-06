@@ -54,7 +54,7 @@
       addresses = [
         {
           address = "152.53.102.232";
-          prefixLength = 64;
+          prefixLength = 22;
         }
       ];
       routes = [

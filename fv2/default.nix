@@ -8,6 +8,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     impermanence.nixosModules.impermanence
+    ./xray.nix
   ];
   boot.loader.grub = {
     enable = true;

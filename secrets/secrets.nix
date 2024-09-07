@@ -37,3 +37,4 @@ in
   ssh.fp0
 ])
 // (setKeys [ "otel_collector" ] [ ssh.fv1 ])
+// (setKeys [ "xray" ] [ ssh.fv2 ])

@@ -7,12 +7,16 @@
   ];
   services.nginx = {
     enable = true;
+    logError = "syslog:server=unix:/dev/log";
+    commonHttpConfig = ''
+      access_log syslog:server=unix:/dev/log;
+    '';
     virtualHosts."photos.freopen.org".locations."/".return = "301 https://photos.freopen.org";
   };
   systemd.services.xray = {
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    reloadTriggers = [ config.age.secrets.xray.file ];
+    restartTriggers = [ config.age.secrets.xray.file ];
     serviceConfig = {
       DynamicUser = true;
       LoadCredential = "xray.json:${config.age.secrets.xray.path}";

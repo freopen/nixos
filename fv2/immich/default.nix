@@ -92,7 +92,7 @@ in
     };
     nginx.virtualHosts."photos.freopen.org" = {
       forceSSL = true;
-      useACMEHost = "freopen.org";
+      enableACME = true;
       locations."/" = {
         proxyPass = "http://127.0.0.1:5001/";
         proxyWebsockets = true;
@@ -107,8 +107,13 @@ in
   };
   systemd.tmpfiles.rules = [
     "d /var/lib/immich 0770 immich immich"
+    "d /var/lib/immich/cloud 0770 immich immich"
     "d /var/lib/immich/upload 0770 immich immich"
     "d /var/lib/immich/model-cache 0770 immich immich"
+  ];
+  environment.persistence."/nix/persist".directories = [
+    "/var/lib/immich"
+    "/var/lib/redis-immich"
   ];
   virtualisation.podman.enable = true;
   systemd.services =
@@ -172,6 +177,7 @@ in
             NotifyAccess = "all";
             User = "immich";
             RuntimeDirectory = "immich/%N";
+            StateDirectory = "immich";
             TimeoutStartSec = 900;
             Delegate = true;
             SyslogIdentifier = "%N";

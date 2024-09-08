@@ -15,18 +15,24 @@ let
       }) names
     );
 in
-(setKeys [
-  "chat_bot"
-  "fishnet"
-  "google_cloud_storage"
-  "miniflux"
-  "netdata"
-  "netdata_stream_fv0"
-  "pgbackrest"
-  "rclone"
-  "renterd"
-  "wireguard"
-] [ ssh.fv0 ])
+(setKeys
+  [
+    "chat_bot"
+    "fishnet"
+    "google_cloud_storage"
+    "miniflux"
+    "netdata"
+    "netdata_stream_fv0"
+    "pgbackrest"
+    "rclone"
+    "renterd"
+    "wireguard"
+  ]
+  [
+    ssh.fv0
+    ssh.fv2
+  ]
+)
 // (setKeys [
   "cloudflared_fp0"
   "netdata_stream_fp0"

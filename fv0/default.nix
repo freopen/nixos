@@ -11,8 +11,6 @@
     ./chat_bot.nix
     ./chess_erdos.nix
     ./fishnet.nix
-    ./immich
-    ./miniflux.nix
     ./monitoring
     ./nginx
     ./postgres.nix

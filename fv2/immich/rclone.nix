@@ -41,6 +41,7 @@ in
     groups.immich-rclone.members = [ "immich" ];
   };
   systemd.tmpfiles.rules = [ "d /var/lib/immich/cloud 0770 immich immich" ];
+  environment.persistence."/nix/persist".directories = [ "/var/lib/immich-rclone" ];
   environment.systemPackages = [ pkgs.fuse3 ];
   programs.fuse.userAllowOther = true;
   systemd.services.immich-rclone = {

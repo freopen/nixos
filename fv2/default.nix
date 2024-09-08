@@ -8,6 +8,10 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     impermanence.nixosModules.impermanence
+    ./immich
+    ./miniflux.nix
+    ./nginx
+    ./postgres.nix
     ./xray.nix
   ];
   boot.loader.grub = {

@@ -25,7 +25,6 @@ in
     "netdata_stream_fv0"
     "pgbackrest"
     "rclone"
-    "renterd"
     "wireguard"
   ]
   [
@@ -42,5 +41,13 @@ in
   ssh.fv0
   ssh.fp0
 ])
-// (setKeys [ "otel_collector" ] [ ssh.fv1 ])
-// (setKeys [ "xray" ] [ ssh.fv2 ])
+// (setKeys [ "otel_collector" ] [
+  ssh.fv0
+  ssh.fv1
+  ssh.fv2
+  ssh.fp0
+])
+// (setKeys [
+  "xray"
+  "clickhouse"
+] [ ssh.fv2 ])

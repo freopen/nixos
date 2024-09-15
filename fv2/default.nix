@@ -8,6 +8,8 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     impermanence.nixosModules.impermanence
+    ../modules/otel.nix
+    ./clickhouse.nix
     ./immich
     ./miniflux.nix
     ./nginx

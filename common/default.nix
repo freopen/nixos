@@ -12,7 +12,10 @@
     ./shell.nix
     ./pkgs_overlay.nix
   ];
-  systemd.tmpfiles.rules = [ "L+ /etc/nixPath - - - - ${pkgs.path}" ];
+  systemd.tmpfiles.rules = [
+    "L+ /etc/nixPath - - - - ${pkgs.path}"
+    "d /var/lib/private 0700 root root"
+  ];
   nix = {
     nixPath = [ "nixpkgs=/etc/nixPath" ];
     gc = {

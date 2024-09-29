@@ -88,4 +88,5 @@ in
       TimeoutStartSec = 60 * 60;
     };
   };
+  services.netdata.metrics.immich_rclone = 5572;
 }

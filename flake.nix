@@ -55,14 +55,6 @@
             ./fv0
           ];
         };
-        fv1 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [
-            ./common
-            ./fv1
-          ];
-        };
         fv2 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;

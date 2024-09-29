@@ -230,4 +230,8 @@ in
       }
     '';
   };
+  services.netdata.metrics = {
+    immich_server = 5004;
+    immich_microservices = 5005;
+  };
 }

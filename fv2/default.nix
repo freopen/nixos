@@ -1,17 +1,10 @@
-{
-  modulesPath,
-  const,
-  impermanence,
-  ...
-}:
+{ modulesPath, const, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    impermanence.nixosModules.impermanence
-    ../modules/otel.nix
-    ./clickhouse.nix
     ./immich
     ./miniflux.nix
+    ./monitoring.nix
     ./nginx
     ./postgres.nix
     ./xray.nix

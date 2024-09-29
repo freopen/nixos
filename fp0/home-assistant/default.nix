@@ -80,7 +80,7 @@
   };
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     hostName = "home";
     publish = {
       enable = true;

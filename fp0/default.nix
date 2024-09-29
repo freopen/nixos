@@ -1,6 +1,5 @@
 {
   nixos-hardware,
-  impermanence,
   pkgs,
   const,
   ...
@@ -8,11 +7,9 @@
 {
   imports = [
     nixos-hardware.nixosModules.raspberry-pi-4
-    impermanence.nixosModules.impermanence
     ./cloudflared.nix
     ./home-assistant
-    ./netdata.nix
-    # ./storage.nix
+    ./monitoring.nix
   ];
   fileSystems = {
     "/" = {

@@ -11,10 +11,8 @@
     ./chat_bot.nix
     ./chess_erdos.nix
     ./fishnet.nix
-    ./monitoring
+    ./monitoring.nix
     ./nginx
-    ./postgres.nix
-    ./wireguard
     chat_bot.nixosModules.freopen_chat_bot
     chess_erdos.nixosModules.default
   ];

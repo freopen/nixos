@@ -19,13 +19,6 @@ in
   [
     "chat_bot"
     "fishnet"
-    "google_cloud_storage"
-    "miniflux"
-    "netdata"
-    "netdata_stream_fv0"
-    "pgbackrest"
-    "rclone"
-    "wireguard"
   ]
   [
     ssh.fv0
@@ -34,20 +27,23 @@ in
 )
 // (setKeys [
   "cloudflared_fp0"
-  "netdata_stream_fp0"
   "zigbee_network_key"
 ] [ ssh.fp0 ])
-// (setKeys [ "grafana" ] [
+// (setKeys [ "netdata_child" ] [
   ssh.fv0
-  ssh.fp0
-])
-// (setKeys [ "otel_collector" ] [
-  ssh.fv0
-  ssh.fv1
-  ssh.fv2
   ssh.fp0
 ])
 // (setKeys [
+  "google_cloud_storage"
+  "miniflux"
+  "netdata_cloud"
+  "netdata_parent"
+  "pgbackrest"
+  "rclone"
   "xray"
-  "clickhouse"
 ] [ ssh.fv2 ])
+// (setKeys [ "grafana" ] [
+  ssh.fv0
+  ssh.fv2
+  ssh.fp0
+])

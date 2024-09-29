@@ -75,4 +75,24 @@
       );
     };
   };
+  services.netdata.configs = {
+    "go.d/nginx.conf" = {
+      jobs = [
+        {
+          name = "local";
+          url = "http://127.0.0.1/nginx_status";
+        }
+      ];
+    };
+    "go.d/web_log.conf" = {
+      jobs = [
+        {
+          name = "nginx";
+          path = "/var/log/nginx/access.log";
+          parser.log_type = "json";
+        }
+      ];
+    };
+    "go.d.conf".modules.web_log = true;
+  };
 }

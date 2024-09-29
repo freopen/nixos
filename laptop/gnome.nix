@@ -15,8 +15,9 @@
         qalculate-gtk
       ])
       ++ (with pkgs.gnomeExtensions; [
-        dash-to-panel
         clipboard-indicator
+        dash-to-panel
+        gtile
         power-profile-switcher
         vitals
       ]);

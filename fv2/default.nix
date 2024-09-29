@@ -2,6 +2,7 @@
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    ./fishnet.nix
     ./immich
     ./miniflux.nix
     ./monitoring.nix

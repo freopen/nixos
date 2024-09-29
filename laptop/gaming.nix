@@ -4,28 +4,27 @@
     enable = true;
     gamescopeSession = {
       enable = true;
+      args = [
+        "--mangoapp"
+        "-F fsr"
+        "-W 2880"
+        "-H 1800"
+        "-w 1440"
+        "-h 900"
+      ];
     };
+    extest.enable = true;
   };
   programs.gamescope = {
+    enable = true;
     capSysNice = true;
   };
   home-manager.users.freopen = {
     programs.mangohud = {
       enable = true;
       settings = {
-        toggle_hud = "F12";
-        font_size = 12;
-        hud_compact = true;
-        hud_no_margin = true;
-        battery = true;
-        gamepad_battery = true;
-        cpu_power = true;
-        cpu_temp = true;
-        gpu_power = true;
-        gpu_temp = true;
-        ram = true;
-        vram = true;
-        resolution = true;
+        toggle_preset = "F11";
+        preset = "1,2,3,4";
       };
     };
   };

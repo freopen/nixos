@@ -40,7 +40,6 @@
     # https://github.com/rustwasm/wasm-pack/issues/1356
     # tmp.useTmpfs = true;
   };
-  time.timeZone = "Europe/Zurich";
   swapDevices = [
     {
       device = "/var/lib/swapfile";

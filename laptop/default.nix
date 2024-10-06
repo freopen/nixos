@@ -58,7 +58,8 @@
     };
   };
   hardware = {
-    cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
+    enableAllFirmware = true;
+    cpu.amd.updateMicrocode = true;
     bluetooth = {
       enable = true;
       settings = {

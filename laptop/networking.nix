@@ -7,21 +7,16 @@
       wifi.backend = "iwd";
       dns = "systemd-resolved";
     };
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "2606:4700:4700::1111"
-      "2606:4700:4700::1001"
-    ];
+    nameservers = [ ]; # Use DHCP provided DNS to deal with captive portals
     nftables.enable = true;
   };
   systemd.network.wait-online.enable = false;
   services.resolved = {
     enable = true;
-    dnssec = "true";
+    dnssec = "allow-downgrade";
     extraConfig = ''
       [Resolve]
-      DNSOverTLS=yes
+      DNSOverTLS=opportunistic
       MulticastDNS=no
     '';
   };

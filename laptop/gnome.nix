@@ -15,10 +15,10 @@
         qalculate-gtk
       ])
       ++ (with pkgs.gnomeExtensions; [
+        battery-health-charging
         clipboard-indicator
         dash-to-panel
         gtile
-        power-profile-switcher
         vitals
       ]);
   };

@@ -11,7 +11,7 @@
   home-manager.users.freopen = {
     home.packages =
       (with pkgs; [
-        gnome.gnome-tweaks
+        gnome-tweaks
         qalculate-gtk
       ])
       ++ (with pkgs.gnomeExtensions; [

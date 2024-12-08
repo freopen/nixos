@@ -9,7 +9,7 @@
 buildHomeAssistantComponent rec {
   owner = "al-one";
   domain = "xiaomi_miot";
-  version = "0.7.17";
+  version = "1.0.2";
 
   src = fetchFromGitHub {
     owner = "al-one";

@@ -1,6 +1,5 @@
 {
   pkgs,
-  config,
   modulesPath,
   home-manager,
   lib,

@@ -1,10 +1,11 @@
 { pkgs, ... }:
 {
   services.home-assistant = {
-    customComponents = [ pkgs.xiaomi_miot ];
+    customComponents = [ pkgs.home-assistant-custom-components.xiaomi_miot ];
     extraComponents = [
       "ffmpeg"
       "local_calendar"
+      "homekit"
     ];
     config.automation = [
       {

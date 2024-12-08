@@ -86,7 +86,7 @@
         log-level-stderr = "info";
         log-timestamp = "n";
         compress-type = "zst";
-        repo1-path = "/var/lib/pgbackrest";
+        repo1-path = "/var/lib/postgresql/pgbackrest";
         repo1-retention-full = 2;
         repo1-retention-diff = 5;
         repo1-bundle = "y";

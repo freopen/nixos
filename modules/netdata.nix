@@ -35,7 +35,7 @@ in
         default = { };
       };
       metrics = mkOption {
-        type = types.attrsOf types.port;
+        type = types.attrsOf (types.either types.port types.str);
         default = { };
       };
     };
@@ -74,7 +74,7 @@ in
                   autodetection_retry = 60;
                   jobs = lib.attrsets.mapAttrsToList (name: port: {
                     inherit name;
-                    url = "http://127.0.0.1:${builtins.toString port}/metrics";
+                    url = if builtins.isString port then port else "http://127.0.0.1:${builtins.toString port}";
                   }) cfg.metrics;
                 };
                 "go.d/systemdunits.conf" = {

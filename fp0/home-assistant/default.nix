@@ -1,15 +1,24 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
-    ./light.nix
-    ./xiaomi.nix
+    ./backup.nix
+    # ./light.nix
+    # ./xiaomi.nix
   ];
   environment.persistence."/persist" = {
-    directories = [
-      "/var/lib/hass"
-      "/var/lib/mosquitto"
-      "/var/lib/zigbee2mqtt"
-    ];
+    directories =
+      builtins.map
+        (user: {
+          directory = "/var/lib/${user}";
+          user = user;
+          group = user;
+          mode = "0750";
+        })
+        [
+          "hass"
+          "mosquitto"
+          "zigbee2mqtt"
+        ];
   };
   services.nginx.virtualHosts."home.freopen.org" = {
     forceSSL = true;
@@ -22,29 +31,38 @@
       proxyWebsockets = true;
     };
   };
+  # services.netdata.metrics.home-assistant = "http://127.0.0.1:8123/api/prometheus";
   services.home-assistant = {
     enable = true;
+    configWritable = true;
+    customComponents = [ pkgs.home-assistant-custom-components.xiaomi_miot ];
     extraComponents = [
       "default_config"
       "esphome"
+      "ffmpeg"
+      "homekit"
+      "local_calendar"
       "met"
       "mqtt"
       "radio_browser"
+      "telegram"
+      "telegram_bot"
     ];
-    config = {
-      http = {
-        server_host = "127.0.0.1";
-        trusted_proxies = [ "127.0.0.1" ];
-        use_x_forwarded_for = true;
-      };
-      default_config = { };
-      recorder = {
-        exclude = {
-          entity_globs = [ "*" ];
-        };
-        commit_interval = 60 * 60;
-      };
-    };
+    config = null;
+    # config = {
+    #   http = {
+    #     server_host = "127.0.0.1";
+    #     trusted_proxies = [ "127.0.0.1" ];
+    #     use_x_forwarded_for = true;
+    #   };
+    #   default_config = { };
+    #   recorder = {
+    #     exclude = {
+    #       entity_globs = [ "*" ];
+    #     };
+    #     commit_interval = 60 * 60;
+    #   };
+    # };
   };
   age.secrets.zigbee_network_key = {
     name = "zigbee_network_key.yaml";

@@ -2,8 +2,6 @@
 {
   imports = [
     ./backup.nix
-    # ./light.nix
-    # ./xiaomi.nix
   ];
   environment.persistence."/persist" = {
     directories =

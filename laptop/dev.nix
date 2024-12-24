@@ -29,15 +29,19 @@ in
           cargo-make
           cargo-update
           clang
+          freecad-wayland
           nil
           nixcfg-apply
-          unstable.nixd
           nixfmt-rfc-style
+          nodejs
           nodePackages.pnpm
           protobuf
-          rustup
+          python3
+          python3Packages.pip
           qmk
+          rustup
           tmux
+          unstable.nixd
           wasm-bindgen-cli
           wasm-pack
         ]);

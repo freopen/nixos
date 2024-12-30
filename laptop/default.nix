@@ -1,13 +1,19 @@
 {
   pkgs,
-  modulesPath,
   home-manager,
   lib,
+  nixos-hardware,
+  config,
   ...
 }:
 {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
+    nixos-hardware.nixosModules.common-cpu-amd
+    nixos-hardware.nixosModules.common-cpu-amd-pstate
+    nixos-hardware.nixosModules.common-cpu-amd-zenpower
+    nixos-hardware.nixosModules.common-gpu-amd
+    nixos-hardware.nixosModules.common-pc-laptop
+    nixos-hardware.nixosModules.common-pc-laptop-ssd
     home-manager.nixosModules.home-manager
     ./dev.nix
     ./firefox.nix
@@ -28,6 +34,10 @@
     ];
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     kernelModules = [ "kvm-amd" ];
+    kernelParams = lib.mkIf (lib.versionOlder config.boot.kernelPackages.kernel.version "6.13") [
+      # https://bbs.archlinux.org/viewtopic.php?id=301280
+      "amdgpu.dcdebugmask=0x10"
+    ];
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot = {

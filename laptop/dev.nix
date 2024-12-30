@@ -30,12 +30,14 @@ in
           cargo-update
           clang
           freecad-wayland
+          gimp-with-plugins
           nil
           nixcfg-apply
           nixfmt-rfc-style
           nodejs
           nodePackages.pnpm
           protobuf
+          prusa-slicer
           python3
           python3Packages.pip
           qmk

@@ -1,6 +1,7 @@
 set -o xtrace
 
 flake=${1:-laptop}
+op=${2:-switch}
 old=/run/current-system
 
 newLink=$(mktemp --dry-run)
@@ -25,7 +26,7 @@ case "${reply}" in
 esac
 
 if [[ $flake == "laptop" ]]; then
-  sudo nixos-rebuild switch --flake ".#${flake}" --no-write-lock-file
+  sudo nixos-rebuild "${op}" --flake ".#${flake}" --no-write-lock-file
 else
-  nixos-rebuild switch --target-host "root@${flake}.freopen.org" --flake ".#${flake}" --no-write-lock-file
+  nixos-rebuild "${op}" --target-host "root@${flake}.freopen.org" --flake ".#${flake}" --no-write-lock-file
 fi

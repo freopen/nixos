@@ -48,7 +48,7 @@
         proxyPass = "http://127.0.0.1:3001/";
       };
       extraConfig = ''
-        ssl_client_certificate ${./cloudflare_auth_origin_pull.pem};
+        ssl_client_certificate ${../../common/cloudflare_auth_origin_pull.pem};
         ssl_verify_client on;
       '';
     };

@@ -2,6 +2,7 @@
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    ./chess_erdos.nix
     ./fishnet.nix
     ./immich
     ./miniflux.nix
@@ -117,6 +118,10 @@
       "/var/lib/systemd/coredump"
       "/var/lib/systemd/timers"
       "/root"
+      {
+        directory = "/tmp";
+        mode = "a=rwxt";
+      }
     ];
     files = [ "/etc/machine-id" ];
   };

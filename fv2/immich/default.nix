@@ -21,11 +21,16 @@ let
       };
       image = {
         colorspace = "p3";
-        previewFormat = "jpeg";
-        previewSize = 720;
-        quality = 80;
-        thumbnailFormat = "webp";
-        thumbnailSize = 250;
+        preview = {
+          format = "jpeg";
+          size = 720;
+          quality = 80;
+        };
+        thumbnail = {
+          format = "webp";
+          size = 250;
+          quality = 80;
+        };
       };
       ffmpeg.transcode = "disabled";
       machineLearning = {
@@ -167,7 +172,7 @@ in
                   "REDIS_SOCKET=/run/redis-immich/redis.sock"
                   "IMMICH_HOST=127.0.0.1"
                   "IMMICH_PORT=${builtins.toString port}"
-                  "IMMICH_METRICS=true"
+                  "IMMICH_TELEMETRY_INCLUDE=all"
                   "IMMICH_API_METRICS_PORT=5004"
                   "IMMICH_MICROSERVICES_METRICS_PORT=5005"
                 ];
@@ -189,16 +194,16 @@ in
       immich-server = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-server";
-          imageDigest = "sha256:df4ae6d2bf8aa3ebd6370b42a667a007c5e7452a1cd2ab4c22fbaff9a69ffcbc";
-          sha256 = "sha256-KrYS9cTuC7mV1YhIwWwm5hd65R13UYd/bWBOlJgqzCg=";
+          imageDigest = "sha256:666ce77995230ff7327da5d285c861895576977237de08564e3c3ddf842877eb";
+          sha256 = "sha256-KMc3ULs0osdlRm1i3e9Z1AGsxWScx6Hpc06cn5Ma1rk=";
         };
         port = 5001;
       };
       immich-machine-learning = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-machine-learning";
-          imageDigest = "sha256:c0300d34fb275343c8e3b50796c9b10e6f33218e84c958386a218fbdceaeed65";
-          sha256 = "sha256-QniM6rTb+Q8O1Ruxb7bpN0vGXXhEWXpnhj1xHwOmSak=";
+          imageDigest = "sha256:fca90362ff3081fc7762d731eb24de262181eaec28afc51eff1d3ca5348663cd";
+          sha256 = "sha256-gdEijD+mzvKtrbGvFwdAIG39jBAs6x/oQVgOV769DAY=";
         };
         port = 5003;
       };

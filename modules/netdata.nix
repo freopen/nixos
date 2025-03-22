@@ -74,7 +74,7 @@ in
                   autodetection_retry = 60;
                   jobs = lib.attrsets.mapAttrsToList (name: port: {
                     inherit name;
-                    url = if builtins.isString port then port else "http://127.0.0.1:${builtins.toString port}";
+                    url = if builtins.isString port then port else "http://127.0.0.1:${builtins.toString port}/metrics";
                   }) cfg.metrics;
                 };
                 "go.d/systemdunits.conf" = {

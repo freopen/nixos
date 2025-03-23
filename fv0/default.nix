@@ -1,7 +1,6 @@
 {
   modulesPath,
   chat_bot,
-  chess_erdos,
   const,
   ...
 }:
@@ -9,12 +8,9 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./chat_bot.nix
-    ./chess_erdos.nix
     ./fishnet.nix
     ./monitoring.nix
-    ./nginx
     chat_bot.nixosModules.freopen_chat_bot
-    chess_erdos.nixosModules.default
   ];
   boot.loader.grub.device = "/dev/sda";
   boot.initrd.availableKernelModules = [

@@ -83,7 +83,7 @@ in
           tpslimit = 10;
           tpslimit-burst = 1000;
         };
-      ExecStartPost = "${pkgs.rclone}/bin/rclone rc vfs/refresh dir=thumbs recursive=true";
+      ExecStartPost = "${pkgs.rclone}/bin/rclone rc vfs/refresh dir=thumbs recursive=true --timeout=1h";
       Restart = "on-failure";
       TimeoutStartSec = 60 * 60;
     };

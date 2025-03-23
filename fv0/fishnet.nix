@@ -32,6 +32,7 @@
       KillMode = "mixed";
       CPUSchedulingPolicy = "idle";
       IOSchedulingClass = "idle";
+      Nice = 19; # To mark process as nice for monitoring
       WorkingDirectory = "/var/lib/fishnet";
       PrivateTmp = true;
     };

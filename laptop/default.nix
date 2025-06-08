@@ -10,7 +10,7 @@
   imports = [
     nixos-hardware.nixosModules.common-cpu-amd
     nixos-hardware.nixosModules.common-cpu-amd-pstate
-    nixos-hardware.nixosModules.common-cpu-amd-zenpower
+    # nixos-hardware.nixosModules.common-cpu-amd-zenpower
     nixos-hardware.nixosModules.common-gpu-amd
     nixos-hardware.nixosModules.common-pc-laptop
     nixos-hardware.nixosModules.common-pc-laptop-ssd
@@ -42,7 +42,7 @@
       efi.canTouchEfiVariables = true;
       systemd-boot = {
         enable = true;
-        configurationLimit = 10;
+        configurationLimit = 2;
       };
       timeout = 1;
     };

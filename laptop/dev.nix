@@ -28,6 +28,7 @@ in
           cargo-insta
           cargo-make
           cargo-update
+          chromium
           clang
           freecad-wayland
           gimp-with-plugins

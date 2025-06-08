@@ -2,7 +2,7 @@
 {
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "IosevkaTerm" ]; })
+      (nerd-fonts.iosevka-term)
       (iosevka-bin.override { variant = "Aile"; })
       (iosevka-bin.override { variant = "Etoile"; })
       noto-fonts

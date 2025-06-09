@@ -34,11 +34,11 @@ let
       };
       ffmpeg.transcode = "disabled";
       machineLearning = {
+        enabled = true;
         clip = {
           enabled = true;
           modelName = "XLM-Roberta-Large-Vit-B-16Plus";
         };
-        enabled = true;
         facialRecognition = {
           enabled = true;
           maxDistance = 0.5;
@@ -46,15 +46,15 @@ let
           minScore = 0.7;
           modelName = "buffalo_l";
         };
-        url = "http://127.0.0.1:5003";
+        urls = [ "http://127.0.0.1:5003" ];
       };
       library = {
         scan.enabled = false;
         watch.enabled = false;
       };
       trash = {
-        days = 9999999999999;
         enabled = true;
+        days = 9999999999999;
       };
       server.externalDomain = "https://photos.freopen.org";
       newVersionCheck.enabled = false;
@@ -194,16 +194,20 @@ in
       immich-server = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-server";
-          imageDigest = "sha256:666ce77995230ff7327da5d285c861895576977237de08564e3c3ddf842877eb";
-          sha256 = "sha256-KMc3ULs0osdlRm1i3e9Z1AGsxWScx6Hpc06cn5Ma1rk=";
+          imageDigest = "sha256:073fc04c7e3d18ace466c20763809cf17aa55765ed610f12971b392a6a80b50c";
+          hash = "sha256-9EuDi1wb8rwWiUaUOI6/8xzwdhf6KGoLhPrPp5/Ydgg=";
+          finalImageName = "ghcr.io/immich-app/immich-server";
+          finalImageTag = "v1.134.0";
         };
         port = 5001;
       };
       immich-machine-learning = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-machine-learning";
-          imageDigest = "sha256:fca90362ff3081fc7762d731eb24de262181eaec28afc51eff1d3ca5348663cd";
-          sha256 = "sha256-gdEijD+mzvKtrbGvFwdAIG39jBAs6x/oQVgOV769DAY=";
+          imageDigest = "sha256:e157e0fa0d4363b0b6bab1923adab5951bbcdb71cd9016470bc6810dae21d115";
+          hash = "sha256-iTQiqSNdq0QVRkNE5bX5knX8AHLcyC2qk38bGl/UyPk=";
+          finalImageName = "ghcr.io/immich-app/immich-machine-learning";
+          finalImageTag = "v1.134.0";
         };
         port = 5003;
       };

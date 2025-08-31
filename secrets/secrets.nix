@@ -3,6 +3,7 @@ let
   common = with ssh; [
     laptop
     phone
+    fd0
   ];
   setKeys =
     names: keys:

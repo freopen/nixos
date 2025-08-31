@@ -111,6 +111,7 @@
   users.users.root.openssh.authorizedKeys.keys = with const.ssh; [
     laptop
     phone
+    fd0
   ];
   environment.persistence."/nix/persist" = {
     directories = [

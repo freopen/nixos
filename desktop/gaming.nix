@@ -1,5 +1,12 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  services.udev.packages = [ pkgs.unstable.game-devices-udev-rules ];
+  services.udev.extraRules = ''
+    # Flydigi Vader 3 Pro USB Dongle
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="2412", MODE="0666"
+    KERNEL=="hidraw*", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="2412", MODE="0666"
+  '';
+  hardware.uinput.enable = true;
   programs.steam = {
     enable = true;
     gamescopeSession = {

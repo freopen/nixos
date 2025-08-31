@@ -30,30 +30,24 @@
     };
   };
 
-  outputs =
-    { nixpkgs, ... }@flakeInputs:
-    let
-      inputs = flakeInputs // {
-        const = import ./const.nix;
-      };
-    in
-    {
+  outputs = { nixpkgs, ... }@flakeInputs:
+    let inputs = flakeInputs // { const = import ./const.nix; };
+    in {
       nixosConfigurations = {
         laptop = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;
-          modules = [
-            ./common
-            ./laptop
-          ];
+          modules = [ ./laptop.nix ];
+        };
+        fd0 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = inputs;
+          modules = [ ./fd0.nix ];
         };
         fv2 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;
-          modules = [
-            ./common
-            ./fv2
-          ];
+          modules = [ ./common ./fv2 ];
         };
       };
     };

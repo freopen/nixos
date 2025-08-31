@@ -17,37 +17,36 @@ in
   };
   home-manager.users.freopen = {
     home = {
-      packages =
-        [
-          agenix.packages.x86_64-linux.default
-          afl-fuzz
-        ]
-        ++ (with pkgs; [
-          binaryen
-          cargo-binutils
-          cargo-insta
-          cargo-make
-          cargo-update
-          chromium
-          clang
-          freecad-wayland
-          gimp-with-plugins
-          nil
-          nixcfg-apply
-          nixfmt-rfc-style
-          nodejs
-          nodePackages.pnpm
-          protobuf
-          prusa-slicer
-          python3
-          python3Packages.pip
-          qmk
-          rustup
-          tmux
-          unstable.nixd
-          wasm-bindgen-cli
-          wasm-pack
-        ]);
+      packages = [
+        agenix.packages.x86_64-linux.default
+        afl-fuzz
+      ]
+      ++ (with pkgs; [
+        binaryen
+        cargo-binutils
+        cargo-insta
+        cargo-make
+        cargo-update
+        chromium
+        clang
+        freecad-wayland
+        gimp-with-plugins
+        nil
+        nixcfg-apply
+        nixfmt-rfc-style
+        nodejs
+        nodePackages.pnpm
+        protobuf
+        prusa-slicer
+        python3
+        python3Packages.pip
+        qmk
+        rustup
+        tmux
+        unstable.nixd
+        wasm-bindgen-cli
+        wasm-pack
+      ]);
       sessionVariables = {
         LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
       };
@@ -56,5 +55,14 @@ in
       zsh.enable = true;
       vscode.enable = true;
     };
+  };
+  services.postgresql = {
+    enable = true;
+    ensureUsers = [
+      {
+        name = "freopen";
+        ensureClauses.superuser = true;
+      }
+    ];
   };
 }

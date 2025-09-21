@@ -194,20 +194,20 @@ in
       immich-server = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-server";
-          imageDigest = "sha256:073fc04c7e3d18ace466c20763809cf17aa55765ed610f12971b392a6a80b50c";
-          hash = "sha256-9EuDi1wb8rwWiUaUOI6/8xzwdhf6KGoLhPrPp5/Ydgg=";
+          imageDigest = "sha256:06bc7715fa4c4a1641bd0b566c949cd7327f420632b480389fd4d1e70665d046";
+          hash = "sha256-ieXjtlmxIWojjuvHgLPpZ8cc/dDd6WkKPmB5u4AwXvg=";
           finalImageName = "ghcr.io/immich-app/immich-server";
-          finalImageTag = "v1.134.0";
+          finalImageTag = "v1.142.1";
         };
         port = 5001;
       };
       immich-machine-learning = immich_unit {
         container = pkgs.dockerTools.pullImage {
           imageName = "ghcr.io/immich-app/immich-machine-learning";
-          imageDigest = "sha256:e157e0fa0d4363b0b6bab1923adab5951bbcdb71cd9016470bc6810dae21d115";
-          hash = "sha256-iTQiqSNdq0QVRkNE5bX5knX8AHLcyC2qk38bGl/UyPk=";
+          imageDigest = "sha256:9855f6a0a998db508ca97894997b17f3a0a61e9388b204d861110c19c42814eb";
+          hash = "sha256-6INEsn30aYfaQY/FGQC5Cyue+3jGc7yMa8WF2U75IoM=";
           finalImageName = "ghcr.io/immich-app/immich-machine-learning";
-          finalImageTag = "v1.134.0";
+          finalImageTag = "v1.142.1";
         };
         port = 5003;
       };

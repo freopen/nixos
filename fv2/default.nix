@@ -108,6 +108,7 @@
       KbdInteractiveAuthentication = false;
     };
   };
+  services.qemuGuest.enable = true;
   users.users.root.openssh.authorizedKeys.keys = with const.ssh; [
     laptop
     phone

@@ -4,6 +4,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./chess_erdos.nix
     ./fishnet.nix
+    ./ghost.nix
     ./immich
     # ./miniflux.nix
     ./monitoring.nix

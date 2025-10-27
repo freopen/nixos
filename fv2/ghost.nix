@@ -31,7 +31,7 @@
       ];
       extraOptions = [ "--userns=keep-id" ];
       environment = {
-        url = "https://ayrlin-beta.freopen.org";
+        url = "https://ayrlin.freopen.org";
         database__client = "sqlite3";
         database__connection__filename = "/var/lib/ghost/content/data/ghost.db";
         database__connection__useNullAsDefault = "true";
@@ -46,7 +46,7 @@
     StartLimitBurst = 3;
     StartLimitIntervalSec = 60 * 60;
   };
-  services.nginx.virtualHosts."ayrlin-beta.freopen.org" = {
+  services.nginx.virtualHosts."ayrlin.freopen.org" = {
     forceSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://127.0.0.1:2368/";

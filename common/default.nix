@@ -1,5 +1,4 @@
 {
-  self,
   pkgs,
   agenix,
   impermanence,
@@ -72,13 +71,27 @@
     '';
     autoUpgrade = {
       enable = true;
-      flake = self.outPath;
+      flake = "/nix/config";
       flags = [
-        "--update-input"
-        "nixpkgs"
-        "--no-write-lock-file"
         "-L" # print build logs
       ];
     };
+  };
+  systemd.services.refresh-flake-lock = {
+    description = "Refresh flake.lock before system upgrade";
+    path = [
+      pkgs.nix
+      pkgs.git
+    ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+      ExecStart = "${pkgs.nix}/bin/nix flake update --flake /nix/config";
+    };
+  };
+  systemd.services.nixos-upgrade = {
+    requires = [ "refresh-flake-lock.service" ];
+    after = [ "refresh-flake-lock.service" ];
   };
 }

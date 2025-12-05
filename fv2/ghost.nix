@@ -6,6 +6,7 @@
     home = "/var/lib/ghost";
     autoSubUidGidRange = true;
     group = "ghost";
+    linger = false;
   };
   users.groups.ghost = { };
   environment.persistence."/nix/persist".directories = [

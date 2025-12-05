@@ -9,7 +9,7 @@
     ../modules
     agenix.nixosModules.default
     impermanence.nixosModules.impermanence
-    ./build_cache.nix
+    # ./build_cache.nix
     ./shell.nix
     ./pkgs_overlay.nix
   ];

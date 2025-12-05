@@ -2,12 +2,12 @@
   description = "Freopen's NixOS config.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     impermanence.url = "github:nix-community/impermanence";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     fenix = {
@@ -30,25 +30,27 @@
     };
   };
 
-  outputs = { nixpkgs, ... }@flakeInputs:
-    let inputs = flakeInputs // { const = import ./const.nix; };
-    in {
+  outputs =
+    { nixpkgs, home-manager, ... }@flakeInputs:
+    let
+      inputs = flakeInputs // {
+        const = import ./const.nix;
+      };
+    in
+    {
       nixosConfigurations = {
-        laptop = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [ ./laptop.nix ];
-        };
-        fd0 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = inputs;
-          modules = [ ./fd0.nix ];
-        };
         fv2 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = inputs;
-          modules = [ ./common ./fv2 ];
+          modules = [
+            ./common
+            ./fv2
+          ];
         };
+      };
+      homeConfigurations."freopen" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        modules = [ ./home.nix ];
       };
     };
 }

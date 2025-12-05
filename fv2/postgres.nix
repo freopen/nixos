@@ -23,7 +23,7 @@
         ensureClauses.superuser = true;
       }
     ];
-    extraPlugins = [
+    extensions = [
       # https://github.com/diogotcorreia/dotfiles/blob/nixos/packages/pgvecto-rs.nix
       (
         let

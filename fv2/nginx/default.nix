@@ -30,7 +30,6 @@
     recommendedProxySettings = true;
     recommendedGzipSettings = true;
     recommendedBrotliSettings = true;
-    recommendedZstdSettings = true;
     proxyTimeout = "600s";
     commonHttpConfig =
       let

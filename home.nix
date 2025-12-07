@@ -12,8 +12,11 @@
       sysz
     ];
     shell.enableZshIntegration = true;
+    sessionVariables = {
+      SSH_ASKPASS = "/usr/bin/ksshaskpass";
+      SSH_ASKPASS_REQUIRE = "prefer";
+    };
   };
-
   programs = {
     home-manager.enable = true;
     vscode.enable = true;
@@ -34,6 +37,7 @@
           "completion"
         ];
       };
+      defaultKeymap = "viins";
       enableVteIntegration = true;
       history = {
         append = true;
@@ -56,21 +60,6 @@
       enableZshIntegration = true;
     };
     fzf.enable = true;
-  };
-  fonts.fontconfig = {
-    enable = true;
-    defaultFonts = {
-      monospace = [ "IosevkaTerm Nerd Font" ];
-      serif = [
-        "Noto Serif"
-      ];
-      sansSerif = [
-        "Noto Sans"
-      ];
-      emoji = [ "Noto Color Emoji" ];
-    };
-    subpixelRendering = "rgb";
-    hinting = "full";
   };
   nixpkgs.config.allowUnfree = true;
   services.home-manager = {

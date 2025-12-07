@@ -1,16 +1,24 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  agenix,
+  ...
+}:
 {
   home = {
     username = "freopen";
     homeDirectory = "/home/freopen";
     stateVersion = "25.11";
-    packages = with pkgs; [
+    packages = [
+      agenix.packages.x86_64-linux.default
+    ]
+    ++ (with pkgs; [
       nerd-fonts.iosevka-term
       nixd
       nixfmt-rfc-style
       rustup
       sysz
-    ];
+    ]);
     shell.enableZshIntegration = true;
     sessionVariables = {
       SSH_ASKPASS = "/usr/bin/ksshaskpass";

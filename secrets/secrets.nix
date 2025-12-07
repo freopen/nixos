@@ -43,6 +43,7 @@ in
 )
 // (setKeys
   [
+    "ghost_backup"
     "google_cloud_storage"
     "miniflux"
     "netdata_cloud"

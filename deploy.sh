@@ -48,7 +48,7 @@ ssh -t "$REMOTE_USER@$REMOTE_HOST" "
     # Build the system but do not activate it yet. 
     # This creates a './result' symlink to the new closure.
     echo 'Building configuration...'
-    nixos-rebuild build --flake $REMOTE_DIR #--no-update-lock-file
+    nixos-rebuild build --flake $REMOTE_DIR --no-update-lock-file
 
     echo 'Generating diff...'
     # Diff current system vs the new build

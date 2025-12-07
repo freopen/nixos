@@ -1,4 +1,4 @@
-{ ... }:
+{ config, pkgs, ... }:
 {
   users.users.ghost = {
     isSystemUser = true;
@@ -51,5 +51,22 @@
     forceSSL = true;
     enableACME = true;
     locations."/".proxyPass = "http://127.0.0.1:2368/";
+  };
+  age.secrets.ghost-backup.file = ../secrets/ghost_backup.age;
+  services.restic.backups.ghost = {
+    environmentFile = config.age.secrets.ghost-backup.path;
+    paths = [
+      "/var/lib/ghost/content"
+    ];
+    backupPrepareCommand = ''
+      ${pkgs.sqlite}/bin/sqlite3 /var/lib/ghost/content/data/ghost.db ".backup /var/lib/ghost/content/data/ghost.db.bak"
+    '';
+    pruneOpts = [
+      "--keep-daily 7"
+      "--keep-weekly 2"
+      "--keep-monthly 1"
+      "--keep-yearly 1"
+    ];
+    user = "ghost";
   };
 }

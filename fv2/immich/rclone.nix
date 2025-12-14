@@ -40,8 +40,15 @@ in
     };
     groups.immich-rclone.members = [ "immich" ];
   };
-  systemd.tmpfiles.rules = [ "d /var/lib/immich/cloud 0770 immich immich" ];
-  environment.persistence."/nix/persist".directories = [ "/var/lib/immich-rclone" ];
+  systemd.tmpfiles.rules = [ "d /var/lib/immich-cloud 0770 immich immich" ];
+  environment.persistence."/nix/persist".directories = [
+    {
+      directory = "/var/lib/immich-rclone";
+      user = "immich-rclone";
+      group = "immich-rclone";
+      mode = "0700";
+    }
+  ];
   environment.systemPackages = [ pkgs.fuse3 ];
   programs.fuse.userAllowOther = true;
   systemd.services.immich-rclone = {
@@ -59,7 +66,7 @@ in
       StateDirectory = "immich-rclone";
       StateDirectoryMode = "0700";
       ExecStart =
-        "${pkgs.rclone}/bin/rclone mount crypt: /var/lib/immich/cloud "
+        "${pkgs.rclone}/bin/rclone mount crypt: /var/lib/immich-cloud "
         + lib.cli.toGNUCommandLineShell { } {
           rc = true;
           rc-enable-metrics = true;

@@ -1,0 +1,19 @@
+{
+  "name": "Debian",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "features": {
+    "ghcr.io/devcontainers/features/nix": {
+      "multiUser": true,
+      "version": "latest",
+      "packages": ["nixd", "nixfmt", "agenix-cli"],
+      "extraNixConfig": "experimental-features = nix-command flakes"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "jnoortheen.nix-ide"
+      ]
+    }
+  }
+}

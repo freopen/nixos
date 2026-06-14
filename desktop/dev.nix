@@ -35,7 +35,7 @@ in
         nixcfg-apply
         nixfmt-rfc-style
         nodejs
-        nodePackages.pnpm
+        pnpm
         protobuf
         prusa-slicer
         python3

@@ -8,7 +8,7 @@ let
   setKeys =
     names: keys:
     builtins.listToAttrs (
-      builtins.map (x: {
+      map (x: {
         name = "${x}.age";
         value = {
           publicKeys = common ++ keys;

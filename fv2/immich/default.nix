@@ -4,7 +4,6 @@
   services = {
     immich = {
       enable = true;
-      database.enableVectors = true;
     };
     nginx.virtualHosts."photos.freopen.org" = {
       forceSSL = true;

@@ -70,6 +70,7 @@ in
         + lib.cli.toGNUCommandLineShell { } {
           rc = true;
           rc-enable-metrics = true;
+          rc-no-auth = true;
           config = rcloneConfig;
           cache-dir = "/var/lib/immich-rclone";
           allow-other = true;

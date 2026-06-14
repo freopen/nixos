@@ -8,7 +8,7 @@
   home = {
     username = "freopen";
     homeDirectory = "/home/freopen";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     packages = [
       agenix.packages.x86_64-linux.default
     ]

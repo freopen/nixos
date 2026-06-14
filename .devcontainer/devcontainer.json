@@ -5,15 +5,20 @@
     "ghcr.io/devcontainers/features/nix": {
       "multiUser": true,
       "version": "latest",
-      "packages": ["nixd", "nixfmt", "agenix-cli"],
       "extraNixConfig": "experimental-features = nix-command flakes"
     }
   },
+  "onCreateCommand": "nix-env -iA nixpkgs.nixd nixpkgs.nixfmt nixpkgs.agenix-cli",
   "customizations": {
     "vscode": {
       "extensions": [
         "jnoortheen.nix-ide"
       ]
     }
-  }
+  },
+  "runArgs": [
+    "--userns=keep-id"
+  ],
+  "remoteUser": "vscode",
+  "containerUser": "vscode"
 }

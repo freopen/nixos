@@ -96,5 +96,5 @@ in
       TimeoutStartSec = 60 * 60;
     };
   };
-  services.netdata.metrics.immich_rclone = 5572;
+  services.grafana-alloy-freopen.metrics.immich_rclone = 5572;
 }

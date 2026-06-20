@@ -14,7 +14,7 @@
       mode = "0750";
     }
   ];
-  services.netdata.metrics.chess_erdos = 4001;
+  services.grafana-alloy-freopen.metrics.chess_erdos = 4001;
   services.nginx.virtualHosts."freopen.org" = {
     forceSSL = true;
     enableACME = true;

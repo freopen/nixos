@@ -4,9 +4,7 @@
 }:
 {
   environment.persistence."/nix/persist".directories = [
-    "/var/lib/pgbackrest"
     "/var/lib/postgresql"
-    "/var/lib/private/pgadmin"
   ];
   services.postgresql = {
     enable = true;
@@ -16,15 +14,6 @@
         name = "root";
         ensureClauses.superuser = true;
       }
-      {
-        name = "pgadmin";
-        ensureClauses.superuser = true;
-      }
     ];
-  };
-  services.pgadmin = {
-    enable = false;
-    initialEmail = "freopen@freopen.org";
-    initialPasswordFile = builtins.toFile "pgadmin-init-pass" "";
   };
 }

@@ -4,16 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     impermanence.url = "github:nix-community/impermanence";
-    home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,7 +17,7 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }@flakeInputs:
+    { nixpkgs, ... }@flakeInputs:
     let
       inputs = flakeInputs // {
         const = import ./const.nix;
@@ -42,11 +33,6 @@
             ./fv2
           ];
         };
-      };
-      homeConfigurations."freopen" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
-        modules = [ ./home.nix ];
-        extraSpecialArgs = inputs;
       };
     };
 }

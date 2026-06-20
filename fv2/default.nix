@@ -6,7 +6,6 @@
     ./fishnet.nix
     ./ghost.nix
     ./immich
-    # ./miniflux.nix
     ./monitoring.nix
     ./nginx
     ./postgres.nix

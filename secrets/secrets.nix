@@ -1,64 +1,32 @@
 let
   ssh = (import ../const.nix).ssh;
-  common = with ssh; [
+  commonKeys = with ssh; [
     laptop
     phone
     fd0
   ];
-  setKeys =
-    names: keys:
+  fv2Keys = commonKeys ++ [ ssh.fv2 ];
+  mkSecrets =
+    publicKeys: names:
     builtins.listToAttrs (
-      map (x: {
-        name = "${x}.age";
+      map (name: {
+        name = "${name}.age";
         value = {
-          publicKeys = common ++ keys;
+          inherit publicKeys;
         };
       }) names
     );
 in
-(setKeys
-  [
-    "chat_bot"
-    "fishnet"
-  ]
-  [
-    ssh.fv0
-    ssh.fv2
-  ]
-)
-// (setKeys
-  [
-    "cloudflared_fp0"
-    "fp0_restic"
-    "zigbee_network_key"
-  ]
-  [ ssh.fp0 ]
-)
-// (setKeys
-  [ "netdata_child" ]
-  [
-    ssh.fv0
-    ssh.fp0
-  ]
-)
-// (setKeys
-  [
-    "ghost_backup"
-    "google_cloud_storage"
-    "miniflux"
-    "netdata_cloud"
-    "netdata_parent"
-    "pgbackrest"
-    "rclone"
-    "xray"
-  ]
-  [ ssh.fv2 ]
-)
-// (setKeys
-  [ "grafana" ]
-  [
-    ssh.fv0
-    ssh.fv2
-    ssh.fp0
-  ]
-)
+(mkSecrets fv2Keys [
+  "fishnet"
+  "ghost_backup"
+  "google_cloud_storage"
+  "grafana"
+  "netdata_cloud"
+  "netdata_parent"
+  "rclone"
+  "xray"
+])
+// (mkSecrets commonKeys [
+  "netdata_child"
+])
